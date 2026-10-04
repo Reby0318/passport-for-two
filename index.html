@@ -135,9 +135,9 @@ footer{margin-top:48px;color:var(--muted);font-size:13px;text-align:center}
   <section class="sec">
     <div class="sec-head"><div><div class="eyebrow">Behind the panels</div><h2>How this page is hosted</h2></div></div>
     <div class="hosting" style="margin-top:0">
-      <div><h3>It is a real website</h3><p>Claude wrote this page as one HTML file and published it to Anthropic's servers. Opening the link downloads the page from there, the same way any website works. That's why it opens on anyone's phone.</p></div>
-      <div><h3>Someone pays for serving it</h3><p>Storing the file and sending it to every visitor costs storage and bandwidth. Anthropic covers that as part of the Claude plan, the way Google Drive hosts your files.</p></div>
-      <div><h3>Moving it to our own address</h3><p>The page lives on claude.ai, not on a domain we own. To give it our own address, upload the same HTML file to GitHub Pages or Netlify (free for a page like this) and add a domain for about $10–15 a year.</p></div>
+      <div><h3>It is a real website</h3><p>This page is one HTML file. Opening a link downloads that file from a server, the same way any website works. That's why it opens on anyone's phone.</p></div>
+      <div><h3>Someone pays for serving it</h3><p>Storing the file and sending it to every visitor costs storage and bandwidth. On claude.ai, Anthropic covers that as part of the Claude plan. On GitHub Pages, GitHub covers it for free, as it does for small static sites.</p></div>
+      <div><h3>It has two homes</h3><p>The same file is served from claude.ai/artifact/FJWiFZ5UAmj1P2YSoApeYZ and, for free, from reby0318.github.io/passport-for-two. A custom domain like ourtravelcomic.com would only add about $10–15 a year.</p></div>
     </div>
   </section>
 
@@ -179,7 +179,10 @@ document.getElementById('gdefs').innerHTML=`
 <pattern id="p-ndebele" width="24" height="24" patternUnits="userSpaceOnUse"><rect width="12" height="12" fill="#1e88e5"/><rect x="12" y="12" width="12" height="12" fill="#fdd835"/><rect x="3" y="15" width="6" height="6" fill="#e53935"/><rect x="15" y="3" width="6" height="6" fill="#43a047"/><path d="M0 12H24M12 0V24" stroke="#1a1a1a" stroke-width="1.6"/></pattern>
 <pattern id="p-polka" width="14" height="14" patternUnits="userSpaceOnUse"><circle cx="4" cy="4" r="2.6" fill="#fff"/><circle cx="11" cy="11" r="2.6" fill="#fff"/></pattern>
 <pattern id="p-knit" width="10" height="14" patternUnits="userSpaceOnUse"><path d="M2 0Q8 7 2 14M8 0Q2 7 8 14" fill="none" stroke="#b5a37f" stroke-width="1.3"/></pattern>
-<pattern id="p-cross" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M2 2L7 7M7 2L2 7" stroke="#c62828" stroke-width="1.6"/></pattern>`;
+<pattern id="p-cross" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M2 2L7 7M7 2L2 7" stroke="#c62828" stroke-width="1.6"/></pattern>
+<pattern id="p-kente" width="24" height="24" patternUnits="userSpaceOnUse"><rect width="24" height="24" fill="#e6b84a"/><rect width="24" height="4" fill="#2e7d32"/><rect y="12" width="24" height="3" fill="#c62828"/><rect x="4" y="4" width="6" height="8" fill="#1a1a1a"/><rect x="14" y="15" width="6" height="9" fill="#2e7d32"/><rect x="16" y="5" width="2" height="7" fill="#c62828"/></pattern>
+<pattern id="p-ikat" width="20" height="16" patternUnits="userSpaceOnUse"><path d="M10 0L18 8L10 16L2 8Z" fill="#fdd835"/><path d="M10 4L14 8L10 12L6 8Z" fill="#c62828"/><path d="M1 0L1 16M19 0L19 16" stroke="#1e5aa8" stroke-width="2"/></pattern>
+<pattern id="p-redcheck" width="10" height="10" patternUnits="userSpaceOnUse"><rect width="5" height="5" fill="#c62828" opacity=".85"/><rect x="5" y="5" width="5" height="5" fill="#c62828" opacity=".85"/></pattern>`;
 const pat=(d,p)=>p?`<path d="${d}" fill="url(#p-${p})"/>`:'';
 
 /* ---------- sprite ---------- */
@@ -262,6 +265,11 @@ function extras(f,who){
   if(e.includes('rings')) o+=[0,1,2,3].map(i=>`<ellipse cx="60" cy="${100+i*3.4}" rx="${9+i*.6}" ry="2.2" fill="none" stroke="${GOLD}" stroke-width="2.6"/>`).join('');
   if(e.includes('suspenders')) o+=`<path d="M46 104 L50 150 M74 104 L70 150" stroke="#5a3a20" stroke-width="5"/><rect x="47" y="118" width="26" height="8" rx="2" fill="#5a3a20" ${S1}/>`+flower(60,122,1.6,'#fff','#fdd835');
   if(e.includes('brooch')) o+=`<circle cx="60" cy="112" r="6" fill="${SILVER}" ${S1}/><circle cx="60" cy="112" r="2.4" fill="${GOLD}"/>`+[-4,0,4].map(x=>`<path d="M${60+x} 117 L${60+x*1.3} 126" stroke="${SILVER}" stroke-width="1.2"/><circle cx="${60+x*1.3}" cy="127" r="1.6" fill="${SILVER}"/>`).join('');
+  if(e.includes('cloak')) o+=['M40 104 L22 208 L44 208 L52 112Z','M80 104 L98 208 L76 208 L68 112Z'].map(d=>`<path d="${d}" fill="${f.cloak}" ${S}/>`).join('')+`<path d="M52 112 L44 208 M68 112 L76 208" stroke="${GOLD}" stroke-width="3"/>`;
+  if(e.includes('gazyri')) o+=[0,1,2,3,4].map(i=>`<rect x="41" y="${112+i*6}" width="11" height="4" rx="1" fill="${SILVER}" ${S1}/><rect x="68" y="${112+i*6}" width="11" height="4" rx="1" fill="${SILVER}" ${S1}/>`).join('');
+  if(e.includes('chains')) o+=`<path d="M44 112 Q60 126 76 112 M44 120 Q60 136 76 120 M44 128 Q60 146 76 128" stroke="${SILVER}" stroke-width="1.8" fill="none"/>`+flower(44,112,2.4,SILVER,'#fff')+flower(76,112,2.4,SILVER,'#fff');
+  if(e.includes('yoke')) o+=`<path d="M38 106 Q60 96 82 106 L84 126 Q60 134 36 126Z" fill="#6b4a33" ${S1}/><path d="M38 116 L42 110 L46 116 L50 110 L54 116 L58 110 L62 116 L66 110 L70 116 L74 110 L78 116 L82 110" fill="none" stroke="#f3ead7" stroke-width="2"/>`+[42,50,58,66,74,82].map(x=>`<circle cx="${x-2}" cy="123" r="1.6" fill="#f3ead7"/>`).join('');
+  if(e.includes('kiekie')) o+=[...Array(13)].map((_,i)=>`<path d="M${38+i*3.7} 148 L${33+i*4.5} 190" stroke="#8a6a3a" stroke-width="2.6"/>`).join('')+`<rect x="35" y="142" width="50" height="9" rx="2" fill="#c9a46a" ${S1}/>`;
   if(e.includes('vysh')) o+=`<rect x="55" y="104" width="10" height="38" fill="url(#p-cross)" ${S1}/><path d="M50 103 Q60 108 70 103" fill="none" stroke="#c62828" stroke-width="3" stroke-dasharray="2 2"/>`;
   if(e.includes('pearls')) o+=`<path d="M46 104 Q60 130 74 104" fill="none" stroke="${f.pearlC||'#fff'}" stroke-width="3.4" stroke-dasharray=".1 4.4" stroke-linecap="round"/>`;
   if(e.includes('bowtie')) o+=`<path d="M60 105 L50 100 L50 110Z M60 105 L70 100 L70 110Z" fill="${f.bowtie||'#c62828'}" ${S1}/><circle cx="60" cy="105" r="2.6" fill="${f.bowtie||'#c62828'}" ${S1}/>`;
@@ -300,7 +308,8 @@ function hat(f,who,layer){
     if(h==='bonnet') return `<path d="M18 64 Q10 8 60 6 Q110 8 102 64 Q98 30 60 26 Q22 30 18 64Z" fill="${c}" ${S}/>`;
     if(h==='hood') return `<path d="M12 86 Q6 14 60 -14 Q114 14 108 86 Q60 70 12 86Z" fill="${c}" ${S}/>`+pat('M12 86 Q6 14 60 -14 Q114 14 108 86 Q60 70 12 86Z',f.pat);
     if(h==='peineta'&&!f.noComb) return `<path d="M28 30 Q30 -34 60 -42 Q90 -34 92 30Z" fill="#3a2214" ${S}/>`+[0,1,2].map(i=>`<ellipse cx="${46+i*14}" cy="-8" rx="4" ry="9" fill="#7a4a2a"/>`).join('');
-    if(h==='ghutra') return `<path d="M16 50 Q8 110 4 146 L40 124 L80 124 L116 146 Q112 110 104 50Z" fill="#fff" ${S}/><path d="M24 70 Q20 110 16 136 M96 70 Q100 110 104 136" ${S1} opacity=".3"/>`;
+    if(h==='pillbox'||h==='saukele') return `<path d="M30 16 Q12 80 18 156 L102 156 Q108 80 90 16Z" fill="#fff" fill-opacity=".72" ${S1}/>`;
+    if(h==='ghutra') return `<path d="M16 50 Q8 110 4 146 L40 124 L80 124 L116 146 Q112 110 104 50Z" fill="${f.hatC||'#fff'}" ${S}/>`+pat('M16 50 Q8 110 4 146 L40 124 L80 124 L116 146 Q112 110 104 50Z',f.hatPat)+`<path d="M24 70 Q20 110 16 136 M96 70 Q100 110 104 136" ${S1} opacity=".3"/>`;
     if(h==='vinok') return [['#e53935',26],['#fdd835',34],['#1e88e5',86],['#43a047',94]].map(([col,x])=>`<path d="M${x} 40 Q${x+(x<60?-6:6)} 100 ${x+(x<60?-4:4)} 160" stroke="${INK}" stroke-width="7.4" fill="none"/><path d="M${x} 40 Q${x+(x<60?-6:6)} 100 ${x+(x<60?-4:4)} 160" stroke="${col}" stroke-width="4.6" fill="none"/>`).join('');
     return '';
   }
@@ -345,7 +354,19 @@ function hat(f,who,layer){
     case 'cordobes': return `<ellipse cx="60" cy="26" rx="52" ry="9" fill="${c}" ${S}/><path d="M36 26 L38 2 L82 2 L84 26Z" fill="${c}" ${S}/><ellipse cx="60" cy="2" rx="22" ry="3.4" fill="${c}" ${S1}/><path d="M37 20 L83 20" stroke="#555" stroke-width="4"/>`;
     case 'tyrol': return `<path d="M34 26 Q34 -2 60 -4 Q86 -2 86 26Z" fill="${c}" ${S}/><path d="M52 -2 Q60 6 68 -2" fill="none" ${S1}/><ellipse cx="60" cy="26" rx="46" ry="8" fill="${c}" ${S}/><path d="M35 20 L85 20" stroke="#fbf7ef" stroke-width="3" stroke-dasharray="3 2"/><path d="M84 18 Q96 -10 102 -18 Q98 -2 88 20Z" fill="#7a6a58" ${S1}/>`+flower(40,18,2,'#fff','#fdd835');
     case 'volendam': return `<path d="M26 28 L-6 2 L2 40Z M94 28 L126 2 L118 40Z" fill="#fff" ${S}/><path d="M20 52 Q16 8 60 6 Q104 8 100 52 Q60 36 20 52Z" fill="#fff" ${S}/><path d="M26 42 Q60 24 94 42 M30 30 Q60 14 90 30" fill="none" ${S1} stroke-dasharray="1.5 2.5" opacity=".5"/>`;
-    case 'ghutra': return `<path d="M16 60 Q8 -6 60 -6 Q112 -6 104 60 Q98 30 60 26 Q22 30 16 60Z" fill="#fff" ${S}/><ellipse cx="60" cy="18" rx="42" ry="9" fill="none" stroke="#1a1a1a" stroke-width="4.4"/><ellipse cx="60" cy="13" rx="40" ry="8" fill="none" stroke="#1a1a1a" stroke-width="3"/>`;
+    case 'topi': return `<path d="M30 36 L34 4 Q60 -6 88 0 L90 36 Q60 30 30 36Z" fill="${c}" ${S}/>`+pat('M30 36 L34 4 Q60 -6 88 0 L90 36 Q60 30 30 36Z',f.hatPat);
+    case 'songkok': return `<path d="M32 34 L34 4 L86 4 L88 34 Q60 30 32 34Z" fill="${c}" ${S}/><ellipse cx="60" cy="4" rx="26" ry="4" fill="${c}" ${S1}/>`;
+    case 'karakul': return `<path d="M30 34 L34 6 Q60 -4 86 6 L90 34 Q60 28 30 34Z" fill="${c}" ${S}/>`+[...Array(12)].map((_,i)=>`<circle cx="${38+(i%6)*9}" cy="${12+Math.floor(i/6)*10}" r="3" fill="none" stroke="#fff" stroke-width="1" opacity=".35"/>`).join('');
+    case 'doppa': return `<path d="M30 32 L32 8 L60 2 L88 8 L90 32 Q60 26 30 32Z" fill="${c}" ${S}/><path d="M46 12 q6 -6 8 4 q-2 8 -8 4Z M66 12 q6 -6 8 4 q-2 8 -8 4Z M40 24 q6 -4 7 3 q-2 6 -7 3Z M74 24 q6 -4 7 3 q-2 6 -7 3Z" fill="#fff"/>`;
+    case 'papakha': return `<path d="M26 36 L28 -24 Q60 -34 92 -24 L94 36 Q60 28 26 36Z" fill="${c}" ${S}/>`+[...Array(14)].map((_,i)=>`<path d="M${32+(i%7)*9} ${-14+Math.floor(i/7)*22} q3 6 0 10" stroke="#fff" stroke-width="1.2" fill="none" opacity=".3"/>`).join('');
+    case 'kufi': return `<path d="M28 34 Q26 4 60 2 Q94 4 92 34 Q60 28 28 34Z" fill="${c}" ${S}/>`+pat('M28 34 Q26 4 60 2 Q94 4 92 34 Q60 28 28 34Z',f.hatPat);
+    case 'pillbox': return `<rect x="36" y="4" width="48" height="22" rx="4" fill="${c}" ${S}/><path d="M37 20 L83 20" stroke="${GOLD}" stroke-width="3"/><path d="M37 10 L83 10" stroke="${GOLD}" stroke-width="1.4" stroke-dasharray="2 2"/>`;
+    case 'saukele': return `<path d="M36 30 L50 -62 L70 -62 L84 30Z" fill="${c}" ${S}/><path d="M40 10 L80 10 M44 -14 L76 -14 M48 -38 L72 -38" stroke="${GOLD}" stroke-width="3"/><path d="M50 -62 Q60 -80 70 -62Z" fill="#fff" ${S1}/>`+[42,52,68,78].map(x=>`<path d="M${x} 30 L${x} 48" stroke="${GOLD}" stroke-width="1.4"/><circle cx="${x}" cy="49" r="2" fill="${GOLD}"/>`).join('');
+    case 'skott': return `<path d="M30 24 Q60 2 92 22 Q60 32 30 24Z" fill="#1a1a1a" ${S}/><path d="M90 22 L100 46" stroke="${GOLD}" stroke-width="6" stroke-linecap="round"/><path d="M100 46 L96 92 M100 46 L102 94 M100 46 L108 90" stroke="#1a1a1a" stroke-width="2.4"/>`;
+    case 'rogatywka': return `<path d="M28 34 L30 10 L44 -6 L76 -6 L90 10 L92 34Z" fill="${c}" ${S}/><rect x="26" y="24" width="68" height="12" rx="4" fill="#3a2a20" ${S1}/><path d="M84 24 Q100 -10 112 -28" stroke="#2e7d32" stroke-width="2"/><ellipse cx="112" cy="-30" rx="5" ry="7" fill="#1e88e5" stroke="#2e7d32" stroke-width="2"/><circle cx="112" cy="-30" r="2" fill="#fdd835"/>`;
+    case 'bowler': return `<path d="M42 14 Q42 -12 60 -12 Q78 -12 78 14Z" fill="${c}" ${S}/><ellipse cx="60" cy="14" rx="26" ry="5" fill="${c}" ${S}/><path d="M43 8 L77 8" stroke="#1a1a1a" stroke-width="3"/>`;
+    case 'feathers': return [...Array(11)].map((_,i)=>{const a=-75+i*15;return`<ellipse cx="60" cy="-26" rx="7" ry="44" fill="${['#e53935','#fdd835','#43a047','#1e88e5','#ab47bc','#ff7043'][i%6]}" ${S1} transform="rotate(${a} 60 26)"/>`}).join('')+`<path d="M20 44 Q60 18 100 44 L98 32 Q60 8 22 32Z" fill="${GOLD}" ${S}/><path d="M24 36 Q60 14 96 36" fill="none" stroke="#fff3c2" stroke-width="2" stroke-dasharray="2 3"/><circle cx="60" cy="22" r="5" fill="#e53935" stroke="#fff3c2" stroke-width="2"/>`;
+    case 'ghutra': return `<path d="M16 60 Q8 -6 60 -6 Q112 -6 104 60 Q98 30 60 26 Q22 30 16 60Z" fill="${f.hatC||'#fff'}" ${S}/>`+pat('M16 60 Q8 -6 60 -6 Q112 -6 104 60 Q98 30 60 26 Q22 30 16 60Z',f.hatPat)+`<ellipse cx="60" cy="18" rx="42" ry="9" fill="none" stroke="#1a1a1a" stroke-width="4.4"/><ellipse cx="60" cy="13" rx="40" ry="8" fill="none" stroke="#1a1a1a" stroke-width="3"/>`;
     case 'fedora': return `<path d="M36 26 Q34 -2 50 -2 Q60 6 70 -2 Q86 -2 84 26Z" fill="${c}" ${S}/><path d="M36 18 L84 18" stroke="${f.band||'#1a1a1a'}" stroke-width="5"/><path d="M6 26 Q30 36 60 32 Q90 36 114 24 Q100 22 84 26 Q60 30 36 26 Q20 22 6 26Z" fill="${c}" ${S}/>`;
     case 'vinok': return [...Array(9)].map((_,i)=>{const p=qpt([20,40],[60,-4],[100,40],i/8);return flower(+p[0].toFixed(1),+p[1].toFixed(1),3.8,['#e53935','#fdd835','#1e88e5','#e53935','#fff'][i%5],'#1a1a1a')}).join('')+`<path d="M18 44 Q12 50 16 58 M102 44 Q108 50 104 58" stroke="#43a047" stroke-width="3" fill="none"/>`;
     case 'beadband': return `<path d="M20 46 Q60 22 100 46" fill="none" stroke="#1a1a1a" stroke-width="10"/><path d="M20 46 Q60 22 100 46" fill="none" stroke="url(#p-ndebele)" stroke-width="8"/>`;
@@ -375,6 +396,7 @@ function person(who,f,pose){
   if(who==='him') o+=`<ellipse cx="24" cy="72" rx="5" ry="8" fill="${sk}" ${S}/><ellipse cx="96" cy="72" rx="5" ry="8" fill="${sk}" ${S}/>`;
   o+=`<path d="M24 58 Q22 92 44 102 Q60 110 76 102 Q98 92 96 58 Q96 22 60 22 Q24 22 24 58Z" fill="${sk}" ${S}/>`;
   o+=face(who);
+  if(f.thanaka) o+=`<circle cx="36" cy="84" r="7.5" fill="#f2dca0" opacity=".9"/><circle cx="84" cy="84" r="7.5" fill="#f2dca0" opacity=".9"/>`;
   if(f.bindi) o+=`<circle cx="60" cy="60" r="2" fill="#c62828"/>`;
   if(who==='her'){
     o+=`<path d="M22 56 Q16 90 24 118 Q31 100 32 80 Q31 66 30 58Z" fill="${hr}" ${S}/><path d="M98 56 Q104 90 96 118 Q89 100 88 80 Q89 66 90 58Z" fill="${hr}" ${S}/>`;
@@ -409,7 +431,7 @@ const sky=(u,a,b)=>`<defs><linearGradient id="sky${u}" x1="0" y1="0" x2="0" y2="
 const cloud=(x,y,s,c='#fff',op=.9)=>`<g transform="translate(${x} ${y}) scale(${s})" fill="${c}" opacity="${op}"><ellipse cx="0" cy="0" rx="26" ry="10"/><ellipse cx="-12" cy="-6" rx="12" ry="10"/><ellipse cx="8" cy="-9" rx="14" ry="12"/></g>`;
 const ground=(c,y=246)=>`<path d="M0 ${y} Q200 ${y-14} 400 ${y} L400 300 L0 300Z" fill="${c}"/>`;
 const tone=(op=.12)=>`<path d="M0 270 L400 260 L400 300 L0 300Z" fill="url(#p-tone)" opacity="${op}"/>`;
-const sfx=(t,x=18,y=258,c='#b23a58')=>`<text x="${x}" y="${y}" transform="rotate(-10 ${x} ${y})" font-family="Dela Gothic One, sans-serif" font-size="22" fill="${c}" stroke="#fff" stroke-width="5" paint-order="stroke" letter-spacing="1">${t}</text>`;
+const sfx=(t,x=18,y=258,c='#b23a58',fs=22)=>`<text x="${x}" y="${y}" transform="rotate(-10 ${x} ${y})" font-family="Dela Gothic One, sans-serif" font-size="${fs}" fill="${c}" stroke="#fff" stroke-width="5" paint-order="stroke" letter-spacing="1">${t}</text>`;
 function onion(cx,by,w,h,c,st){return `<path d="M${cx-w/2} ${by} Q${cx-w/2-4} ${by-h*.5} ${cx} ${by-h} Q${cx+w/2+4} ${by-h*.5} ${cx+w/2} ${by}Z" fill="${c}" ${S1}/>`+(st?`<path d="M${cx-w/4} ${by} Q${cx-w/3} ${by-h*.5} ${cx} ${by-h} M${cx+w/4} ${by} Q${cx+w/3} ${by-h*.5} ${cx} ${by-h}" stroke="${st}" stroke-width="3" fill="none"/>`:'')+`<path d="M${cx} ${by-h} L${cx} ${by-h-12} M${cx-4} ${by-h-8} L${cx+4} ${by-h-8}" stroke="${GOLD}" stroke-width="2"/>`;}
 
 const BG={
@@ -724,6 +746,339 @@ const TRIPS=[
   her:{top:'tunic',topC:'#15151c',pat:'flowersG',trim:GOLD,cuff:GOLD,bottom:'robe',botC:'#15151c',trim:GOLD,hat:'scarfhead',hatC:'#15151c',hatPat:'sequin',extra:['necklace'],shoes:GOLD},
   him:{top:'tunic',topC:'#fbf7ef',trim:'#d9d4c8',bottom:'robe',botC:'#fbf7ef',hat:'ghutra',shoes:'#7a5230'}}
 ];
+
+/* ---------- scene kit: reusable landmark pieces for stamps 37–100 ---------- */
+let CU=0;
+const SC={
+  sun:(x=320,y=60,r=26)=>`<circle cx="${x}" cy="${y}" r="${r}" fill="#fff4cf"/>`,
+  stars:(n=40,seed=3)=>{const r=rng(seed);let o='';for(let i=0;i<n;i++)o+=`<circle cx="${(r()*400).toFixed(0)}" cy="${(r()*150).toFixed(0)}" r="${(r()*1.3+.3).toFixed(1)}" fill="#fff" opacity="${(r()*.6+.3).toFixed(2)}"/>`;return o;},
+  clouds:()=>cloud(80,40,1.1)+cloud(300,54,.9),
+  sea:(y=188,c='#2f8fb5')=>`<rect y="${y}" width="400" height="${262-y}" fill="${c}"/><path d="M40 ${y+14} L110 ${y+14} M220 ${y+26} L320 ${y+26}" stroke="#fff" stroke-width="2" opacity=".5"/>`,
+  river:(y=200,c='#4f8fb0')=>`<rect y="${y}" width="400" height="60" fill="${c}"/>`,
+  lake:(y=196,c='#4fa3c8')=>`<rect y="${y}" width="400" height="60" fill="${c}"/><path d="M30 ${y+10} L90 ${y+10} M250 ${y+18} L340 ${y+18}" stroke="#fff" stroke-width="2" opacity=".45"/>`,
+  mtn:(c='#8aa3b8',snow=0,y=170)=>`<path d="M0 ${y} L50 ${y-60} L90 ${y-30} L150 ${y-90} L210 ${y-40} L260 ${y-80} L320 ${y-30} L360 ${y-70} L400 ${y-20} L400 ${y+90} L0 ${y+90}Z" fill="${c}"/>`+(snow?`<path d="M150 ${y-90} L136 ${y-69} L150 ${y-74} L164 ${y-66}Z M260 ${y-80} L248 ${y-62} L260 ${y-66} L272 ${y-60}Z M50 ${y-60} L40 ${y-46} L52 ${y-49}Z M360 ${y-70} L350 ${y-56} L362 ${y-59} L369 ${y-60}Z" fill="#fff"/>`:''),
+  peak:(x,w,h,c,snow=0,b=232)=>`<path d="M${x-w} ${b} L${x} ${b-h} L${x+w} ${b}Z" fill="${c}"/>`+(snow?`<path d="M${x} ${b-h} L${x-w*.22} ${b-h*.78} L${x-w*.08} ${b-h*.82} L${x} ${b-h*.74} L${x+w*.1} ${b-h*.82} L${x+w*.22} ${b-h*.78}Z" fill="#fff"/>`:''),
+  volcano:(x=200,c='#7a6a6a',smoke=1)=>`<path d="M${x-150} 232 L${x-26} 100 L${x+26} 100 L${x+150} 232Z" fill="${c}"/><path d="M${x-26} 100 L${x-14} 118 L${x} 108 L${x+14} 120 L${x+26} 100Z" fill="#fff" opacity=".9"/>`+(smoke?`<circle cx="${x+4}" cy="84" r="12" fill="#ddd" opacity=".7"/><circle cx="${x+20}" cy="66" r="15" fill="#ddd" opacity=".55"/><circle cx="${x+42}" cy="50" r="18" fill="#ddd" opacity=".4"/>`:''),
+  hills:(c='#7fb85a',y=196,c2)=>`<path d="M0 ${y} Q100 ${y-40} 200 ${y-6} Q300 ${y+24} 400 ${y-24} L400 300 L0 300Z" fill="${c}"/>`+(c2?`<path d="M0 ${y+24} Q120 ${y-6} 240 ${y+20} Q330 ${y+34} 400 ${y+10} L400 300 L0 300Z" fill="${c2}"/>`:''),
+  terraces:()=>[0,1,2,3,4,5].map(i=>`<path d="M0 ${186+i*12} Q120 ${170+i*12} 240 ${190+i*10} Q330 ${200+i*10} 400 ${178+i*12}" stroke="#3f7a3a" stroke-width="2" fill="none" opacity=".6"/>`).join(''),
+  dunes:(c='#e8c27a',c2='#d9a95c')=>`<path d="M0 200 Q80 160 170 196 Q260 170 400 194 L400 300 L0 300Z" fill="${c2}"/><path d="M0 226 Q120 196 240 228 Q330 210 400 222 L400 300 L0 300Z" fill="${c}"/>`,
+  salt:()=>`<rect y="186" width="400" height="120" fill="#dcecf8"/><path d="M0 200 L400 200 M0 222 L400 222" stroke="#fff" stroke-width="2" opacity=".7"/>`,
+  palm:(x=360,s=1)=>`<g transform="translate(${x} 250) scale(${s})"><path d="M0 0 Q-8 -70 -24 -120" stroke="#7a5230" stroke-width="8" fill="none" stroke-linecap="round"/>${[[-50,-6],[-20,-28],[16,-30],[44,-10],[-36,16],[30,18]].map(([dx,dy])=>`<path d="M-24 -120 q${dx*.5} ${dy*.5-10} ${dx} ${dy+10}" stroke="#2f7d4a" stroke-width="8" fill="none" stroke-linecap="round"/>`).join('')}</g>`,
+  pine:(x,s=1,snow=0,c='#1f4a32')=>`<g transform="translate(${x} 244) scale(${s})"><path d="M0 -90 L-22 -50 L-12 -50 L-30 -20 L-16 -20 L-34 10 L34 10 L16 -20 L30 -20 L12 -50 L22 -50Z" fill="${c}"/>${snow?'<path d="M0 -90 L-10 -72 L10 -72Z" fill="#fff"/>':''}<rect x="-4" y="10" width="8" height="8" fill="#3a2a20"/></g>`,
+  pines:(snow=0,c)=>[20,62,346,386].map((x,i)=>SC.pine(x,[1,.8,1.1,.85][i],snow,c)).join(''),
+  acacia:(x=330)=>`<path d="M${x} 252 L${x+4} 170" stroke="#5a3a20" stroke-width="6"/><path d="M${x+4} 180 L${x-20} 160 M${x+4} 176 L${x+26} 156" stroke="#5a3a20" stroke-width="3"/><ellipse cx="${x+4}" cy="152" rx="56" ry="12" fill="#4f6d3a"/>`,
+  baobab:(x,s=1)=>`<g transform="translate(${x} 250) scale(${s})"><path d="M-14 0 Q-18 -80 -10 -130 L10 -130 Q18 -80 14 0Z" fill="#9a6a4a" ${S1}/><path d="M-10 -130 L-30 -150 M-4 -130 L-10 -158 M4 -130 L12 -160 M10 -130 L30 -148" stroke="#6a4a30" stroke-width="4"/><ellipse cx="0" cy="-152" rx="34" ry="9" fill="#5f8a3a"/></g>`,
+  cedar:(x=360)=>`<g transform="translate(${x} 250)"><rect x="-5" y="-60" width="10" height="60" fill="#5a3a20"/>${[0,1,2,3].map(i=>`<ellipse cx="0" cy="${-60-i*20}" rx="${50-i*10}" ry="9" fill="#2f6b3a"/>`).join('')}</g>`,
+  bloom:(x,y)=>[[0,0],[10,6],[-8,8],[4,14],[14,-6]].map(([dx,dy])=>`<circle cx="${x+dx}" cy="${y+dy}" r="7" fill="#ec4fa0" opacity=".9"/>`).join(''),
+  leaves:(c='#e0602c',seed=4)=>{const r=rng(seed);let o='';for(let i=0;i<20;i++){const x=r()*400,y=r()*230;o+=`<path d="M${x.toFixed(0)} ${(y-5).toFixed(0)} l4 5 l-4 5 l-4 -5Z" fill="${c}" opacity=".85"/>`;}return o;},
+  flags:()=>`<path d="M0 30 Q200 110 400 50" stroke="${INK}" stroke-width="1" fill="none"/>`+[...Array(18)].map((_,i)=>{const t=(i+.5)/18,p=qpt([0,30],[200,110],[400,50],t);return`<rect x="${(p[0]-6).toFixed(0)}" y="${p[1].toFixed(0)}" width="12" height="14" fill="${['#1e88e5','#fff','#e53935','#43a047','#fdd835'][i%5]}"/>`}).join(''),
+  balloon:(x,y,c)=>`<ellipse cx="${x}" cy="${y}" rx="16" ry="19" fill="${c}" ${S1}/><path d="M${x-5} ${y+19} L${x-3} ${y+28} M${x+5} ${y+19} L${x+3} ${y+28}" stroke="${INK}"/><rect x="${x-4}" y="${y+28}" width="8" height="6" fill="#7a5230" ${S1}/>`,
+  hut:(x,s=1,wall='#d9b88e',roof='#a8864a')=>`<g transform="translate(${x} 248) scale(${s})" ${S1}><rect x="-26" y="-34" width="52" height="34" fill="${wall}"/><path d="M-36 -32 L0 -66 L36 -32Z" fill="${roof}"/><rect x="-7" y="-20" width="14" height="20" fill="#3a2a20"/></g>`,
+  fale:(x=330)=>`<g transform="translate(${x} 248)" ${S1}><path d="M-48 -40 Q0 -86 48 -40Z" fill="#a8864a"/>${[-40,-20,0,20,40].map(dx=>`<rect x="${dx-2}" y="-40" width="4" height="40" fill="#7a5230"/>`).join('')}<rect x="-50" y="-4" width="100" height="6" fill="#c9a46a"/></g>`,
+  ger:(x,s=1)=>`<g transform="translate(${x} 240) scale(${s})" ${S1}><rect x="-30" y="-24" width="60" height="26" fill="#fbf7ef"/><path d="M-30 -14 L30 -14" stroke="#c62828" stroke-width="3"/><path d="M-34 -24 Q0 -50 34 -24Z" fill="#f3ead7"/><rect x="-6" y="-14" width="12" height="16" fill="#e0602c"/></g>`,
+  overwater:()=>[60,130,300,370].map(x=>`<g ${S1}>${[-14,14].map(dx=>`<rect x="${x+dx-1.5}" y="186" width="3" height="20" fill="#7a5230"/>`).join('')}<rect x="${x-20}" y="166" width="40" height="22" fill="#e8d6b0"/><path d="M${x-26} 168 L${x} 146 L${x+26} 168Z" fill="#a8864a"/></g>`).join('')+`<path d="M60 188 L370 188" stroke="#7a5230" stroke-width="3"/>`,
+  boat:(x=120,sail='#f3ead7')=>`<path d="M${x-40} 214 L${x+40} 214 L${x+30} 228 L${x-30} 228Z" fill="#6b3f2a" ${S1}/><path d="M${x} 214 L${x} 150" stroke="${INK}" stroke-width="2"/><path d="M${x} 152 Q${x+36} 180 ${x+30} 210 L${x} 210Z" fill="${sail}" ${S1}/>`,
+  car:(x=320,c='#3fb0b0')=>`<g transform="translate(${x} 236)" ${S1}><path d="M-46 0 L-46 -16 Q-40 -24 -24 -24 L-14 -38 L18 -38 L28 -24 L44 -20 Q50 -16 48 0Z" fill="${c}"/><path d="M-10 -34 L14 -34 L22 -24 L-18 -24Z" fill="#cfe9f5"/><circle cx="-26" cy="0" r="8" fill="#1a1a1a"/><circle cx="28" cy="0" r="8" fill="#1a1a1a"/><circle cx="-26" cy="0" r="3" fill="${SILVER}"/><circle cx="28" cy="0" r="3" fill="${SILVER}"/></g>`,
+  wheel:(x=60,y=190)=>`<circle cx="${x}" cy="${y}" r="40" fill="#e53935" ${S}/>`+[...Array(12)].map((_,i)=>{const a=i*Math.PI/6;return`<path d="M${x} ${y} L${(x+38*Math.cos(a)).toFixed(1)} ${(y+38*Math.sin(a)).toFixed(1)}" stroke="${['#fdd835','#1e88e5','#fff'][i%3]}" stroke-width="4"/>`}).join('')+`<circle cx="${x}" cy="${y}" r="9" fill="#fdd835" ${S1}/><circle cx="${x}" cy="${y}" r="26" fill="none" stroke="#fff" stroke-width="2" stroke-dasharray="3 4"/>`,
+  moai:(x,s=1)=>`<g transform="translate(${x} 240) scale(${s})" ${S1}><path d="M-16 0 L-18 -60 Q-20 -84 -6 -90 L10 -90 Q20 -84 18 -60 L16 0Z" fill="#7a6a5a"/><path d="M-12 -68 L-2 -68 M4 -68 L14 -68" stroke="${INK}" stroke-width="3"/><path d="M2 -64 L5 -46 L-1 -44" fill="none"/><path d="M-6 -34 L10 -34"/></g>`,
+  opera:(x=290)=>`<g ${S1}><rect x="${x-80}" y="196" width="170" height="20" fill="#e8dcc4"/>${[[-60,50],[-24,74],[14,96],[50,70]].map(([dx,h])=>`<path d="M${x+dx-26} 196 Q${x+dx-20} ${196-h} ${x+dx+16} ${196-h-6} Q${x+dx+6} ${196-h*.4} ${x+dx+14} 196Z" fill="#fbf7ef"/>`).join('')}</g>`,
+  harbour:()=>`<path d="M-30 190 Q90 70 210 190" fill="none" stroke="#5a6a7a" stroke-width="8"/><path d="M-30 168 L210 168" stroke="#5a6a7a" stroke-width="4"/>`+[.2,.3,.4,.6,.7,.8].map(t=>{const p=qpt([-30,190],[90,70],[210,190],t);return`<path d="M${p[0].toFixed(0)} ${p[1].toFixed(0)} L${p[0].toFixed(0)} 168" stroke="#5a6a7a" stroke-width="1.6"/>`}).join(''),
+  bigrock:(x=200,c='#a86a4a',w=110,h=110)=>`<path d="M${x-w} 232 Q${x-w*.9} ${232-h} ${x-w*.5} ${232-h*1.05} L${x+w*.5} ${232-h*1.05} Q${x+w*.9} ${232-h} ${x+w} 232Z" fill="${c}" ${S1}/><path d="M${x-w*.5} ${232-h*1.05} L${x+w*.5} ${232-h*1.05}" stroke="#4f7d4a" stroke-width="6"/>`,
+  petra:()=>`<rect width="400" height="250" fill="#d9926a"/><path d="M0 0 L0 250 L60 250 Q50 120 80 0Z M400 0 L400 250 L340 250 Q350 120 320 0Z" fill="#b8704a"/><g ${S1}><rect x="110" y="40" width="180" height="20" fill="#e8a882"/>${[120,160,200,240,280].map(cx=>`<rect x="${cx-7}" y="60" width="14" height="70" fill="#e8a882"/>`).join('')}<rect x="104" y="128" width="192" height="14" fill="#e8a882"/>${[126,166,234,274].map(cx=>`<rect x="${cx-7}" y="142" width="14" height="90" fill="#e8a882"/>`).join('')}<rect x="186" y="160" width="28" height="72" fill="#5a3a2a"/><path d="M180 40 L200 14 L220 40Z" fill="#e8a882"/></g>`,
+  columns:(x=200,c='#e3d2b0',n=6)=>`<g ${S1}><rect x="${x-130}" y="80" width="260" height="20" fill="${c}"/>${[...Array(n)].map((_,i)=>`<rect x="${(x-128+i*(240/(n-1))).toFixed(0)}" y="100" width="16" height="132" fill="${c}"/>`).join('')}</g>`,
+  waterfall:(x=200,c='#5f7a6a')=>`<path d="M${x-150} 232 L${x-130} 80 L${x+130} 80 L${x+150} 232Z" fill="${c}"/><rect x="${x-34}" y="80" width="68" height="152" fill="#dff2fb"/><path d="M${x-22} 86 L${x-22} 226 M${x} 86 L${x} 228 M${x+22} 86 L${x+22} 226" stroke="#fff" stroke-width="3"/><ellipse cx="${x}" cy="232" rx="56" ry="10" fill="#fff" opacity=".85"/>`,
+  aurora:()=>`<defs><linearGradient id="au2${CU}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6bffb8" stop-opacity="0"/><stop offset=".5" stop-color="#4dffa6" stop-opacity=".7"/><stop offset="1" stop-color="#2bd9c8" stop-opacity="0"/></linearGradient></defs><path d="M-20 110 Q80 10 180 70 Q280 130 420 30 L420 90 Q280 190 180 130 Q80 70 -20 170Z" fill="url(#au2${CU})"/>`,
+  maypole:(x=330)=>`<path d="M${x} 250 L${x} 90" stroke="#5a3a20" stroke-width="6"/><path d="M${x-44} 118 L${x+44} 118" stroke="#5a3a20" stroke-width="5"/><circle cx="${x-44}" cy="134" r="14" fill="none" stroke="#43a047" stroke-width="5"/><circle cx="${x+44}" cy="134" r="14" fill="none" stroke="#43a047" stroke-width="5"/>`+[100,140,180,220].map(y=>flower(x,y,2.4,'#fdd835','#fff')).join(''),
+  mosque:(x=200,dome='#3f7cac',wall='#f3ede4')=>`<g ${S1}><rect x="${x-60}" y="150" width="120" height="82" fill="${wall}"/><path d="M${x-40} 150 Q${x-40} 96 ${x} 84 Q${x+40} 96 ${x+40} 150Z" fill="${dome}"/><path d="M${x-18} 232 L${x-18} 196 Q${x} 176 ${x+18} 196 L${x+18} 232Z" fill="${dome}" opacity=".8"/>${[x-82,x+82].map(m=>`<rect x="${m-6}" y="90" width="12" height="142" fill="${wall}"/><path d="M${m-8} 92 Q${m} 70 ${m+8} 92Z" fill="${dome}"/><rect x="${m-9}" y="130" width="18" height="5" fill="${dome}"/>`).join('')}</g><path d="M${x} 84 L${x} 70" stroke="${GOLD}" stroke-width="2.4"/><circle cx="${x}" cy="68" r="3" fill="${GOLD}"/>`,
+  stupa:(x=200,c='#fbf7ef')=>`<g ${S1}><rect x="${x-90}" y="214" width="180" height="18" fill="#e8e0d4"/><path d="M${x-70} 214 Q${x-70} 150 ${x} 146 Q${x+70} 150 ${x+70} 214Z" fill="${c}"/><rect x="${x-18}" y="124" width="36" height="22" fill="${GOLD}"/><path d="M${x-14} 124 L${x} 60 L${x+14} 124Z" fill="${GOLD}"/>${[0,1,2,3,4].map(i=>`<path d="M${x-12+i*2.4} ${116-i*12} L${x+12-i*2.4} ${116-i*12}" stroke="#a67c2e" stroke-width="2"/>`).join('')}</g>`,
+  pagoda:(x=200,n=5,c='#b3262f',roof='#3d4148')=>{let o='';for(let i=0;i<n;i++){const w=70-i*10,y=232-i*30;o+=`<rect x="${x-w*.6}" y="${y-22}" width="${w*1.2}" height="22" fill="${c}" ${S1}/><path d="M${x-w-6} ${y-18} Q${x-w} ${y-26} ${x-w*.8} ${y-34} L${x+w*.8} ${y-34} Q${x+w} ${y-26} ${x+w+6} ${y-18}Z" fill="${roof}" ${S1}/>`;}return o+`<path d="M${x} ${232-n*30-4} L${x} ${232-n*30-30}" stroke="${GOLD}" stroke-width="3"/>`;},
+  angkor:(x=200)=>[[x-110,.6],[x+110,.6],[x-55,.8],[x+55,.8],[x,1]].map(([cx,s])=>`<path d="M${cx-30*s} 232 L${cx-30*s} ${232-60*s} Q${cx-26*s} ${232-120*s} ${cx} ${232-170*s} Q${cx+26*s} ${232-120*s} ${cx+30*s} ${232-60*s} L${cx+30*s} 232Z" fill="#9a8a72" ${S1}/>`+[1,2,3,4].map(k=>`<path d="M${cx-(30-k*4)*s} ${232-(60+k*24)*s} L${cx+(30-k*4)*s} ${232-(60+k*24)*s}" stroke="#7a6a52" stroke-width="2"/>`).join('')).join('')+`<rect x="${x-160}" y="214" width="320" height="18" fill="#8a7a62" ${S1}/>`,
+  dzong:(x=200)=>`<g ${S1}><path d="M${x-150} 232 L${x-140} 140 L${x+140} 140 L${x+150} 232Z" fill="#f3ede4"/><rect x="${x-140}" y="140" width="280" height="14" fill="#b3462a"/><rect x="${x-50}" y="100" width="100" height="54" fill="#f3ede4"/><rect x="${x-50}" y="100" width="100" height="12" fill="#b3462a"/><path d="M${x-62} 100 L${x} 70 L${x+62} 100Z" fill="#c9a24a"/></g>`+[x-100,x-70,x+70,x+100,x-20,x+20].map(w=>`<rect x="${w-5}" y="170" width="10" height="14" fill="${INK}" opacity=".6"/>`).join(''),
+  castle:(x=200,wall='#d9cbb5',roof='#3f6fa8',s=1)=>`<g transform="translate(${x} 232) scale(${s})" ${S1}><rect x="-80" y="-70" width="160" height="70" fill="${wall}"/>${[-80,-30,30,80].map((tx,i)=>`<rect x="${tx-14}" y="${-110-(i%2)*20}" width="28" height="${110+(i%2)*20}" fill="${wall}"/><path d="M${tx-18} ${-110-(i%2)*20} L${tx} ${-150-(i%2)*20} L${tx+18} ${-110-(i%2)*20}Z" fill="${roof}"/>`).join('')}<path d="M-10 0 L-10 -24 Q0 -36 10 -24 L10 0Z" fill="#5a4a3a"/></g>`,
+  fort:(x=300,s=1)=>`<g transform="translate(${x} 232) scale(${s})" ${S1}><rect x="-90" y="-70" width="180" height="70" fill="#f3ede4"/><path d="M-90 -70 L90 -70" stroke="#f3ede4" stroke-width="10" stroke-dasharray="8 6"/><rect x="-30" y="-110" width="60" height="40" fill="#f3ede4"/><path d="M-30 -110 L30 -110" stroke="#f3ede4" stroke-width="8" stroke-dasharray="6 5"/><path d="M-10 0 L-10 -26 Q0 -38 10 -26 L10 0Z" fill="#5a4a3a"/></g>`,
+  church:(x=200,wall='#f3ede4',dome='#3a8a5a',s=1)=>`<g transform="translate(${x} 232) scale(${s})" ${S1}><rect x="-60" y="-80" width="120" height="80" fill="${wall}"/><rect x="-26" y="-120" width="52" height="40" fill="${wall}"/><path d="M-30 -120 Q-30 -160 0 -166 Q30 -160 30 -120Z" fill="${dome}"/><path d="M0 -166 L0 -184" stroke="${GOLD}" stroke-width="3"/><path d="M-12 0 L-12 -30 Q0 -44 12 -30 L12 0Z" fill="#5a4a3a"/></g>`,
+  island:(x=200)=>`<ellipse cx="${x}" cy="232" rx="70" ry="12" fill="#5f9a4a" ${S1}/>`,
+  gothic:(x=200,c='#c9b38e')=>[[-60,120],[-30,170],[0,190],[30,170],[60,120]].map(([dx,h])=>`<path d="M${x+dx-12} 232 L${x+dx-12} ${232-h+40} L${x+dx} ${232-h} L${x+dx+12} ${232-h+40} L${x+dx+12} 232Z" fill="${c}" ${S1}/>`).join('')+`<rect x="${x-80}" y="160" width="160" height="72" fill="${c}" ${S1}/><circle cx="${x}" cy="186" r="14" fill="#7fa8d8" ${S1}/>`,
+  skyline:(c='#6a6a8a',seed=5)=>{const r=rng(seed);let o='';for(let x=0;x<400;x+=26){const h=40+r()*110;o+=`<rect x="${x}" y="${(232-h).toFixed(0)}" width="22" height="${h.toFixed(0)}" fill="${c}"/>`;}return o;},
+  twin:(x=200)=>[x-34,x+34].map(cx=>`<path d="M${cx-18} 232 L${cx-18} 90 L${cx-12} 70 L${cx-6} 50 L${cx} 20 L${cx+6} 50 L${cx+12} 70 L${cx+18} 90 L${cx+18} 232Z" fill="#b8c4d0" ${S1}/>`+[110,140,170,200].map(y=>`<path d="M${cx-18} ${y} L${cx+18} ${y}" stroke="#8a96a4"/>`).join('')).join('')+`<rect x="${x-16}" y="130" width="32" height="6" fill="#8a96a4" ${S1}/>`,
+  marina:(x=290)=>[-40,0,40].map(dx=>`<path d="M${x+dx-12} 200 L${x+dx-6} 90 L${x+dx+10} 90 L${x+dx+12} 200Z" fill="#c9d4de" ${S1}/>`).join('')+`<path d="M${x-70} 92 L${x+76} 84 Q${x+86} 86 ${x+80} 92 L${x-70} 98Z" fill="#8a96a4" ${S1}/>`+[40,80,120].map(tx=>`<path d="M${tx} 210 L${tx-6} 120 L${tx+6} 120Z" fill="#7a5a8a"/><path d="M${tx-22} 120 Q${tx} 104 ${tx+22} 120Z" fill="#b06ad8" opacity=".85"/>`).join(''),
+  houses:(cs=['#e9b949','#d8573c','#3f7cac','#f0e2c0','#c94b4b','#76a36b','#e58a3a'],y=200,flat=0)=>cs.map((c,i)=>{const x=i*58-6,h=100+(i%3)*20,top=y-h;return `<rect x="${x}" y="${top}" width="58" height="${h}" fill="${c}" ${S1}/>`+(flat?`<rect x="${x-2}" y="${top-6}" width="62" height="8" fill="#fbf7ef" ${S1}/>`:`<path d="M${x} ${top} L${x+29} ${top-22} L${x+58} ${top}Z" fill="#b3462a" ${S1}/>`)+[0,1].map(r=>[0,1].map(k=>`<rect x="${x+10+k*24}" y="${top+16+r*34}" width="14" height="20" fill="#fbf7ef" ${S1}/>`).join('')).join('');}).join(''),
+  bridge:(y=206,c='#a89a86')=>`<rect x="0" y="${y-12}" width="400" height="14" fill="${c}" ${S1}/>`+[0,1,2,3,4].map(i=>`<rect x="${i*90-10}" y="${y+2}" width="20" height="40" fill="${c}" ${S1}/>`).join(''),
+  steppyr:(x=200,c='#a89a86')=>{let o='';for(let i=0;i<8;i++){const w=130-i*14,y=232-i*18;o+=`<rect x="${x-w/2}" y="${y-18}" width="${w}" height="18" fill="${c}" ${S1}/>`;}return o+`<rect x="${x-18}" y="50" width="36" height="40" fill="${c}" ${S1}/><rect x="${x-7}" y="64" width="14" height="22" fill="${INK}" opacity=".6"/>`;},
+  whitewall:()=>`<rect width="400" height="250" fill="#f6f3ee"/><path d="M150 250 L150 120 Q200 70 250 120 L250 250Z" fill="#1e6fb8" ${S1}/><path d="M160 250 L160 124 Q200 84 240 124 L240 250Z" fill="#2a86d4"/>${[0,1,2,3,4,5].map(i=>`<circle cx="${172+(i%3)*28}" cy="${150+Math.floor(i/3)*40}" r="3" fill="#1a1a1a"/>`).join('')}<rect x="40" y="90" width="50" height="50" fill="#1e6fb8" ${S1}/><path d="M65 90 L65 140 M40 115 L90 115" stroke="#fff" stroke-width="3"/>`+[[300,40],[330,70],[360,46],[290,90],[350,100]].map(([x,y])=>SC.bloom(x,y)).join('')+`<rect y="250" width="400" height="50" fill="#e8e0d4"/>`
+};
+function scene(u,sp){
+  CU=u;
+  const o=(sp.L||[]).map(([k,...a])=>SC[k](...a)).join('');
+  const [t,c]=sp.sfx, fs=t.length>9?15:20;
+  return sky(u,sp.sky[0],sp.sky[1])+o+(sp.g?ground(sp.g,sp.gy||248):'')+tone()+sfx(t,200-t.length*fs*.36,44,c,fs);
+}
+
+const PZ=[['peace','wave'],['holdR','holdL'],['cheer','hip'],['wave','idle'],['holdR','holdL'],['peace','peace'],['cheer','wave'],['idle','hip']];
+const MORE=[
+ /* ---- Asia ---- */
+ {k:'nepal',name:"Nepal",native:"नेपाल",place:"Boudhanath, Kathmandu",say:["Namaste! Himalayas!","Prayer flags for both of us."],fits:["Gunyu cholo with green pote beads","Daura suruwal with a dhaka topi"],
+  sc:{sky:['#8fcaf0','#eef8ff'],L:[['mtn','#a8b8cc',1,160],['stupa',200],['flags']],g:'#c9b38e',sfx:['Namaste!','#c62828']},
+  her:{top:'kimono',topC:'#c62828',pat:'flowersG',collar:GOLD,bottom:'longskirt',botC:'#7b1e3a',botPat:'zig',sash:'#43a047',bindi:true,extra:['pearls'],pearlC:'#43a047',shoes:'#c62828'},
+  him:{top:'kimono',topC:'#f3ead7',collar:'#d9cfb8',bottom:'pants',botC:'#f3ead7',hat:'topi',hatC:'#c62828',hatPat:'ikat',shoes:'#1a1a1a'}},
+ {k:'bhutan',name:"Bhutan",native:"འབྲུག་ཡུལ།",place:"Punakha Dzong",say:["Kuzuzangpo la!","Gross National Happiness: confirmed."],fits:["Kira with a silk toego jacket","Gho with white lagey cuffs"],
+  sc:{sky:['#9fd3f2','#f2fbff'],L:[['mtn','#6f9a7a',0,170],['dzong',200],['flags']],g:'#8fb86a',sfx:['Kuzuzangpo!','#b3462a']},
+  her:{top:'jacket',topC:'#c62828',vest:'#e6b84a',vestPat:'flowersR',bottom:'longskirt',botC:'#1e5aa8',botPat:'ikat',trim:GOLD,cuff:'#fbf7ef',shoes:'#1a1a1a'},
+  him:{top:'kimono',topC:'#7b1e3a',pat:'plaid',collar:'#fbf7ef',cuff:'#fbf7ef',bottom:'kilt',botC:'#7b1e3a',botPat:'plaid',legs:'#1a1a1a',sash:'#e6b84a',shoes:'#1a1a1a'}},
+ {k:'srilanka',name:"Sri Lanka",native:"ශ්‍රී ලංකා",place:"Sigiriya Lion Rock",say:["Ayubowan! A palace on a rock!","1,200 steps. Worth it."],fits:["Kandyan osariya sari","Shirt and checked sarong"],
+  sc:{sky:['#9fd8ef','#fff4d6'],L:[['hills','#5f9a4a',190],['bigrock',200,'#a86a4a',90,130],['palm',372,1],['palm',36,.8]],g:'#7fb85a',sfx:['Ayubowan!','#7b1e3a']},
+  her:{top:'sari',topC:'#fbf7ef',drape:'#f3d48a',drapePat:'zig',sleeve:'short',sleeveC:'#fbf7ef',bottom:'longskirt',botC:'#fbf7ef',botPat:'flowersG',trim:GOLD,extra:['necklace'],shoes:GOLD},
+  him:{top:'shirt',topC:'#fbf7ef',collar:'#fbf7ef',bottom:'robe',botC:'#1e5aa8',botPat:'plaid',shoes:'#7a5230'}},
+ {k:'bangladesh',name:"Bangladesh",native:"বাংলাদেশ",place:"A river in the delta",say:["Shagotom! Boat ride at sunset.","Best river breeze ever."],fits:["Jamdani sari","Embroidered panjabi"],
+  sc:{sky:['#ffd59a','#fff3dc'],L:[['sun',90,120,30],['river',190,'#5f9fb0'],['boat',60,'#e0602c'],['palm',372,1]],g:'#9cc06a',sfx:['Shagotom!','#0f6b5c',150,40]},
+  her:{top:'sari',topC:'#0f6b5c',drape:'#c62828',drapePat:'flowersG',sleeve:'short',sleeveC:'#c62828',bottom:'longskirt',botC:'#0f6b5c',botPat:'flowersG',trim:GOLD,bindi:true,extra:['necklace'],shoes:GOLD},
+  him:{top:'tunic',topC:'#fbf7ef',pat:'zig',trim:'#c62828',bottom:'pants',botC:'#fbf7ef',shoes:'#7a5230'}},
+ {k:'pakistan',name:"Pakistan",native:"پاکستان",place:"Badshahi Mosque, Lahore",say:["Khush amdeed! Look at that red stone.","Lahore is lahore!"],fits:["Shalwar kameez with a sequined dupatta","Shalwar kameez, waistcoat and Jinnah cap"],
+  sc:{sky:['#ffcf9a','#fff1dc'],L:[['mosque',200,'#fbf7ef','#b3463a']],g:'#d9b88e',sfx:['Khush amdeed!','#2e7d32']},
+  her:{top:'tunic',topC:'#2e7d32',pat:'flowersG',bottom:'pants',botC:'#fbf7ef',extra:['shawl','necklace'],shawl:'#fdd835',shawlPat:'sequin',shoes:GOLD},
+  him:{top:'vest',topC:'#fbf7ef',vest:'#1a1a1a',bottom:'widepants',botC:'#fbf7ef',hat:'karakul',hatC:'#5a5a5a',shoes:'#3a2214'}},
+ {k:'malaysia',name:"Malaysia",native:"Malaysia",place:"Petronas Towers, Kuala Lumpur",say:["Selamat datang! Twin towers!","Twins, like us. Sort of."],fits:["Baju kurung with songket","Baju Melayu with samping and songkok"],
+  sc:{sky:['#8fd0f0','#eaf7ff'],L:[['clouds'],['skyline','#9aa8b8',7],['twin',200]],g:'#9a9590',sfx:['Selamat datang!','#1e5aa8']},
+  her:{top:'tunic',topC:'#ec407a',pat:'flowersG',bottom:'longskirt',botC:'#ec407a',botPat:'zig',extra:['brooch'],shoes:GOLD},
+  him:{top:'mandarin',topC:'#1e5aa8',bottom:'pants',botC:'#1e5aa8',apron:'#e6b84a',apronPat:'zig',hat:'songkok',hatC:'#1a1a1a',shoes:'#1a1a1a'}},
+ {k:'singapore',name:"Singapore",native:"Singapura",place:"Marina Bay at night",say:["Shiok! The supertrees glow!","Hawker centre after this?"],fits:["Nyonya kebaya and batik sarong","Batik shirt"],
+  sc:{sky:['#2a2f6a','#e88a7a'],L:[['stars',30,2],['sea',190,'#2f5f8a'],['marina',290]],g:'#5a5a6a',sfx:['Shiok!','#fdd835',150,40]},
+  her:{top:'dress',topC:'#80cbc4',pat:'flowersR',bottom:'longskirt',botC:'#5e2a84',botPat:'batik',extra:['brooch'],shoes:'#ec407a'},
+  him:{top:'shirt',topC:'#1e5aa8',pat:'batik',collar:'#1e5aa8',sleeve:'short',bottom:'pants',botC:'#2b2b33',shoes:'#1a1a1a'}},
+ {k:'cambodia',name:"Cambodia",native:"កម្ពុជា",place:"Angkor Wat at sunrise",say:["Suosdei! Sunrise at Angkor!","Five towers, one wow."],fits:["Apsara-style sampot and sbai","Sampot chang kben with a silk krama"],
+  sc:{sky:['#ffb36b','#ffe8c0'],L:[['sun',70,80,26],['angkor',200]],g:'#c9a46a',sfx:['Suosdei!','#5e2a84',150,40]},
+  her:{top:'sari',topC:'#e6b84a',drape:'#c99a2e',sleeve:'none',bottom:'longskirt',botC:'#5e2a84',botPat:'zig',trim:GOLD,sash:GOLD,hat:'chada',extra:['necklace'],shoes:GOLD},
+  him:{top:'mandarin',topC:'#fbf7ef',trim:GOLD,bottom:'widepants',botC:'#0f6b5c',botPat:'sequin',extra:['scarf'],scarf:'#e6b84a',shoes:'#1a1a1a'}},
+ {k:'laos',name:"Laos",native:"ລາວ",place:"Luang Prabang temple",say:["Sabaidee! Morning alms soon.","Slowest, sweetest town."],fits:["Sinh skirt with a pha biang sash","Salong with a pha biang"],
+  sc:{sky:['#ffd0a0','#fff3e0'],L:[['mtn','#7f9a8a',0,180],['pagoda',200,3,'#c9a24a','#7b1e3a'],['palm',372,.9]],g:'#c9a46a',sfx:['Sabaidee!','#c62828']},
+  her:{top:'sari',topC:'#ec407a',drape:'#e6b84a',drapePat:'zig',sleeve:'none',bottom:'longskirt',botC:'#c62828',botPat:'ikat',trim:GOLD,sash:GOLD,hat:'buns',shoes:GOLD},
+  him:{top:'mandarin',topC:'#fbf7ef',bottom:'widepants',botC:'#1e5aa8',botPat:'ikat',extra:['scarf'],scarf:'#c62828',scarfPat:'zig',shoes:'#1a1a1a'}},
+ {k:'myanmar',name:"Myanmar",native:"မြန်မာ",place:"Bagan temple plains",say:["Mingalaba! Balloons over Bagan!","A thousand temples. Counting."],fits:["Htamein with thanaka on the cheeks","Longyi with a gaung baung headwrap"],
+  sc:{sky:['#ffb07a','#ffe6c8'],L:[['sun',300,90,30],['stupa',70,'#c98a5a'],['stupa',330,'#b8784a'],['balloon',200,46,'#fdd835'],['balloon',300,30,'#e53935']],g:'#c9a46a',sfx:['Mingalaba!','#7b1e3a']},
+  her:{top:'tee',topC:'#f8bbd0',bottom:'longskirt',botC:'#7b1e3a',botPat:'flowersG',thanaka:true,hat:'hibiscus',shoes:'#c9a27a'},
+  him:{top:'mandarin',topC:'#fbf7ef',bottom:'robe',botC:'#3a5a8a',botPat:'plaid',hat:'khan',hatC:'#f8bbd0',shoes:'#c9a27a'}},
+ {k:'kazakhstan',name:"Kazakhstan",native:"Қазақстан",place:"Steppe below the Tian Shan",say:["Salem! Tallest hat yet.","My kalpak approves."],fits:["Velvet bridal robe with a saukele","Chapan robe with a kalpak"],
+  sc:{sky:['#7fc4ee','#e8f6ff'],L:[['mtn','#8aa3b8',1,170],['hills','#a8c46a',214],['ger',50,1],['ger',360,.8]],g:'#a8c46a',sfx:['Salem!','#1e88e5',150,40]},
+  her:{top:'mandarin',topC:'#c62828',pat:'flowersG',cuff:GOLD,bottom:'robe',botC:'#c62828',botPat:'flowersG',trim:GOLD,hat:'saukele',hatC:'#c62828',boots:'#7a2a2a'},
+  him:{top:'kimono',topC:'#1e5aa8',pat:'flowersG',collar:GOLD,bottom:'robe',botC:'#1e5aa8',sash:'#e6b84a',hat:'mongol',hatC:'#fbf7ef',boots:'#3a2214'}},
+ {k:'uzbekistan',name:"Uzbekistan",native:"Oʻzbekiston",place:"Registan, Samarkand",say:["Salom! So much blue tile!","Plov for dinner. Non-negotiable."],fits:["Ikat atlas dress with a doppa","Striped chapan with a doppa"],
+  sc:{sky:['#9fd6f2','#fff3dc'],L:[['mosque',90,'#2aa0c8','#d9b88e'],['mosque',310,'#2aa0c8','#d9b88e']],g:'#d9c4a0',sfx:['Salom!','#1e5aa8',150,40]},
+  her:{top:'dress',topC:'#ec407a',pat:'ikat',bottom:'longskirt',botC:'#ec407a',botPat:'ikat',hat:'doppa',hatC:'#1a1a1a',shoes:GOLD},
+  him:{top:'kimono',topC:'#2e5aa8',pat:'stripesV',collar:'#fdd835',bottom:'robe',botC:'#2e5aa8',botPat:'stripesV',sash:'#c62828',hat:'doppa',hatC:'#1a1a1a',boots:'#1a1a1a'}},
+ {k:'iran',name:"Iran",native:"ایران",place:"A turquoise-domed mosque, Isfahan",say:["Salam! Look at that dome!","Half the world, they say."],fits:["Qashqai layered skirts with a gold scarf","Long robe with a felt cap"],
+  sc:{sky:['#9fd3f2','#fff1e0'],L:[['mosque',200,'#2a9fb8','#e8d4b0']],g:'#d9c4a0',sfx:['Salam!','#0f6b5c']},
+  her:{top:'tunic',topC:'#c62828',pat:'sequin',bottom:'pollera',botC:'#43a047',trim:GOLD,legs:'#c62828',hat:'scarfhead',hatC:'#e6b84a',hatPat:'sequin',shoes:'#1a1a1a'},
+  him:{top:'kimono',topC:'#f3ead7',collar:'#8a6a4f',bottom:'robe',botC:'#f3ead7',sash:'#8a6a4f',hat:'kufi',hatC:'#8a6a4f',shoes:'#3a2214'}},
+ {k:'jordan',name:"Jordan",native:"الأردن",place:"The Treasury, Petra",say:["Ahlan! It's carved into the rock!","Indiana Jones vibes."],fits:["Embroidered black thobe","Thobe with a red-check shemagh"],
+  sc:{sky:['#d9926a','#e8a882'],L:[['petra']],g:'#c98a62',sfx:['Ahlan!','#7b1e3a']},
+  her:{top:'tunic',topC:'#1a1a1a',pat:'cross',bottom:'longskirt',botC:'#1a1a1a',botPat:'cross',sash:'#c62828',hat:'scarfhead',hatC:'#fbf7ef',shoes:'#1a1a1a'},
+  him:{top:'tunic',topC:'#fbf7ef',bottom:'robe',botC:'#fbf7ef',hat:'ghutra',hatC:'#fbf7ef',hatPat:'redcheck',shoes:'#7a5230'}},
+ {k:'saudi',name:"Saudi Arabia",native:"السعودية",place:"Elephant Rock, AlUla",say:["Marhaban! The rock is an elephant!","Desert stargazing tonight."],fits:["Najdi thobe in burgundy and gold","Thobe, gold-trimmed bisht and shemagh"],
+  sc:{sky:['#ffb46a','#ffe6bc'],L:[['bigrock',320,'#b8784a',70,120],['dunes']],g:'#e8c27a',sfx:['Marhaban!','#2e7d32']},
+  her:{top:'tunic',topC:'#7b1e3a',pat:'sequin',bottom:'robe',botC:'#7b1e3a',botPat:'flowersG',trim:GOLD,hat:'scarfhead',hatC:'#7b1e3a',hatPat:'sequin',extra:['necklace'],shoes:GOLD},
+  him:{top:'tunic',topC:'#fbf7ef',bottom:'robe',botC:'#fbf7ef',extra:['cloak'],cloak:'#3a2a20',hat:'ghutra',hatC:'#fbf7ef',hatPat:'redcheck',shoes:'#7a5230'}},
+ {k:'oman',name:"Oman",native:"عُمان",place:"Muscat harbour fort",say:["Marhaba! Frankincense everywhere.","That fort has a view."],fits:["Embroidered dress over patterned trousers","Dishdasha with an embroidered kumma"],
+  sc:{sky:['#8fd3f0','#f0f8ff'],L:[['mtn','#b8a08a',0,180],['sea',196,'#2f8fb5'],['fort',330,.7]],g:'#e3c79a',sfx:['Marhaba!','#c62828']},
+  her:{top:'tunic',topC:'#43a047',pat:'flowersR',bottom:'pants',botC:'#c62828',botPat:'zig',hat:'scarfhead',hatC:'#c62828',hatPat:'sequin',extra:['necklace'],shoes:GOLD},
+  him:{top:'tunic',topC:'#fbf7ef',trim:'#c9a46a',bottom:'robe',botC:'#fbf7ef',hat:'kufi',hatC:'#fbf7ef',hatPat:'zig',shoes:'#7a5230'}},
+ {k:'georgia',name:"Georgia",native:"საქართველო",place:"Gergeti church, Kazbegi",say:["Gamarjoba! Church in the clouds.","Supra feast tonight!"],fits:["Kartuli gown with a veiled pillbox","Chokha with gazyri and papakha"],
+  sc:{sky:['#9fd3f2','#eef8ff'],L:[['mtn','#7f9aaf',1,150],['hills','#6f9a5a',200],['church',340,'#c9b38e','#8a7a62',.55]],g:'#7fae5a',sfx:['Gamarjoba!','#b3262f']},
+  her:{top:'dress',topC:'#fbf7ef',pat:'sequin',bottom:'longskirt',botC:'#fbf7ef',trim:GOLD,sash:GOLD,hat:'pillbox',hatC:'#fbf7ef',extra:['pearls'],shoes:'#fbf7ef'},
+  him:{top:'longcoat',topC:'#1a1a1a',bottom:'pants',botC:'#1a1a1a',extra:['gazyri'],sash:SILVER,boots:'#1a1a1a',hat:'papakha',hatC:'#1a1a1a'}},
+ {k:'armenia',name:"Armenia",native:"Հայաստան",place:"Khor Virap and Mount Ararat",say:["Barev! Ararat is right there!","Apricots and lavash, please."],fits:["Taraz with an embroidered apron and coin headband","Taraz vest, sash and fur papakha"],
+  sc:{sky:['#a8d6f2','#f4fbff'],L:[['peak',200,170,150,'#c4ccd8',1],['peak',80,80,90,'#b8c2d0',1],['church',340,'#c98a6a','#a86a4a',.55]],g:'#a8b86a',sfx:['Barev!','#c62828']},
+  her:{top:'dress',topC:'#7b1e3a',pat:'zig',bottom:'longskirt',botC:'#7b1e3a',botPat:'flowersG',apron:'#fbf7ef',apronPat:'cross',hat:'coins',extra:['necklace'],shoes:'#1a1a1a'},
+  him:{top:'vest',topC:'#fbf7ef',vest:'#24345e',vestPat:'zig',bottom:'widepants',botC:'#1a1a1a',sash:'#c62828',boots:'#1a1a1a',hat:'papakha',hatC:'#7a5a3a'}},
+ {k:'maldives',name:"Maldives",native:"ދިވެހިރާއްޖެ",place:"Overwater villas",say:["Kihineh! The water is SO blue.","We live here now."],fits:["Dhivehi libaas with a gold neckline","White shirt and sarong"],
+  sc:{sky:['#7fd0f0','#eafaff'],L:[['sea',170,'#2bc4c8'],['overwater']],g:'#f4e6c4',sfx:['Kihineh!','#1e88e5']},
+  her:{top:'dress',topC:'#1e88e5',pat:'sequin',bottom:'longskirt',botC:'#1a2a4a',trim:GOLD,extra:['necklace'],hat:'hibiscus',shoes:'#c9a27a'},
+  him:{top:'shirt',topC:'#fbf7ef',collar:'#fbf7ef',bottom:'robe',botC:'#2bb3b1',botPat:'stripesV',shoes:'#c9a27a'}},
+ {k:'lebanon',name:"Lebanon",native:"لبنان",place:"Baalbek and the cedars",say:["Marhaba! Roman columns!","Then mezze. Lots of mezze."],fits:["Embroidered gown with a sheer veil","Sherwal, vest and tarboush"],
+  sc:{sky:['#ffd3a8','#fff1e0'],L:[['mtn','#a8b0c0',1,170],['columns',200,'#e3c49a',6],['cedar',372]],g:'#d9c4a0',sfx:['Marhaba!','#2e7d32']},
+  her:{top:'dress',topC:'#1e5aa8',pat:'flowersG',bottom:'longskirt',botC:'#1e5aa8',botPat:'flowersG',sash:GOLD,hat:'scarfhead',hatC:'#fbf7ef',hatPat:'sequin',shoes:GOLD},
+  him:{top:'vest',topC:'#fbf7ef',vest:'#1a1a1a',vestPat:'zig',bottom:'widepants',botC:'#1a1a1a',sash:'#c62828',hat:'fez',hatC:'#b3262f',shoes:'#7a5230'}},
+ /* ---- Europe ---- */
+ {k:'portugal',name:"Portugal",native:"Portugal",place:"Lisbon, tram 28",say:["Olá! Pastel de nata time.","Hold on, the tram's coming!"],fits:["Traje à Vianesa with gold filigree","Campino: red vest, breeches, green stocking cap"],
+  sc:{sky:['#a8d6f2','#fff4e6'],L:[['houses',['#f3e6c4','#7fb0d8','#f2c14e','#e98a6a','#fbf7ef','#9cc06a','#f3e6c4'],210,1],['car',362,'#fdd835']],g:'#c9bfb2',sfx:['Olá!','#c62828']},
+  her:{top:'vest',topC:'#fbf7ef',vest:'#c62828',vestPat:'flowersG',bottom:'longskirt',botC:'#c62828',botPat:'flowersG',apron:'#1a1a1a',apronPat:'flowersR',hat:'scarfhead',hatC:'#c62828',hatPat:'flowersG',extra:['necklace'],shoes:'#1a1a1a'},
+  him:{top:'vest',topC:'#fbf7ef',vest:'#c62828',bottom:'breeches',botC:'#1a1a1a',legs:'#fbf7ef',sash:'#c62828',hat:'toque',hatC:'#2e7d32',shoes:'#1a1a1a'}},
+ {k:'switzerland',name:"Switzerland",native:"Schweiz",place:"Below the Matterhorn",say:["Grüezi! Chocolate break?","Fondue break first."],fits:["Bernese tracht with silver chains","Edelweiss shirt and felt hat"],
+  sc:{sky:['#8fcdf0','#eef8ff'],L:[['peak',260,90,170,'#8a96a8',1],['hills','#7fb85a',200,'#6fa84a'],['hut',50,.9,'#a8864a','#7a5230']],g:'#7fb85a',sfx:['Grüezi!','#c62828',150,40]},
+  her:{top:'vest',topC:'#fbf7ef',vest:'#1a1a1a',sleeve:'short',extra:['chains'],bottom:'longskirt',botC:'#1a1a1a',apron:'#e2477e',hat:'bonnet',hatC:'#1a1a1a',shoes:'#1a1a1a'},
+  him:{top:'shirt',topC:'#1e3a6e',pat:'dots',collar:'#1e3a6e',sleeve:'short',bottom:'pants',botC:'#1a1a1a',hat:'tyrol',hatC:'#1a1a1a',shoes:'#5a3a20'}},
+ {k:'austria',name:"Austria",native:"Österreich",place:"Hallstatt lakeside",say:["Servus! Postcard village!","The hills are alive."],fits:["Pink dirndl with a mint apron","Trachten jacket and lederhosen"],
+  sc:{sky:['#a8d6f2','#f0f8ff'],L:[['mtn','#7f9aaf',1,160],['lake',196,'#3f86a8'],['church',340,'#f3ede4','#5a6a7a',.5]],g:'#7fb85a',sfx:['Servus!','#c62828']},
+  her:{top:'vest',topC:'#fbf7ef',vest:'#e2477e',vestPat:'flowersG',sleeve:'short',bottom:'skirt',botC:'#e2477e',apron:'#80cbc4',legs:'#fbf7ef',shoes:'#1a1a1a'},
+  him:{top:'jacket',topC:'#fbf7ef',vest:'#2e5a3a',sleeveC:'#2e5a3a',bottom:'breeches',botC:'#7a5230',extra:['suspenders'],legs:'#e9e1d0',hat:'tyrol',hatC:'#2e5a3a',shoes:'#5a3a20'}},
+ {k:'sweden',name:"Sweden",native:"Sverige",place:"Midsummer meadow",say:["Hej! Midsummer dance!","Small frogs song. Don't ask."],fits:["Folkdräkt with a midsummer crown","Blue waistcoat and yellow breeches"],
+  sc:{sky:['#9fd3f2','#f4fbff'],L:[['hills','#7fb85a',200],['hut',50,1,'#b3262f','#3a2a20'],['maypole',350]],g:'#8fc464',sfx:['Hej!','#1e5aa8',150,40]},
+  her:{top:'vest',topC:'#fbf7ef',vest:'#c62828',bottom:'longskirt',botC:'#1e5aa8',apron:'#fdd835',apronPat:'stripesV',hat:'crown',crownC:['#fff','#fdd835','#90caf9'],shoes:'#1a1a1a'},
+  him:{top:'vest',topC:'#fbf7ef',vest:'#1e5aa8',vestButtons:GOLD,bottom:'breeches',botC:'#fdd835',legs:'#fbf7ef',hat:'flatcap',hatC:'#1a1a1a',shoes:'#1a1a1a'}},
+ {k:'iceland',name:"Iceland",native:"Ísland",place:"Skógafoss waterfall",say:["Halló! We're soaked!","Worth it. Totally worth it."],fits:["Peysuföt with a tasselled skotthúfa","Lopapeysa wool sweater"],
+  sc:{sky:['#8fb8d8','#e8f2fa'],L:[['waterfall',200,'#4f6a5a']],g:'#6f9a5a',sfx:['Halló!','#1e5aa8']},
+  her:{top:'jacket',topC:'#fbf7ef',vest:'#1a1a1a',sleeveC:'#1a1a1a',bottom:'longskirt',botC:'#1a1a1a',extra:['scarf'],scarf:'#2e7d32',hat:'skott',shoes:'#1a1a1a'},
+  him:{top:'tee',topC:'#d9d2c4',pat:'knit',sleeveC:'#d9d2c4',extra:['yoke'],bottom:'pants',botC:'#3a3a44',hat:'beanie',hatC:'#6b4a33',pom:'#d9d2c4',boots:'#3a2214'}},
+ {k:'poland',name:"Poland",native:"Polska",place:"Wawel Castle, Kraków",say:["Cześć! Pierogi count: twelve.","Thirteen. I saw you."],fits:["Łowicz striped skirt with a ribboned crown","Krakowiak coat and peacock-feather cap"],
+  sc:{sky:['#a8d6f2','#f4fbff'],L:[['clouds'],['castle',200,'#e8dcc4','#3a8a5a']],g:'#9cc06a',sfx:['Cześć!','#c62828']},
+  her:{top:'vest',topC:'#fbf7ef',vest:'#1a1a1a',vestPat:'flowersR',sleeve:'short',extra:['butterfly'],bottom:'longskirt',botC:'#f28c28',botPat:'rainbow',apron:'#1a1a1a',apronPat:'flowersR',hat:'vinok',shoes:'#1a1a1a'},
+  him:{top:'longcoat',topC:'#1e5aa8',bottom:'pants',botC:'#c62828',botPat:'stripesV',sash:'#c62828',boots:'#1a1a1a',hat:'rogatywka',hatC:'#c62828'}},
+ {k:'czechia',name:"Czechia",native:"Česko",place:"Charles Bridge, Prague",say:["Ahoj! Castle on the hill!","Trdelník in both hands."],fits:["Moravian kroj with butterfly sleeves","Embroidered vest and yellow breeches"],
+  sc:{sky:['#ffd3a8','#fff1e0'],L:[['gothic',300,'#8a7a6a'],['river',200,'#5f8fb0'],['bridge',206]],g:'#a89a86',sfx:['Ahoj!','#1e5aa8']},
+  her:{top:'vest',topC:'#fbf7ef',vest:'#1a1a1a',vestPat:'flowersR',sleeve:'short',extra:['butterfly'],bottom:'pollera',botC:'#c62828',botPat:'flowersR',trim:'#fdd835',legs:'#fbf7ef',hat:'crown',shoes:'#1a1a1a'},
+  him:{top:'vest',topC:'#fbf7ef',vest:'#1e5aa8',vestPat:'flowersR',bottom:'breeches',botC:'#fdd835',boots:'#1a1a1a',hat:'fedora',hatC:'#1a1a1a',band:'#c62828'}},
+ {k:'hungary',name:"Hungary",native:"Magyarország",place:"Parliament on the Danube",say:["Szia! Thermal baths next!","Then lángos. Then more baths."],fits:["Matyó embroidery with puffed sleeves","Csikós horseman blues"],
+  sc:{sky:['#ffcf9a','#fff1dc'],L:[['gothic',200,'#e8dcc4'],['church',200,'#e8dcc4','#b3462a',.7],['river',220,'#5f8fb0']],g:'#a89a86',sfx:['Szia!','#2e7d32']},
+  her:{top:'dress',topC:'#1a1a1a',pat:'flowersR',sleeve:'short',sleeveC:'#fbf7ef',extra:['butterfly'],bottom:'pollera',botC:'#1a1a1a',botPat:'flowersR',trim:'#c62828',legs:'#fbf7ef',hat:'crown',shoes:'#c62828'},
+  him:{top:'vest',topC:'#1e5aa8',vest:'#1a1a1a',sleeve:'wide',sleeveC:'#1e5aa8',bottom:'widepants',botC:'#1e5aa8',boots:'#1a1a1a',hat:'fedora',hatC:'#1a1a1a'}},
+ {k:'romania',name:"Romania",native:"România",place:"Bran Castle, Transylvania",say:["Salut! Dracula's castle!","I'll keep you safe. Probably."],fits:["Ie blouse with a fotă wrap skirt","White shirt, sheepskin vest and căciulă"],
+  sc:{sky:['#a8c8e8','#eef4fa'],L:[['mtn','#5f7a6a',0,170],['castle',300,'#e8dcc4','#b3462a',.7],['pine',30,1],['pine',70,.8]],g:'#6f9a5a',sfx:['Salut!','#1e5aa8',150,40]},
+  her:{top:'blouse',topC:'#fbf7ef',pat:'cross',cuff:'#c62828',bottom:'longskirt',botC:'#1a1a1a',botPat:'zig',apron:'#1a1a1a',apronPat:'cross',hat:'scarfhead',hatC:'#fbf7ef',shoes:'#1a1a1a'},
+  him:{top:'vest',topC:'#fbf7ef',vest:'#1a1a1a',vestPat:'flowersR',cuff:'#c62828',bottom:'pants',botC:'#fbf7ef',sash:'#c62828',hat:'papakha',hatC:'#1a1a1a',shoes:'#3a2214'}},
+ {k:'croatia',name:"Croatia",native:"Hrvatska",place:"Dubrovnik old town",say:["Bok! Red roofs everywhere!","Walk the walls at sunset?"],fits:["White linen, red embroidery and coral beads","Red vest with a crvenkapa cap"],
+  sc:{sky:['#8fd0f5','#eef9ff'],L:[['sea',170,'#1e78c2'],['houses',['#f3e6c4','#e8d4b0','#f3e6c4','#e8d4b0','#f3e6c4','#e8d4b0','#f3e6c4'],226,0]],g:'#d9cbb5',sfx:['Bok!','#c62828']},
+  her:{top:'blouse',topC:'#fbf7ef',bottom:'longskirt',botC:'#fbf7ef',botPat:'cross',apron:'#c62828',apronPat:'zig',extra:['pearls'],pearlC:'#e2563a',hat:'scarfhead',hatC:'#fbf7ef',hatPat:'cross',shoes:'#1a1a1a'},
+  him:{top:'vest',topC:'#fbf7ef',vest:'#c62828',vestButtons:SILVER,bottom:'widepants',botC:'#fbf7ef',hat:'amalia',hatC:'#c62828',shoes:'#1a1a1a'}},
+ {k:'belgium',name:"Belgium",native:"België",place:"Grand-Place, Brussels",say:["Hallo! Waffles AND chocolate?","And fries. It's a law."],fits:["Lace cap and lace apron","Blue linen smock with a red scarf"],
+  sc:{sky:['#b8d4ea','#f2f6fa'],L:[['houses',['#e6b84a','#7a6a5a','#e6b84a','#5a4a3a','#e6b84a','#7a6a5a','#e6b84a'],220,0]],g:'#a89a86',sfx:['Hallo!','#1a1a1a']},
+  her:{top:'vest',topC:'#fbf7ef',vest:'#1a2a4a',bottom:'longskirt',botC:'#1a2a4a',apron:'#fbf7ef',apronPat:'knit',hat:'bonnet',hatC:'#fbf7ef',shoes:'#1a1a1a'},
+  him:{top:'shirt',topC:'#1e5aa8',collar:'#fbf7ef',bottom:'pants',botC:'#3a3a44',extra:['scarf'],scarf:'#c62828',hat:'flatcap',hatC:'#3a3a44',shoes:'#1a1a1a'}},
+ {k:'bulgaria',name:"Bulgaria",native:"България",place:"Rila Monastery",say:["Zdravei! Roses everywhere!","Rose oil, rose jam, rose us."],fits:["Sukman with a rose crown","Embroidered shirt, red sash and kalpak"],
+  sc:{sky:['#a8d6f2','#f4fbff'],L:[['mtn','#7f9aaf',1,160],['church',200,'#e8dcc4','#5a6a7a',.9]],g:'#9cc06a',sfx:['Zdravei!','#2e7d32']},
+  her:{top:'vest',topC:'#fbf7ef',vest:'#1a1a1a',vestPat:'zig',bottom:'longskirt',botC:'#1a1a1a',trim:'#c62828',apron:'#c62828',apronPat:'rainbow',hat:'crown',crownC:['#ec407a','#f8bbd0','#c62828'],shoes:'#1a1a1a'},
+  him:{top:'tee',topC:'#fbf7ef',pat:'cross',bottom:'widepants',botC:'#7a5230',sash:'#c62828',hat:'karakul',hatC:'#1a1a1a',shoes:'#3a2214'}},
+ {k:'serbia',name:"Serbia",native:"Србија",place:"Temple of Saint Sava, Belgrade",say:["Zdravo! What a dome!","Ćevapi, then the fortress."],fits:["Gold-embroidered jelek","Šajkača cap and woollen breeches"],
+  sc:{sky:['#ffd3a8','#fff1e0'],L:[['church',200,'#fbf7ef','#3a8a5a',1.1]],g:'#c9bfb2',sfx:['Zdravo!','#c62828']},
+  her:{top:'jacket',topC:'#fbf7ef',vest:'#1a1a1a',vestPat:'flowersG',bottom:'longskirt',botC:'#fbf7ef',botPat:'cross',apron:'#1a1a1a',apronPat:'flowersR',hat:'amalia',hatC:'#c62828',shoes:'#c62828'},
+  him:{top:'vest',topC:'#fbf7ef',vest:'#1a1a1a',vestPat:'zig',bottom:'breeches',botC:'#3a3a44',legs:'#fbf7ef',sash:'#c62828',hat:'fila',hatC:'#5a5a5a',shoes:'#7a5230'}},
+ {k:'estonia',name:"Estonia",native:"Eesti",place:"Tallinn old town",say:["Tere! Fairytale towers!","Medieval, but with Wi-Fi."],fits:["Striped skirt and silver brooch","Long coat with a woven belt"],
+  sc:{sky:['#a8cfee','#f0f8ff'],L:[['castle',200,'#d9cbb5','#b3462a',1.1]],g:'#a89a86',sfx:['Tere!','#1e5aa8']},
+  her:{top:'vest',topC:'#fbf7ef',vest:'#1e5aa8',bottom:'longskirt',botC:'#c62828',botPat:'rainbow',extra:['brooch'],hat:'beadband',shoes:'#1a1a1a'},
+  him:{top:'longcoat',topC:'#3a3a44',bottom:'breeches',botC:'#f3ead7',legs:'#fbf7ef',sash:'#c62828',hat:'cordobes',hatC:'#1a1a1a',shoes:'#1a1a1a'}},
+ {k:'lithuania',name:"Lithuania",native:"Lietuva",place:"Trakai Island Castle",say:["Labas! A castle on a lake!","Kayak there? Kayak there."],fits:["Checked skirt with a woven headband","Linen shirt with a juosta sash"],
+  sc:{sky:['#a8d6f2','#f4fbff'],L:[['lake',190,'#4f8fb0'],['castle',200,'#b8573a','#7a2a1a',.8]],g:'#7fb85a',sfx:['Labas!','#2e7d32']},
+  her:{top:'vest',topC:'#fbf7ef',vest:'#2e7d32',bottom:'longskirt',botC:'#2e7d32',botPat:'plaid',apron:'#fbf7ef',apronPat:'cross',hat:'pillbox',hatC:'#c62828',shoes:'#1a1a1a'},
+  him:{top:'tee',topC:'#fbf7ef',bottom:'pants',botC:'#fbf7ef',sash:'#c62828',hat:'boater',hatC:'#c62828',shoes:'#7a5230'}},
+ {k:'latvia',name:"Latvia",native:"Latvija",place:"Riga old town",say:["Sveiki! Pastel buildings!","Black balsam? Small one."],fits:["Villaine shawl with a big sakta brooch","Grey wool coat with a red belt"],
+  sc:{sky:['#ffd0b0','#fff4e6'],L:[['houses',['#7fb0d8','#f2c14e','#e98a6a','#fbf7ef','#b8a0d8','#9cc06a','#f2c14e'],210,0]],g:'#a89a86',sfx:['Sveiki!','#7b1e3a']},
+  her:{top:'tee',topC:'#fbf7ef',extra:['shawl','brooch'],shawl:'#fbf7ef',shawlPat:'zig',bottom:'longskirt',botC:'#7b1e3a',botPat:'stripesV',hat:'crown',crownC:['#fdd835','#c62828'],shoes:'#1a1a1a'},
+  him:{top:'longcoat',topC:'#8a8a8a',bottom:'pants',botC:'#3a3a44',sash:'#c62828',hat:'fedora',hatC:'#1a1a1a',boots:'#1a1a1a'}},
+ {k:'slovakia',name:"Slovakia",native:"Slovensko",place:"Spiš Castle",say:["Ahoj! Biggest castle ever!","Bryndzové halušky, here I come."],fits:["Čičmany-pattern kroj","Wide linen trousers and a black hat"],
+  sc:{sky:['#a8d6f2','#f4fbff'],L:[['hills','#8fb86a',190],['castle',220,'#e8e0d4','#8a6a5a',.8]],g:'#7fae5a',sfx:['Ahoj!','#c62828']},
+  her:{top:'blouse',topC:'#fbf7ef',pat:'cross',extra:['butterfly'],bottom:'pollera',botC:'#c62828',botPat:'flowersR',trim:'#1e5aa8',legs:'#fbf7ef',hat:'crown',shoes:'#1a1a1a'},
+  him:{top:'vest',topC:'#fbf7ef',vest:'#1a1a1a',vestPat:'flowersR',bottom:'widepants',botC:'#fbf7ef',sash:'#7a5230',hat:'tyrol',hatC:'#1a1a1a',shoes:'#1a1a1a'}},
+ {k:'slovenia',name:"Slovenia",native:"Slovenija",place:"Lake Bled",say:["Živjo! Island church!","Let's ring the wishing bell."],fits:["Peča lace headscarf","Red waistcoat and green felt hat"],
+  sc:{sky:['#9fd3f2','#eef8ff'],L:[['mtn','#6f8a9a',1,160],['lake',190,'#3fa0b0'],['island',200],['church',200,'#fbf7ef','#b3462a',.5]],g:'#6fa84a',sfx:['Živjo!','#1e5aa8']},
+  her:{top:'vest',topC:'#fbf7ef',vest:'#1a1a1a',bottom:'longskirt',botC:'#1e3a6e',apron:'#fbf7ef',apronPat:'flowersR',hat:'scarfhead',hatC:'#fbf7ef',hatPat:'knit',shoes:'#1a1a1a'},
+  him:{top:'vest',topC:'#fbf7ef',vest:'#c62828',vestButtons:SILVER,bottom:'breeches',botC:'#1a1a1a',legs:'#fbf7ef',hat:'tyrol',hatC:'#2e5a3a',boots:'#1a1a1a'}},
+ {k:'malta',name:"Malta",native:"Malta",place:"Valletta harbour",say:["Bonġu! Golden limestone!","Pastizzi for the whole boat."],fits:["Għonnella hooded cloak","Fisherman's red sash and stocking cap"],
+  sc:{sky:['#9fd6f2','#fff4e0'],L:[['sea',200,'#1e78c2'],['church',320,'#e8d4a8','#c9a983',.8],['houses',['#e8d4a8','#e3c79a','#e8d4a8'],210,1]],g:'#e3d2b0',sfx:['Bonġu!','#c62828']},
+  her:{top:'dress',topC:'#1a1a1a',bottom:'longskirt',botC:'#1a1a1a',hat:'hood',hatC:'#1a1a1a',extra:['necklace'],shoes:'#1a1a1a'},
+  him:{top:'shirt',topC:'#fbf7ef',collar:'#fbf7ef',bottom:'pants',botC:'#24345e',sash:'#c62828',hat:'toque',hatC:'#c62828',shoes:'#1a1a1a'}},
+ {k:'albania',name:"Albania",native:"Shqipëri",place:"Gjirokastër stone town",say:["Përshëndetje! Stone roofs!","Byrek break? Byrek break."],fits:["Xhubleta bell skirt","Fustanella with a white plis cap"],
+  sc:{sky:['#a8d6f2','#f4fbff'],L:[['mtn','#8a9aaa',1,160],['houses',['#e8e0d4','#d9cbb5','#e8e0d4','#d9cbb5','#e8e0d4','#d9cbb5','#e8e0d4'],214,0]],g:'#a8a090',sfx:['Mirë!','#c62828']},
+  her:{top:'blouse',topC:'#fbf7ef',bottom:'chima',botC:'#1a1a1a',botPat:'zig',trim:'#c62828',hat:'scarfhead',hatC:'#fbf7ef',extra:['necklace'],shoes:'#1a1a1a'},
+  him:{top:'vest',topC:'#fbf7ef',vest:'#1a1a1a',vestPat:'zig',sleeve:'wide',sleeveC:'#fbf7ef',bottom:'kilt',botC:'#fbf7ef',legs:'#fbf7ef',hat:'kufi',hatC:'#fbf7ef',shoes:'#1a1a1a',pompom:true}},
+ /* ---- Americas ---- */
+ {k:'canada',name:"Canada",native:"Canada",place:"Moraine Lake, Banff",say:["Hi! That water is unreal.","Sorry, I'm just amazed."],fits:["Plaid wool coat, ceinture fléchée and tuque","Red serge and stetson"],
+  sc:{sky:['#8fcdf0','#eef8ff'],L:[['mtn','#7f9aaf',1,160],['lake',196,'#2fb8c8'],['pines',0],['leaves','#e0602c',4]],g:'#6f9a5a',sfx:['Eh!','#c62828',150,40]},
+  her:{top:'longcoat',topC:'#c62828',pat:'plaid',bottom:'pants',botC:'#2b2b33',sash:'#2e7d32',hat:'beanie',hatC:'#c62828',pom:'#fbf7ef',boots:'#5a3a20'},
+  him:{top:'mandarin',topC:'#c62828',trim:GOLD,bottom:'breeches',botC:'#1a2a4a',boots:'#3a2214',hat:'cowboy',hatC:'#7a5a3a',sash:'#5a3a20'}},
+ {k:'guatemala',name:"Guatemala",native:"Guatemala",place:"Tikal in the jungle",say:["¡Hola! Above the jungle!","Toucan spotted. Two toucans."],fits:["Woven huipil and corte","Todos Santos striped trousers"],
+  sc:{sky:['#a8dcf0','#f4fbff'],L:[['hills','#3f7a3a',180],['steppyr',200,'#a89a86'],['palm',374,.9]],g:'#5f9a4a',sfx:['¡Chilero!','#1e5aa8']},
+  her:{top:'dress',topC:'#7b1e3a',pat:'ikat',sleeve:'none',bottom:'longskirt',botC:'#1e3a6e',botPat:'stripesV',sash:'#e53935',hat:'beadband',shoes:'#c9a27a'},
+  him:{top:'shirt',topC:'#8e5ab8',pat:'stripesV',collar:'#8e5ab8',bottom:'pants',botC:'#c62828',botPat:'stripesV',hat:'boater',hatC:'#1e3a6e',shoes:'#c9a27a'}},
+ {k:'cuba',name:"Cuba",native:"Cuba",place:"Old Havana",say:["¡Azúcar! Salsa tonight!","I call shotgun in the '57 Chevy."],fits:["Rumbera ruffles and polka-dot headwrap","Guayabera and Panama hat"],
+  sc:{sky:['#8fd3f0','#fff4dc'],L:[['houses',['#7fd0c8','#f2c14e','#ec7a9a','#9fd48a','#f39a5a','#7fb0e8','#f2c14e'],214,1],['car',352,'#e53935']],g:'#c9bfb2',sfx:['¡Azúcar!','#c62828']},
+  her:{top:'blouse',topC:'#fbf7ef',sleeve:'short',bottom:'pollera',botC:'#e53935',botPat:'polka',trim:'#fdd835',legs:SKIN.her,hat:'gele',hatC:'#e53935',hatPat:'polka',shoes:'#e53935'},
+  him:{top:'shirt',topC:'#f3ead7',pat:'stripesV',collar:'#f3ead7',bottom:'pants',botC:'#d9c4a0',hat:'fedora',hatC:'#f3ead7',band:'#1a1a1a',shoes:'#7a5230'}},
+ {k:'jamaica',name:"Jamaica",native:"Jamaica",place:"Negril beach",say:["Wah gwaan! Reggae and sunsets!","Jerk chicken, then swim."],fits:["Bandana quadrille dress with head tie","Madras shirt and straw boater"],
+  sc:{sky:['#8fd3f0','#fff3d6'],L:[['mtn','#4f8a5a',0,180],['sea',190,'#2bb3c8'],['palm',372,1],['palm',36,.8]],g:'#f4dca6',sfx:['Yeah mon!','#2e7d32']},
+  her:{top:'blouse',topC:'#fbf7ef',sleeve:'short',bottom:'longskirt',botC:'#e53935',botPat:'plaid',hat:'gele',hatC:'#fdd835',hatPat:'plaid',shoes:'#c9a27a'},
+  him:{top:'shirt',topC:'#fdd835',pat:'plaid',collar:'#fdd835',sleeve:'short',bottom:'pants',botC:'#fbf7ef',hat:'boater',hatC:'#2e7d32',shoes:'#c9a27a'}},
+ {k:'colombia',name:"Colombia",native:"Colombia",place:"Cartagena old city",say:["¡Hola! Balconies full of flowers!","Cumbia lessons? Let's go."],fits:["Cumbia pollera with a flower crown","All white with a sombrero vueltiao"],
+  sc:{sky:['#9fd6f2','#fff4e0'],L:[['houses',['#f2c14e','#ec7a9a','#7fb0e8','#f39a5a','#fbf7ef','#9fd48a','#f2c14e'],214,1],['bloom',40,90],['bloom',300,80]],g:'#c9bfb2',sfx:['¡Qué chévere!','#c62828']},
+  her:{top:'blouse',topC:'#fbf7ef',sleeve:'short',bottom:'pollera',botC:'#fbf7ef',botPat:'flowersR',trim:'#e53935',legs:SKIN.her,hat:'crown',shoes:'#e53935'},
+  him:{top:'shirt',topC:'#fbf7ef',collar:'#fbf7ef',bottom:'pants',botC:'#fbf7ef',extra:['scarf'],scarf:'#e53935',hat:'sombrero',hatC:'#f3ead7',shoes:'#1a1a1a'}},
+ {k:'chile',name:"Chile",native:"Chile",place:"Rapa Nui moai",say:["¡Hola! They're HUGE!","They're judging my hat too."],fits:["Cueca china dress with apron","Huaso chamanto and flat hat"],
+  sc:{sky:['#ffb07a','#ffe0c0'],L:[['sea',190,'#2f6fa8'],['moai',50,1],['moai',346,1.1],['moai',386,.8]],g:'#6f9a5a',sfx:['¡Bacán!','#1e5aa8',150,40]},
+  her:{top:'dress',topC:'#e53935',pat:'dots',sleeve:'short',bottom:'skirt',botC:'#e53935',botPat:'dots',apron:'#fbf7ef',legs:SKIN.her,hat:'hibiscus',shoes:'#1a1a1a'},
+  him:{top:'poncho',topC:'#c62828',pat:'stripesV',bottom:'pants',botC:'#3a3a44',boots:'#1a1a1a',hat:'cordobes',hatC:'#1a1a1a'}},
+ {k:'bolivia',name:"Bolivia",native:"Bolivia",place:"Salar de Uyuni",say:["¡Hola! We're walking on the sky!","Perspective photos, go!"],fits:["Cholita pollera, manta and bowler hat","Woven vest and felt hat"],
+  sc:{sky:['#7fc4f0','#eaf6ff'],L:[['mtn','#8a7a9a',1,180],['salt']],sfx:['¡Increíble!','#c62828']},
+  her:{top:'blouse',topC:'#fbf7ef',bottom:'pollera',botC:'#7b1e3a',trim:GOLD,legs:SKIN.her,extra:['shawl'],shawl:'#e6b84a',shawlPat:'sequin',hat:'bowler',hatC:'#5a3a20',shoes:'#1a1a1a'},
+  him:{top:'vest',topC:'#fbf7ef',vest:'#1e5aa8',vestPat:'ikat',bottom:'pants',botC:'#2b2b33',hat:'fedora',hatC:'#3a2a20',shoes:'#1a1a1a'}},
+ {k:'ecuador',name:"Ecuador",native:"Ecuador",place:"Cotopaxi volcano",say:["¡Hola! Standing on the equator!","One foot in each half."],fits:["Otavalo blouse, anaco and gold beads","Navy poncho and fedora"],
+  sc:{sky:['#9fd3f2','#eef8ff'],L:[['volcano',200,'#6a7a8a',0],['hills','#7fb85a',206]],g:'#8fc464',sfx:['¡Chévere!','#1e3a6e']},
+  her:{top:'blouse',topC:'#fbf7ef',sleeve:'short',bottom:'longskirt',botC:'#1a1a1a',apron:'#fbf7ef',extra:['shawl','pearls'],shawl:'#1e3a6e',pearlC:GOLD,shoes:'#fbf7ef'},
+  him:{top:'poncho',topC:'#1e3a6e',bottom:'pants',botC:'#fbf7ef',hat:'fedora',hatC:'#3a3a3a',shoes:'#fbf7ef'}},
+ {k:'panama',name:"Panama",native:"Panamá",place:"The Panama Canal",say:["¡Hola! Ships in the canal!","Two oceans, one day."],fits:["Pollera de gala with tembleques","Montuno and Panama hat"],
+  sc:{sky:['#8fd3f0','#f0f8ff'],L:[['skyline','#8a9aaa',11],['sea',196,'#2f8fb5'],['boat',60,'#fbf7ef']],g:'#c9bfb2',sfx:['¡Chuleta!','#c62828',150,40]},
+  her:{top:'blouse',topC:'#fbf7ef',sleeve:'short',bottom:'pollera',botC:'#fbf7ef',botPat:'flowersR',trim:'#e53935',legs:SKIN.her,hat:'crown',crownC:['#fff','#fff3c2','#ffd1dc'],extra:['necklace'],shoes:'#fbf7ef'},
+  him:{top:'shirt',topC:'#fbf7ef',pat:'cross',collar:'#fbf7ef',bottom:'shorts',botC:'#1a1a1a',hat:'fedora',hatC:'#f3ead7',band:'#1a1a1a',shoes:'#7a5230'}},
+ {k:'costarica',name:"Costa Rica",native:"Costa Rica",place:"Arenal volcano",say:["¡Pura vida! Sloth spotted!","Pura vida indeed."],fits:["Ribboned typical dress","White shirt, red scarf and straw hat"],
+  sc:{sky:['#9fd6f2','#f0fbff'],L:[['volcano',230,'#5f7a5a',1],['hills','#3f8a3a',200,'#4f9a4a'],['wheel',50,186]],g:'#5f9a4a',sfx:['¡Pura vida!','#1e5aa8',150,40]},
+  her:{top:'blouse',topC:'#fbf7ef',sleeve:'short',bottom:'longskirt',botC:'#e53935',trim:'#1e5aa8',hat:'hibiscus',shoes:'#1a1a1a'},
+  him:{top:'shirt',topC:'#fbf7ef',collar:'#fbf7ef',bottom:'pants',botC:'#1e3a6e',extra:['scarf'],scarf:'#e53935',sash:'#e53935',hat:'boater',hatC:'#1e3a6e',shoes:'#7a5230'}},
+ {k:'dominican',name:"Dominican Republic",native:"Rep. Dominicana",place:"Punta Cana beach",say:["¡Hola! Merengue on the sand!","Coconut water, two straws."],fits:["Merengue skirt with ruffles","Chacabana and Panama hat"],
+  sc:{sky:['#8fd3f0','#fff3d6'],L:[['clouds'],['sea',186,'#2bc4c8'],['palm',36,1],['palm',374,.9]],g:'#f6e6b8',sfx:['¡Klk!','#c62828',150,40]},
+  her:{top:'blouse',topC:'#fbf7ef',sleeve:'short',bottom:'pollera',botC:'#fdd835',botPat:'flowersR',trim:'#e53935',legs:SKIN.her,hat:'hibiscus',shoes:'#e53935'},
+  him:{top:'shirt',topC:'#a8d4f0',pat:'stripesV',collar:'#a8d4f0',bottom:'pants',botC:'#f3ead7',hat:'fedora',hatC:'#f3ead7',band:'#1e3a6e',shoes:'#7a5230'}},
+ {k:'trinidad',name:"Trinidad and Tobago",native:"Trinidad & Tobago",place:"Carnival on the beach",say:["Carnival! Look at my feathers!","Steelpan in my soul."],fits:["Carnival costume with a feather crown","Sequined carnival shirt"],
+  sc:{sky:['#ff8a6a','#ffd9a0'],L:[['sun',200,150,40],['sea',190,'#2f8fb5'],['palm',30,.9],['palm',380,1]],g:'#f4dca6',sfx:['Leh we go!','#c62828']},
+  her:{top:'dress',topC:'#e6b84a',pat:'sequin',sleeve:'none',bottom:'longskirt',botC:'#e53935',botPat:'sequin',trim:GOLD,hat:'feathers',extra:['necklace'],shoes:GOLD},
+  him:{top:'shirt',topC:'#e53935',pat:'sequin',collar:'#e53935',sleeve:'short',bottom:'pants',botC:'#fbf7ef',hat:'fedora',hatC:'#1a1a1a',band:'#fdd835',shoes:'#1a1a1a'}},
+ /* ---- Africa ---- */
+ {k:'ghana',name:"Ghana",native:"Ghana",place:"Cape Coast",say:["Akwaaba! Kente for both of us!","Jollof rice: Ghana wins."],fits:["Kente kaba, slit and gele","Kente cloth toga"],
+  sc:{sky:['#9fd6f2','#fff3d6'],L:[['sea',200,'#2f8fb5'],['fort',330,.8],['palm',40,.9]],g:'#e8d6a8',sfx:['Akwaaba!','#2e7d32',150,40]},
+  her:{top:'dress',topC:'#e6b84a',pat:'kente',sleeve:'short',bottom:'longskirt',botC:'#e6b84a',botPat:'kente',hat:'gele',hatC:'#e6b84a',hatPat:'kente',extra:['necklace'],shoes:GOLD},
+  him:{top:'sari',topC:'#e6b84a',pat:'kente',drape:'#e6b84a',drapePat:'kente',sleeve:'none',bottom:'robe',botC:'#e6b84a',botPat:'kente',shoes:'#7a5230'}},
+ {k:'ethiopia',name:"Ethiopia",native:"ኢትዮጵያ",place:"Simien Mountains",say:["Selam! Coffee ceremony time!","Third cup is the blessing."],fits:["Habesha kemis with tibeb borders","White suit with a gabi shawl"],
+  sc:{sky:['#9fd3f2','#eef8ff'],L:[['mtn','#8a7a5a',0,170],['hills','#9cb36f',200],['hut',350,.9]],g:'#c9a46a',sfx:['Selam!','#2e7d32']},
+  her:{top:'dress',topC:'#fbf7ef',bottom:'longskirt',botC:'#fbf7ef',trim:'#2e7d32',extra:['shawl','necklace'],shawl:'#fbf7ef',shawlPat:'zig',shoes:'#fbf7ef'},
+  him:{top:'tunic',topC:'#fbf7ef',trim:'#2e7d32',bottom:'pants',botC:'#fbf7ef',extra:['shawl'],shawl:'#fbf7ef',shawlPat:'zig',shoes:'#7a5230'}},
+ {k:'senegal',name:"Senegal",native:"Sénégal",place:"Lac Rose, the pink lake",say:["Nanga def! The lake is PINK!","Thieboudienne for lunch."],fits:["Blue grand boubou with matching headwrap","White grand boubou with gold embroidery"],
+  sc:{sky:['#ffd3a8','#fff1e0'],L:[['lake',190,'#f5a3b8'],['baobab',350,1]],g:'#e3c79a',sfx:['Nanga def!','#1e88e5']},
+  her:{top:'tunic',topC:'#1e88e5',pat:'flowersG',sleeve:'wide',bottom:'robe',botC:'#1e88e5',botPat:'flowersG',hat:'gele',hatC:'#1e88e5',hatPat:'sequin',shoes:GOLD},
+  him:{top:'tunic',topC:'#fbf7ef',pat:'zig',sleeve:'wide',bottom:'robe',botC:'#fbf7ef',hat:'kufi',hatC:'#fbf7ef',hatPat:'zig',shoes:'#f2c14e'}},
+ {k:'tanzania',name:"Tanzania",native:"Tanzania",place:"Zanzibar shore",say:["Karibu! Dhow at sunset!","Spice tour tomorrow."],fits:["Kanga wrap and headscarf","Kanzu with an embroidered kofia"],
+  sc:{sky:['#8fd3f0','#f0fbff'],L:[['sea',186,'#2bb3c8'],['boat',60,'#fbf7ef'],['palm',372,1]],g:'#f4e6c4',sfx:['Karibu!','#2e7d32',150,40]},
+  her:{top:'dress',topC:'#fdd835',pat:'flowersR',bottom:'longskirt',botC:'#fdd835',botPat:'flowersR',trim:'#1a1a1a',hat:'gele',hatC:'#fdd835',hatPat:'flowersR',shoes:'#c9a27a'},
+  him:{top:'tunic',topC:'#fbf7ef',bottom:'robe',botC:'#fbf7ef',hat:'kufi',hatC:'#fbf7ef',hatPat:'zig',shoes:'#7a5230'}},
+ {k:'madagascar',name:"Madagascar",native:"Madagasikara",place:"Avenue of the Baobabs",say:["Salama! Upside-down trees!","Lemurs, where are you?"],fits:["Silk lamba over a white dress","Lamba shawl and straw hat"],
+  sc:{sky:['#ffb07a','#ffe0c0'],L:[['sun',200,140,34],['baobab',40,1],['baobab',352,1.1],['baobab',300,.7]],g:'#c98a5a',sfx:['Salama!','#2e7d32',150,40]},
+  her:{top:'dress',topC:'#fbf7ef',bottom:'longskirt',botC:'#fbf7ef',extra:['shawl'],shawl:'#fbf7ef',shawlPat:'zig',hat:'buns',shoes:'#c9a27a'},
+  him:{top:'shirt',topC:'#fbf7ef',collar:'#fbf7ef',bottom:'pants',botC:'#3a3a44',extra:['shawl'],shawl:'#fbf7ef',shawlPat:'zig',hat:'boater',hatC:'#7a5230',shoes:'#7a5230'}},
+ {k:'tunisia',name:"Tunisia",native:"تونس",place:"Sidi Bou Said",say:["Aslema! Blue doors everywhere!","Mint tea on that terrace."],fits:["Gold-embroidered keswa","Jebba, burnous and red chechia"],
+  sc:{sky:['#8fd3f0','#eef8ff'],L:[['whitewall']],sfx:['Aslema!','#1e5aa8']},
+  her:{top:'tunic',topC:'#c62828',pat:'sequin',bottom:'longskirt',botC:'#c62828',botPat:'flowersG',trim:GOLD,hat:'coins',extra:['necklace'],shoes:GOLD},
+  him:{top:'tunic',topC:'#fbf7ef',trim:'#d9cfb8',bottom:'robe',botC:'#fbf7ef',extra:['cloak'],cloak:'#c9b38e',hat:'songkok',hatC:'#c62828',shoes:'#f2c14e'}},
+ {k:'rwanda',name:"Rwanda",native:"Rwanda",place:"Land of a thousand hills",say:["Muraho! Green hills forever!","Gorilla trek, here we come."],fits:["Umushanana with a gold sash","Men's umushanana"],
+  sc:{sky:['#a8d6f2','#f4fbff'],L:[['hills','#5f9a4a',170,'#4f8a3a'],['terraces']],g:'#6fa84a',sfx:['Muraho!','#1e88e5']},
+  her:{top:'sari',topC:'#f3ead7',drape:'#e6b84a',drapePat:'zig',sleeve:'none',bottom:'longskirt',botC:'#f3ead7',trim:GOLD,extra:['necklace'],shoes:GOLD},
+  him:{top:'sari',topC:'#fbf7ef',drape:'#1e5aa8',drapePat:'zig',sleeve:'short',sleeveC:'#fbf7ef',bottom:'robe',botC:'#fbf7ef',trim:'#1e5aa8',shoes:'#7a5230'}},
+ /* ---- Oceania ---- */
+ {k:'australia',name:"Australia",native:"Australia",place:"Sydney Harbour",say:["G'day! Opera House!","Brekkie by the harbour?"],fits:["Floral sundress and sun hat","Akubra hat and bush khakis"],
+  sc:{sky:['#8fd3f0','#eef8ff'],L:[['harbour'],['sea',190,'#2f7fb5'],['opera',300]],g:'#c9bfb2',sfx:["G'day!",'#2e7d32']},
+  her:{top:'dress',topC:'#fdd835',pat:'flowersR',sleeve:'short',bottom:'skirt',botC:'#fdd835',botPat:'flowersR',legs:SKIN.her,hat:'sunhat',hatC:'#2e7d32',shoes:'#7a5230'},
+  him:{top:'shirt',topC:'#c9b38e',collar:'#c9b38e',sleeve:'short',bottom:'shorts',botC:'#8a7a5a',boots:'#5a3a20',hat:'cowboy',hatC:'#7a5a3a'}},
+ {k:'fiji',name:"Fiji",native:"Viti",place:"Coral coast",say:["Bula! Bula! Bula!","Fiji time means no rush."],fits:["Sulu jaba with a salusalu garland","Bula shirt and tailored sulu"],
+  sc:{sky:['#8fd3f0','#f0fbff'],L:[['sea',186,'#2bc4c8'],['hut',50,.9,'#d9b88e','#a8864a'],['palm',372,1]],g:'#f6e6b8',sfx:['Bula!','#1e88e5',150,40]},
+  her:{top:'dress',topC:'#1e88e5',pat:'hibiscus',sleeve:'short',bottom:'longskirt',botC:'#1e88e5',botPat:'hibiscus',extra:['lei'],hat:'hibiscus',shoes:'#c9a27a'},
+  him:{top:'shirt',topC:'#2bb3b1',pat:'hibiscus',collar:'#2bb3b1',sleeve:'short',bottom:'kilt',botC:'#24345e',extra:['lei'],shoes:'#c9a27a'}},
+ {k:'samoa',name:"Samoa",native:"Sāmoa",place:"Beach fale",say:["Talofa! Our own beach fale!","Sunset swim, then sleep."],fits:["Puletasi","White shirt and ie faitaga"],
+  sc:{sky:['#ffb07a','#ffe3b0'],L:[['sea',190,'#2f9fb5'],['fale',340],['palm',36,.9]],g:'#f4dca6',sfx:['Talofa!','#c62828',150,40]},
+  her:{top:'dress',topC:'#c62828',pat:'hibiscus',sleeve:'short',bottom:'longskirt',botC:'#c62828',botPat:'hibiscus',hat:'hibiscus',shoes:'#c9a27a'},
+  him:{top:'shirt',topC:'#fbf7ef',collar:'#fbf7ef',sleeve:'short',bottom:'robe',botC:'#24345e',shoes:'#c9a27a'}},
+ {k:'tonga',name:"Tonga",native:"Tonga",place:"Whale-watching coast",say:["Mālō e lelei! Whales!","Humpbacks waving at us."],fits:["Kiekie waist ornament","Tupenu with a woven taʻovala mat"],
+  sc:{sky:['#8fd3f0','#f0fbff'],L:[['clouds'],['sea',186,'#2bb3c8'],['palm',374,1],['palm',30,.8]],g:'#f6e6b8',sfx:['Mālō!','#c62828',150,40]},
+  her:{top:'dress',topC:'#fbf7ef',sleeve:'short',bottom:'longskirt',botC:'#24345e',extra:['kiekie'],hat:'hibiscus',shoes:'#c9a27a'},
+  him:{top:'shirt',topC:'#fbf7ef',collar:'#fbf7ef',bottom:'robe',botC:'#1a1a1a',apron:'#c9a46a',apronPat:'batik',shoes:'#c9a27a'}},
+ {k:'png',name:"Papua New Guinea",native:"Papua Niugini",place:"Goroka highlands",say:["Gude! Look at those feathers!","Bird-of-paradise mode."],fits:["Meri blouse and woven skirt","Goroka show feather headdress and laplap"],
+  sc:{sky:['#9fd3f2','#eef8ff'],L:[['mtn','#3f6a4a',0,170],['hills','#3f8a3a',196,'#2f7a3a'],['hut',360,.9,'#a8864a','#7a5a3a']],g:'#4f8a3a',sfx:['Gude!','#c62828']},
+  her:{top:'blouse',topC:'#ec407a',pat:'flowersR',sleeve:'short',bottom:'longskirt',botC:'#2e7d32',botPat:'zig',extra:['kiekie'],hat:'beadband',shoes:'#c9a27a'},
+  him:{top:'tee',topC:'#fdd835',sleeve:'short',bottom:'robe',botC:'#c62828',botPat:'zig',hat:'feathers',extra:['pearls'],shoes:'#c9a27a'}}
+];
+MORE.forEach((t,i)=>{t.poses=t.poses||PZ[i%PZ.length];BG[t.k]=u=>scene(u,t.sc);TRIPS.push(t);});
 
 /* ---------- render ---------- */
 let uid=0;
