@@ -1,0 +1,769 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+</head>
+<body style="margin:0">
+<title>Passport for Two</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Zen+Maru+Gothic:wght@400;500;700;900&display=swap">
+<style>
+/* Layout: a luxe manga volume — indigo night page, gold foil rules, paper-white panels in a 2-up grid */
+:root{
+  --page:#11121f; --page-2:#1a1b2e; --fg:#f4efe6; --muted:#aaa6c2;
+  --gold:#d9b25f; --gold-soft:#f1dca0; --rose:#ea7896; --paper:#fbf7f0; --ink:#2a1d26;
+  --display:"Dela Gothic One","Hiragino Sans","Yu Gothic",system-ui,sans-serif;
+  --body:"Zen Maru Gothic","Hiragino Maru Gothic ProN","Hiragino Sans",system-ui,sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:radial-gradient(1200px 600px at 50% -10%,#2a2347 0%,var(--page) 60%) var(--page);color:var(--fg);font-family:var(--body);font-size:15px;line-height:1.6}
+.wrap{max-width:1120px;margin:0 auto;padding-inline:16px;padding-block:28px 64px}
+h1,h2,h3{font-family:var(--display);font-weight:400;text-wrap:balance;margin:0}
+.eyebrow{font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold)}
+
+/* cover */
+.cover{display:grid;grid-template-columns:1.05fr .95fr;gap:28px;align-items:center;padding:28px;border:1px solid color-mix(in srgb,var(--gold) 55%,transparent);border-radius:4px;background:linear-gradient(160deg,#1d1c35,#141425);position:relative;overflow:hidden}
+.cover::before{content:"";position:absolute;inset:8px;border:1px solid color-mix(in srgb,var(--gold) 30%,transparent);pointer-events:none}
+.cover h1{font-size:clamp(40px,7vw,78px);line-height:1;letter-spacing:.01em;background:linear-gradient(180deg,var(--gold-soft),var(--gold) 70%,#a67c2e);-webkit-background-clip:text;background-clip:text;color:transparent}
+.cover .jp{font-family:var(--body);font-weight:900;font-size:clamp(18px,2.6vw,26px);letter-spacing:.3em;color:var(--rose);margin-top:10px}
+.cover p{max-width:46ch;color:var(--muted);margin:16px 0 0}
+.cover .art{min-width:0}
+.cover svg{width:100%;height:auto;display:block}
+.stamps{display:flex;flex-wrap:wrap;gap:6px;margin-top:18px}
+.stamps span{font-size:11px;letter-spacing:.08em;border:1px solid color-mix(in srgb,var(--gold) 50%,transparent);color:var(--gold-soft);padding:2px 8px;border-radius:2px}
+
+/* section headings */
+.sec{margin-top:56px}
+.sec-head{display:flex;flex-wrap:wrap;align-items:end;justify-content:space-between;gap:12px;border-bottom:1px solid color-mix(in srgb,var(--gold) 40%,transparent);padding-bottom:12px;margin-bottom:20px}
+.sec-head h2{font-size:clamp(24px,3.4vw,34px)}
+.sec-head p{margin:4px 0 0;color:var(--muted);max-width:60ch}
+
+/* cast */
+.cast{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.card{background:var(--paper);color:var(--ink);border-radius:3px;padding:8px;box-shadow:0 0 0 1px var(--gold),0 10px 30px -12px #000}
+.card svg{width:100%;height:auto;display:block;border:2.5px solid var(--ink)}
+.card h3{font-size:16px;margin-top:8px}
+.card p{margin:2px 0 4px;font-size:12.5px;color:#5b4d58;line-height:1.45}
+
+/* controls */
+.btn{font:700 13px var(--body);letter-spacing:.06em;color:var(--page);background:linear-gradient(180deg,var(--gold-soft),var(--gold));border:0;border-radius:2px;padding:9px 16px;cursor:pointer}
+.btn:hover{filter:brightness(1.08)}
+.btn:focus-visible,.panel:focus-visible{outline:3px solid var(--rose);outline-offset:3px}
+
+/* comic */
+.comic{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.panel{background:var(--paper);color:var(--ink);padding:8px 8px 10px;border-radius:3px;box-shadow:0 0 0 1px var(--gold),0 14px 36px -16px #000;cursor:pointer;min-width:0}
+.panel.wide{grid-column:1/-1}
+.stage{position:relative;border:3px solid var(--ink);overflow:hidden;background:#fff}
+.stage svg{display:block;width:100%;height:auto}
+.bubble{position:absolute;top:3%;max-width:30%;background:#fff;color:var(--ink);border:2.5px solid var(--ink);border-radius:18px;padding:6px 10px;font-weight:700;font-size:clamp(10.5px,1.35vw,13.5px);line-height:1.3}
+.wide .bubble{max-width:24%}
+.bubble.her{left:2%}
+.bubble.him{right:2%}
+.bubble::after{content:"";position:absolute;bottom:-11px;width:14px;height:14px;background:#fff;border-right:2.5px solid var(--ink);border-bottom:2.5px solid var(--ink)}
+.bubble.her::after{right:22px;transform:rotate(30deg)}
+.bubble.him::after{left:22px;transform:rotate(60deg)}
+.cap{display:flex;gap:12px;align-items:baseline;justify-content:space-between;padding:8px 4px 0;flex-wrap:wrap}
+.cap .ep{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#8a6a2e;font-weight:700}
+.cap h3{font-size:20px;line-height:1.1}
+.cap .native{font-weight:900;font-size:20px;color:#b23a58}
+.cap .fits{flex-basis:100%;font-size:12.5px;color:#5b4d58;line-height:1.45}
+.cap .fits b{color:var(--ink)}
+
+/* motion */
+.bob{animation:bob 3.2s ease-in-out infinite}
+.bob.b2{animation-delay:-1.6s}
+@keyframes bob{50%{transform:translateY(-3px)}}
+.panel.jump .bob{animation:jump .7s cubic-bezier(.3,1.6,.5,1)}
+@keyframes jump{40%{transform:translateY(-22px)}}
+@media (prefers-reduced-motion:reduce){.bob,.panel.jump .bob{animation:none}}
+
+footer{margin-top:48px;color:var(--muted);font-size:13px;text-align:center}
+.hosting{margin-top:56px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.hosting div{border:1px solid color-mix(in srgb,var(--gold) 40%,transparent);border-radius:3px;padding:14px 16px;min-width:0}
+.hosting h3{font-size:15px;color:var(--gold-soft);margin-bottom:6px}
+.hosting p{margin:0;color:var(--muted);font-size:13.5px;line-height:1.55}
+@media (max-width:860px){.hosting{grid-template-columns:1fr}}
+
+@media (max-width:860px){
+  .cover{grid-template-columns:1fr;padding:20px}
+  .cast{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .comic{grid-template-columns:1fr}
+  .bubble,.wide .bubble{max-width:31%;font-size:11px;padding:4px 8px;border-radius:12px}
+}
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs id="gdefs"></defs></svg>
+
+<div class="wrap">
+  <header class="cover">
+    <div>
+      <div class="eyebrow">Volume 1 · A travel manga</div>
+      <h1>Passport for Two</h1>
+      <div class="jp">ふたりのパスポート</div>
+      <p>Two sprites, drawn from one sunny Seattle selfie, set off around the world. Every stop comes with a new traditional outfit, a new view, and the same two people holding hands in the middle of it.</p>
+      <div class="stamps" id="stamps"></div>
+    </div>
+    <div class="art" id="coverArt"></div>
+  </header>
+
+  <section class="sec">
+    <div class="sec-head">
+      <div>
+        <div class="eyebrow">Character sheet</div>
+        <h2>Four versions of us</h2>
+        <p>The base sprites, in four looks. She has the bangs, the big smile and the red backpack. He has the messy hair, the beard and the green tee.</p>
+      </div>
+    </div>
+    <div class="cast" id="cast"></div>
+  </section>
+
+  <section class="sec">
+    <div class="sec-head">
+      <div>
+        <div class="eyebrow">The comic</div>
+        <h2>Around the world in traditional dress</h2>
+        <p>Tap any panel to make them jump.</p>
+      </div>
+      <button class="btn" id="shuffle" type="button">Shuffle poses</button>
+    </div>
+    <div class="comic" id="comic"></div>
+  </section>
+
+  <section class="sec">
+    <div class="sec-head"><div><div class="eyebrow">Behind the panels</div><h2>How this page is hosted</h2></div></div>
+    <div class="hosting" style="margin-top:0">
+      <div><h3>It is a real website</h3><p>Claude wrote this page as one HTML file and published it to Anthropic's servers. Opening the link downloads the page from there, the same way any website works. That's why it opens on anyone's phone.</p></div>
+      <div><h3>Someone pays for serving it</h3><p>Storing the file and sending it to every visitor costs storage and bandwidth. Anthropic covers that as part of the Claude plan, the way Google Drive hosts your files.</p></div>
+      <div><h3>Moving it to our own address</h3><p>The page lives on claude.ai, not on a domain we own. To give it our own address, upload the same HTML file to GitHub Pages or Netlify (free for a page like this) and add a domain for about $10–15 a year.</p></div>
+    </div>
+  </section>
+
+  <footer>Passport for Two · drawn in code, one panel per stamp</footer>
+</div>
+
+<script>
+const INK='#2a1d26';
+const SKIN={her:'#fde3cf',him:'#c68a60'};
+const SKIN_SH={her:'#f1c3a6',him:'#a46c46'};
+const HAIR={her:'#3b2219',him:'#1e1613'};
+const HAIR_HI={her:'#86553a',him:'#54443d'};
+const GOLD='#e2b34a', SILVER='#d9dde3', WHITE='#fbf7ef';
+const S=`stroke="${INK}" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"`;
+const S1=`stroke="${INK}" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"`;
+
+/* ---------- global patterns & gradients ---------- */
+function flower(x,y,r,c,center){let s='';for(let i=0;i<5;i++){const a=i*72*Math.PI/180;s+=`<circle cx="${(x+Math.cos(a)*r).toFixed(1)}" cy="${(y+Math.sin(a)*r).toFixed(1)}" r="${r*.8}" fill="${c}"/>`;}return s+`<circle cx="${x}" cy="${y}" r="${r*.55}" fill="${center}"/>`;}
+document.getElementById('gdefs').innerHTML=`
+<radialGradient id="iris-her" cx=".5" cy=".7" r=".7"><stop offset="0" stop-color="#a9673e"/><stop offset=".6" stop-color="#5a2f1c"/><stop offset="1" stop-color="#25120c"/></radialGradient>
+<radialGradient id="iris-him" cx=".5" cy=".7" r=".7"><stop offset="0" stop-color="#8a5a32"/><stop offset=".6" stop-color="#43291a"/><stop offset="1" stop-color="#1a0f0a"/></radialGradient>
+<radialGradient id="glow" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#fff3c2"/><stop offset=".5" stop-color="#ffb347"/><stop offset="1" stop-color="#ff7a2f" stop-opacity="0"/></radialGradient>
+<pattern id="p-sakura" width="24" height="24" patternUnits="userSpaceOnUse">${flower(6,6,2.6,'#fff','#f6c445')}${flower(18,17,2.2,'#ffd1dc','#e0607e')}</pattern>
+<pattern id="p-seigaiha" width="20" height="10" patternUnits="userSpaceOnUse"><g fill="none" stroke="#fff" stroke-width="1.1" opacity=".45"><path d="M0 10A10 10 0 0 1 20 10"/><path d="M4 10A6 6 0 0 1 16 10"/><path d="M8 10A2 2 0 0 1 12 10"/><path d="M-10 5A10 10 0 0 1 10 5"/><path d="M10 5A10 10 0 0 1 30 5"/></g></pattern>
+<pattern id="p-stripesV" width="8" height="8" patternUnits="userSpaceOnUse"><rect width="2.5" height="8" fill="#fff" opacity=".35"/></pattern>
+<pattern id="p-stripesH" width="8" height="8" patternUnits="userSpaceOnUse"><rect width="8" height="2.5" fill="#fff" opacity=".4"/></pattern>
+<pattern id="p-breton" width="10" height="9" patternUnits="userSpaceOnUse"><rect width="10" height="3.6" fill="#24345e"/></pattern>
+<pattern id="p-bretonR" width="10" height="9" patternUnits="userSpaceOnUse"><rect width="10" height="3.6" fill="#c62828"/></pattern>
+<pattern id="p-plaid" width="16" height="16" patternUnits="userSpaceOnUse"><rect width="16" height="5" fill="#1a1520" opacity=".35"/><rect width="5" height="16" fill="#1a1520" opacity=".35"/><rect y="10" width="16" height="1" fill="#fff" opacity=".4"/><rect x="10" width="1" height="16" fill="#fff" opacity=".4"/></pattern>
+<pattern id="p-hibiscus" width="30" height="30" patternUnits="userSpaceOnUse">${flower(8,8,4,'#fff','#ffd54a')}${flower(23,22,3,'#ffe08a','#e2563a')}</pattern>
+<pattern id="p-flowersR" width="14" height="14" patternUnits="userSpaceOnUse">${flower(4,4,1.6,'#ffd54a','#c62828')}${flower(11,10,1.6,'#fff','#2e7d32')}</pattern>
+<pattern id="p-flowersG" width="18" height="18" patternUnits="userSpaceOnUse">${flower(5,5,1.8,GOLD,'#fff3c2')}${flower(14,13,1.4,'#f5d58a','#fff')}</pattern>
+<pattern id="p-sequin" width="8" height="8" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1.2" fill="${GOLD}"/><circle cx="6" cy="6" r=".9" fill="#fff3c2"/></pattern>
+<pattern id="p-zig" width="12" height="10" patternUnits="userSpaceOnUse"><path d="M0 7L3 3L6 7L9 3L12 7" fill="none" stroke="${GOLD}" stroke-width="1.4"/></pattern>
+<pattern id="p-rainbow" width="20" height="20" patternUnits="userSpaceOnUse"><rect width="4" height="20" fill="#e53935"/><rect x="4" width="4" height="20" fill="#fdd835"/><rect x="8" width="4" height="20" fill="#43a047"/><rect x="12" width="4" height="20" fill="#1e88e5"/><rect x="16" width="4" height="20" fill="#fff"/></pattern>
+<pattern id="p-dots" width="10" height="10" patternUnits="userSpaceOnUse"><circle cx="3" cy="3" r="1.4" fill="#fff" opacity=".8"/></pattern>
+<pattern id="p-tone" width="6" height="6" patternUnits="userSpaceOnUse"><circle cx="3" cy="3" r="1.1" fill="${INK}"/></pattern>
+<pattern id="p-batik" width="16" height="16" patternUnits="userSpaceOnUse"><circle cx="8" cy="8" r="5" fill="none" stroke="#2a160c" stroke-width="1.4"/><circle cx="8" cy="8" r="1.6" fill="#f2d48a"/><path d="M0 0L4 4M16 0L12 4M0 16L4 12M16 16L12 12" stroke="#f2d48a" stroke-width="1.2"/></pattern>
+<pattern id="p-ndebele" width="24" height="24" patternUnits="userSpaceOnUse"><rect width="12" height="12" fill="#1e88e5"/><rect x="12" y="12" width="12" height="12" fill="#fdd835"/><rect x="3" y="15" width="6" height="6" fill="#e53935"/><rect x="15" y="3" width="6" height="6" fill="#43a047"/><path d="M0 12H24M12 0V24" stroke="#1a1a1a" stroke-width="1.6"/></pattern>
+<pattern id="p-polka" width="14" height="14" patternUnits="userSpaceOnUse"><circle cx="4" cy="4" r="2.6" fill="#fff"/><circle cx="11" cy="11" r="2.6" fill="#fff"/></pattern>
+<pattern id="p-knit" width="10" height="14" patternUnits="userSpaceOnUse"><path d="M2 0Q8 7 2 14M8 0Q2 7 8 14" fill="none" stroke="#b5a37f" stroke-width="1.3"/></pattern>
+<pattern id="p-cross" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M2 2L7 7M7 2L2 7" stroke="#c62828" stroke-width="1.6"/></pattern>`;
+const pat=(d,p)=>p?`<path d="${d}" fill="url(#p-${p})"/>`:'';
+
+/* ---------- sprite ---------- */
+const POSES={
+  idle:{L:[31,160],R:[89,160]}, wave:{L:[31,160],R:[104,70]}, peace:{L:[31,160],R:[86,86]},
+  cheer:{L:[14,72],R:[106,72]}, holdR:{L:[31,160],R:[124,148]}, holdL:{L:[-4,148],R:[89,160]},
+  hip:{L:[42,146],R:[78,146]}
+};
+const qpt=(a,c,b,t)=>{const u=1-t;return[u*u*a[0]+2*u*t*c[0]+t*t*b[0],u*u*a[1]+2*u*t*c[1]+t*t*b[1]]};
+const lerp=(a,b,t)=>[a[0]+(b[0]-a[0])*t,a[1]+(b[1]-a[1])*t];
+const P=p=>p.map(n=>n.toFixed(1)).join(' ');
+
+function arm(side,pose,f,who){
+  const s=side==='L'?[41,111]:[79,111], h=POSES[pose][side], dir=side==='L'?-1:1;
+  const m=lerp(s,h,.5); let c;
+  if(pose==='hip') c=[m[0]+dir*24,m[1]];
+  else if(h[1]<s[1]) c=[m[0]+dir*14,m[1]+16];
+  else c=[m[0]+dir*8,m[1]];
+  const sl=f.sleeve||'long', sc=f.sleeveC||f.topC, sk=SKIN[who];
+  const w=sl==='wide'?17:12, d=`M${P(s)} Q${P(c)} ${P(h)}`;
+  let o=`<path d="${d}" fill="none" stroke="${INK}" stroke-width="${w+4.4}" stroke-linecap="round"/>`;
+  if(sl==='short'||sl==='none'){
+    o+=`<path d="${d}" fill="none" stroke="${sk}" stroke-width="${w}" stroke-linecap="round"/>`;
+    if(sl==='short'){const t=.42,c2=lerp(s,c,t),e=qpt(s,c,h,t);o+=`<path d="M${P(s)} Q${P(c2)} ${P(e)}" fill="none" stroke="${INK}" stroke-width="${w+5}" stroke-linecap="butt"/><path d="M${P(s)} Q${P(c2)} ${P(e)}" fill="none" stroke="${sc}" stroke-width="${w+1}" stroke-linecap="butt"/>`;}
+  } else {
+    o+=`<path d="${d}" fill="none" stroke="${sc}" stroke-width="${w}" stroke-linecap="round"/>`;
+    if(f.sleeveStripe) o+=`<path d="${d}" fill="none" stroke="#fff" stroke-width="2" stroke-dasharray="0" transform="translate(${dir*-3} 0)" opacity=".9"/>`;
+    if(f.cuff){const e=qpt(s,c,h,.86);o+=`<circle cx="${e[0].toFixed(1)}" cy="${e[1].toFixed(1)}" r="${w/2}" fill="${f.cuff}" ${S1}/>`;}
+  }
+  if(sl==='wide'){const p=qpt(s,c,h,.6);o+=`<path d="M${p[0]-11} ${p[1]-6} Q${p[0]-14} ${p[1]+26} ${p[0]} ${p[1]+28} Q${p[0]+14} ${p[1]+26} ${p[0]+11} ${p[1]-6}Z" fill="${sc}" ${S}/>`+(f.pat?`<path d="M${p[0]-11} ${p[1]-6} Q${p[0]-14} ${p[1]+26} ${p[0]} ${p[1]+28} Q${p[0]+14} ${p[1]+26} ${p[0]+11} ${p[1]-6}Z" fill="url(#p-${f.pat})"/>`:'');}
+  o+=`<circle cx="${h[0]}" cy="${h[1]}" r="6.6" fill="${sk}" ${S}/>`;
+  if(pose==='peace'&&side==='R') o+=`<path d="M${h[0]-2} ${h[1]-4} L${h[0]-6} ${h[1]-16} M${h[0]+2} ${h[1]-4} L${h[0]+5} ${h[1]-16}" stroke="${INK}" stroke-width="6.4" stroke-linecap="round"/><path d="M${h[0]-2} ${h[1]-4} L${h[0]-6} ${h[1]-16} M${h[0]+2} ${h[1]-4} L${h[0]+5} ${h[1]-16}" stroke="${sk}" stroke-width="3.6" stroke-linecap="round"/>`;
+  return o;
+}
+
+const BOT={robe:'M38 146 L28 220 Q60 228 92 220 L82 146 Z',skirt:'M38 146 L24 198 Q60 206 96 198 L82 146 Z',longskirt:'M38 146 L22 218 Q60 226 98 218 L82 146 Z',
+  chima:'M40 112 L18 220 Q60 230 102 220 L80 112 Z',pollera:'M38 146 L16 202 Q60 212 104 202 L82 146 Z',kilt:'M38 146 L34 192 Q60 196 86 192 L82 146 Z',
+  pants:'M38 146 L82 146 L80 218 L63 218 L60 174 L57 218 L40 218 Z',widepants:'M38 146 L82 146 L94 218 L63 218 L60 176 L57 218 L26 218 Z',
+  shorts:'M38 146 L82 146 L85 186 L63 186 L60 170 L57 186 L35 186 Z',breeches:'M38 146 L82 146 L82 196 L63 196 L60 172 L57 196 L38 196 Z'};
+const HEM={robe:'M28 220 Q60 228 92 220',skirt:'M24 198 Q60 206 96 198',longskirt:'M22 218 Q60 226 98 218',chima:'M18 220 Q60 230 102 220',pollera:'M16 202 Q60 212 104 202',kilt:'M34 192 Q60 196 86 192'};
+const TOR={base:'M40 104 Q60 98 80 104 L86 156 Q60 162 34 156 Z',jeogori:'M40 104 Q60 98 80 104 L84 128 Q60 134 36 128 Z',longcoat:'M40 104 Q60 98 80 104 L88 198 Q60 204 32 198 Z',tunic:'M40 104 Q60 98 80 104 L84 150 L87 214 L33 214 L36 150 Z',poncho:'M44 101 Q60 97 76 101 L110 166 Q60 180 10 166 Z'};
+
+function bottom(f){
+  const b=f.bottom,d=BOT[b];let o=`<path d="${d}" fill="${f.botC}" ${S}/>`+pat(d,f.botPat);
+  if(b==='pollera') o+=`<path d="M30 166 Q60 174 90 166 M23 184 Q60 194 97 184" fill="none" stroke="${f.trim||GOLD}" stroke-width="3"/><path d="M30 166 Q60 174 90 166 M23 184 Q60 194 97 184" fill="none" ${S1}/>`;
+  if(b==='kilt') o+=`<path d="M46 160 L44 192 M54 160 L53 194 M62 160 L62 195 M70 160 L71 194 M78 160 L80 192" ${S1} opacity=".6"/>`;
+  if(f.trim&&HEM[b]) o+=`<path d="${HEM[b]}" fill="none" stroke="${f.trim}" stroke-width="5"/><path d="${HEM[b]}" fill="none" ${S1}/>`;
+  if(f.apron){const a='M46 150 L42 204 Q60 208 78 204 L74 150 Z';o+=`<path d="${a}" fill="${f.apron}" ${S}/>`+pat(a,f.apronPat);}
+  if(f.sporran) o+=`<path d="M53 164 L67 164 L68 182 Q60 188 52 182Z" fill="#7a5230" ${S}/><circle cx="57" cy="176" r="1.8" fill="#fff"/><circle cx="63" cy="176" r="1.8" fill="#fff"/>`;
+  if(f.sideButtons) o+=[0,1,2,3,4].map(i=>`<circle cx="${41+i*.2}" cy="${160+i*12}" r="1.6" fill="${SILVER}"/><circle cx="${79-i*.2}" cy="${160+i*12}" r="1.6" fill="${SILVER}"/>`).join('');
+  return o;
+}
+
+function torso(f){
+  const st=f.top,shape=TOR[st]||TOR.base;let o=`<path d="${shape}" fill="${f.topC}" ${S}/>`+pat(shape,f.pat);
+  const col=f.collar||WHITE;
+  if(st==='kimono') o+=`<path d="M72 102 L56 128" stroke="${INK}" stroke-width="8.4" stroke-linecap="round"/><path d="M72 102 L56 128" stroke="${col}" stroke-width="5" stroke-linecap="round"/><path d="M48 102 L65 140" stroke="${INK}" stroke-width="8.4" stroke-linecap="round"/><path d="M48 102 L65 140" stroke="${col}" stroke-width="5" stroke-linecap="round"/>`;
+  if(st==='mandarin'||st==='tunic'||st==='longcoat'||st==='zip') o+=`<rect x="51" y="97" width="18" height="9" rx="3" fill="${f.topC}" ${S}/>`;
+  if(st==='mandarin'||st==='tunic') o+=`<path d="M60 106 Q70 108 74 120" fill="none" stroke="${f.trim||GOLD}" stroke-width="2.4"/><circle cx="66" cy="108" r="1.6" fill="${f.trim||GOLD}"/><circle cx="72" cy="114" r="1.6" fill="${f.trim||GOLD}"/>`;
+  if(st==='longcoat') o+=[0,1,2,3,4,5].map(i=>`<circle cx="60" cy="${112+i*14}" r="2" fill="${GOLD}" ${S1}/>`).join('');
+  if(st==='zip') o+=`<path d="M60 106 L60 156" ${S1}/><rect x="58" y="112" width="4" height="6" rx="1" fill="${SILVER}"/>`;
+  if(st==='shirt') o+=`<path d="M50 101 L60 111 L54 99Z M70 101 L60 111 L66 99Z" fill="${col}" ${S1}/>`+[0,1,2].map(i=>`<circle cx="60" cy="${118+i*12}" r="1.5" fill="${INK}"/>`).join('');
+  if(st==='tee'||st==='dress'||st==='blouse'||st==='jeogori'||st==='vest'||st==='jacket') o+=`<path d="M51 102 Q60 110 69 102" fill="none" ${S}/>`;
+  if(st==='blouse') o+=`<path d="M46 106 Q60 124 74 106" fill="none" stroke="#c62828" stroke-width="3" stroke-dasharray="2 3"/><path d="M48 110 Q60 126 72 110" fill="none" stroke="#2e7d32" stroke-width="2" stroke-dasharray="3 3"/>`;
+  if(st==='vest') o+=`<path d="M40 104 L52 106 L56 156 Q44 158 34 156 Z" fill="${f.vest}" ${S}/><path d="M80 104 L68 106 L64 156 Q76 158 86 156 Z" fill="${f.vest}" ${S}/>`+pat('M40 104 L52 106 L56 156 Q44 158 34 156 Z M80 104 L68 106 L64 156 Q76 158 86 156 Z',f.vestPat)+(f.vestButtons?[0,1,2,3].map(i=>`<circle cx="54" cy="${116+i*10}" r="1.8" fill="${f.vestButtons}"/><circle cx="66" cy="${116+i*10}" r="1.8" fill="${f.vestButtons}"/>`).join(''):'');
+  if(st==='jacket') o+=`<path d="M40 104 L54 106 L52 136 Q42 138 36 134 Z" fill="${f.vest}" ${S}/><path d="M80 104 L66 106 L68 136 Q78 138 84 134 Z" fill="${f.vest}" ${S}/>`+pat('M40 104 L54 106 L52 136 Q42 138 36 134 Z M80 104 L66 106 L68 136 Q78 138 84 134 Z',f.vestPat)+[0,1,2].map(i=>`<circle cx="51" cy="${114+i*8}" r="1.7" fill="${SILVER}"/><circle cx="69" cy="${114+i*8}" r="1.7" fill="${SILVER}"/>`).join('');
+  if(st==='sari') o+=`<path d="M80 104 L88 114 L52 158 L38 156 Z" fill="${f.drape}" ${S}/>`+pat('M80 104 L88 114 L52 158 L38 156 Z',f.drapePat||'sequin')+`<path d="M88 114 L52 158" stroke="${GOLD}" stroke-width="4"/>`;
+  if(st==='poncho') o+=`<path d="M60 112 L60 174" stroke="${GOLD}" stroke-width="3" opacity=".8"/><path d="M14 168 Q60 182 106 168" fill="none" stroke="#fdd835" stroke-width="3"/>`;
+  if(f.sash){const y=f.high?110:(f.obi?136:142),h=f.obi?18:10;o+=`<rect x="${f.high?38:35}" y="${y}" width="${f.high?44:50}" height="${h}" rx="2" fill="${f.sash}" ${S}/>`+(f.obi?`<path d="M36 ${y+9} L84 ${y+9}" stroke="#c62828" stroke-width="2.4"/><rect x="54" y="${y+4}" width="12" height="10" rx="2" fill="#c62828" ${S1}/>`:'');}
+  return o;
+}
+
+function extras(f,who){
+  let o='';const e=f.extra||[];
+  if(e.includes('shawl')){const d='M36 106 Q60 140 84 106 L90 132 Q60 158 30 132 Z';o+=`<path d="${d}" fill="${f.shawl}" ${S}/>`+pat(d,f.shawlPat)+`<path d="M32 134 Q60 160 88 134" fill="none" stroke="${GOLD}" stroke-width="2" stroke-dasharray="1 3"/>`;}
+  if(e.includes('beads')) o+=`<path d="M44 104 Q60 130 76 104" fill="none" stroke="#fdd835" stroke-width="5"/><path d="M42 106 Q60 136 78 106" fill="none" stroke="#1e88e5" stroke-width="3.4" stroke-dasharray="3 2"/><path d="M41 109 Q60 142 79 109" fill="none" stroke="#fff" stroke-width="3" stroke-dasharray="2 2"/>`;
+  if(e.includes('goreum')) o+=`<path d="M58 118 L52 146 L58 146 L62 120 L70 150 L76 148 L64 118Z" fill="${f.goreum||'#c62828'}" ${S1}/><circle cx="61" cy="118" r="3.4" fill="${f.goreum||'#c62828'}" ${S1}/>`;
+  if(e.includes('necklace')) o+=`<path d="M48 104 Q60 122 72 104" fill="none" stroke="${GOLD}" stroke-width="2.4"/><path d="M51 104 Q60 116 69 104" fill="none" stroke="#fff3c2" stroke-width="1.4"/><circle cx="60" cy="116" r="3.4" fill="#c2185b" stroke="${GOLD}" stroke-width="1.6"/>`;
+  if(e.includes('maasai')) o+=[['#e53935',0],['#fff',5],['#1e88e5',10],['#fdd835',15],['#43a047',20]].map(([c,k])=>`<path d="M${44-k*.4} ${104} Q60 ${118+k*1.3} ${76+k*.4} 104" fill="none" stroke="${c}" stroke-width="4.6"/>`).join('')+`<path d="M42 104 Q60 146 78 104" fill="none" ${S1} stroke-dasharray="2 3"/>`;
+  if(e.includes('rings')) o+=[0,1,2,3].map(i=>`<ellipse cx="60" cy="${100+i*3.4}" rx="${9+i*.6}" ry="2.2" fill="none" stroke="${GOLD}" stroke-width="2.6"/>`).join('');
+  if(e.includes('suspenders')) o+=`<path d="M46 104 L50 150 M74 104 L70 150" stroke="#5a3a20" stroke-width="5"/><rect x="47" y="118" width="26" height="8" rx="2" fill="#5a3a20" ${S1}/>`+flower(60,122,1.6,'#fff','#fdd835');
+  if(e.includes('brooch')) o+=`<circle cx="60" cy="112" r="6" fill="${SILVER}" ${S1}/><circle cx="60" cy="112" r="2.4" fill="${GOLD}"/>`+[-4,0,4].map(x=>`<path d="M${60+x} 117 L${60+x*1.3} 126" stroke="${SILVER}" stroke-width="1.2"/><circle cx="${60+x*1.3}" cy="127" r="1.6" fill="${SILVER}"/>`).join('');
+  if(e.includes('vysh')) o+=`<rect x="55" y="104" width="10" height="38" fill="url(#p-cross)" ${S1}/><path d="M50 103 Q60 108 70 103" fill="none" stroke="#c62828" stroke-width="3" stroke-dasharray="2 2"/>`;
+  if(e.includes('pearls')) o+=`<path d="M46 104 Q60 130 74 104" fill="none" stroke="${f.pearlC||'#fff'}" stroke-width="3.4" stroke-dasharray=".1 4.4" stroke-linecap="round"/>`;
+  if(e.includes('bowtie')) o+=`<path d="M60 105 L50 100 L50 110Z M60 105 L70 100 L70 110Z" fill="${f.bowtie||'#c62828'}" ${S1}/><circle cx="60" cy="105" r="2.6" fill="${f.bowtie||'#c62828'}" ${S1}/>`;
+  if(e.includes('scarf')){const d='M46 100 Q60 110 74 100 L76 108 Q60 120 44 108Z M66 110 L72 132 L62 130 L60 112Z';o+=`<path d="${d}" fill="${f.scarf}" ${S}/>`+pat(d,f.scarfPat);}
+  if(e.includes('lei')){for(let i=0;i<11;i++){const t=i/10,p=qpt([43,104],[60,140],[77,104],t);o+=`<circle cx="${p[0].toFixed(1)}" cy="${p[1].toFixed(1)}" r="4.2" fill="${['#ff6f91','#ffd54a','#fff','#ff8a65'][i%4]}" ${S1}/>`;}}
+  if(e.includes('emblem')) o+=`<path d="M60 116 L63 122 L68 120 L66 128 L72 130 L66 134 L67 140 L60 138 L53 140 L54 134 L48 130 L54 128 L52 120 L57 122Z" fill="#b3262f" ${S1}/>`+`<path d="M60 116 L63 122 L68 120 L66 128 L72 130 L66 134 L67 140 L60 138 L53 140 L54 134 L48 130 L54 128 L52 120 L57 122Z" fill="url(#p-plaid)"/><path d="M45 146 Q60 140 76 146" fill="none" stroke="#f2c14e" stroke-width="3.4" stroke-linecap="round"/>`;
+  return o;
+}
+
+function face(who){
+  const big=who==='her',cy=big?72:73,rx=big?8:6.8,ry=big?9.6:7.6;let o='';
+  [[45,-1],[75,1]].forEach(([cx,side])=>{
+    o+=`<ellipse cx="${cx}" cy="${cy}" rx="${rx}" ry="${ry}" fill="#fff"/><ellipse cx="${cx}" cy="${cy+1}" rx="${rx*.8}" ry="${ry*.88}" fill="url(#iris-${who})"/><ellipse cx="${cx}" cy="${cy+2}" rx="${rx*.38}" ry="${ry*.42}" fill="#140c10"/><circle cx="${cx+rx*.3}" cy="${cy-ry*.35}" r="${rx*.32}" fill="#fff"/><circle cx="${cx-rx*.35}" cy="${cy+ry*.45}" r="${rx*.15}" fill="#fff" opacity=".85"/>`;
+    o+=`<path d="M${cx-rx-1.5} ${cy-ry*.15} Q${cx} ${cy-ry-4.5} ${cx+rx+1.5} ${cy-ry*.25}" fill="none" stroke="${INK}" stroke-width="${big?3.4:2.8}" stroke-linecap="round"/>`;
+    if(big) o+=`<path d="M${cx+side*(rx+1)} ${cy-ry*.3} l${side*3.6} -3.2" stroke="${INK}" stroke-width="2.4" stroke-linecap="round"/>`;
+    o+=`<path d="M${cx-rx*.6} ${cy+ry+.6} Q${cx} ${cy+ry+2.4} ${cx+rx*.6} ${cy+ry+.6}" fill="none" stroke="${INK}" stroke-width="1.2" opacity=".35"/>`;
+  });
+  o+=`<path d="M61 82 L59 85" stroke="${SKIN_SH[who]}" stroke-width="2" stroke-linecap="round"/>`;
+  o+=`<ellipse cx="36" cy="85" rx="6.5" ry="3.2" fill="#ff8a9a" opacity="${big?.5:.3}"/><ellipse cx="84" cy="85" rx="6.5" ry="3.2" fill="#ff8a9a" opacity="${big?.5:.3}"/>`;
+  if(big){
+    o+=`<path d="M49 89 Q60 101 71 89 Q60 92 49 89Z" fill="#b8434f" ${S1}/><path d="M50.5 89.6 Q60 92.6 69.5 89.6 L68.4 92 Q60 94.4 51.6 92Z" fill="#fff"/>`;
+    o+=[[33,82],[36,80],[38,83],[82,82],[85,80],[87,83]].map(([x,y])=>`<circle cx="${x}" cy="${y}" r=".7" fill="#b06a4a" opacity=".55"/>`).join('');
+  } else {
+    o+=`<path d="M26 66 Q26 98 44 104 Q60 110 76 104 Q94 98 94 66 Q92 92 78 96 Q60 101 42 96 Q28 92 26 66Z" fill="${HAIR.him}" opacity=".35"/>`;
+    o+=`<path d="M49 87 Q60 82 71 87 Q60 85.5 49 87Z" fill="${HAIR.him}" opacity=".7"/><path d="M57 99 Q60 101 63 99" stroke="${HAIR.him}" stroke-width="2.4" opacity=".5" fill="none"/>`;
+    o+=`<path d="M51 89.5 Q60 97 69 89.5 Q60 91.5 51 89.5Z" fill="#fff" ${S1}/>`;
+    o+=`<path d="M37 61 Q45 57 53 61" stroke="${HAIR.him}" stroke-width="3.4" stroke-linecap="round" fill="none"/><path d="M67 61 Q75 57 83 61" stroke="${HAIR.him}" stroke-width="3.4" stroke-linecap="round" fill="none"/>`;
+  }
+  return o;
+}
+
+function hat(f,who,layer){
+  const h=f.hat,c=f.hatC||'#1a1a1a';if(!h)return'';
+  if(layer==='back'){
+    if(h==='kokoshnik') return `<path d="M16 58 Q12 4 60 -12 Q108 4 104 58 Q84 36 60 36 Q36 36 16 58Z" fill="${c}" ${S}/><path d="M24 50 Q22 12 60 0 Q98 12 96 50" fill="none" stroke="${GOLD}" stroke-width="3"/>`+[...Array(9)].map((_,i)=>{const p=qpt([22,50],[60,-26],[98,50],i/8);return`<circle cx="${p[0].toFixed(1)}" cy="${p[1].toFixed(1)}" r="2.6" fill="#fff" ${S1}/>`}).join('')+flower(60,8,4,GOLD,'#c62828');
+    if(h==='bonnet') return `<path d="M18 64 Q10 8 60 6 Q110 8 102 64 Q98 30 60 26 Q22 30 18 64Z" fill="${c}" ${S}/>`;
+    if(h==='hood') return `<path d="M12 86 Q6 14 60 -14 Q114 14 108 86 Q60 70 12 86Z" fill="${c}" ${S}/>`+pat('M12 86 Q6 14 60 -14 Q114 14 108 86 Q60 70 12 86Z',f.pat);
+    if(h==='peineta'&&!f.noComb) return `<path d="M28 30 Q30 -34 60 -42 Q90 -34 92 30Z" fill="#3a2214" ${S}/>`+[0,1,2].map(i=>`<ellipse cx="${46+i*14}" cy="-8" rx="4" ry="9" fill="#7a4a2a"/>`).join('');
+    if(h==='ghutra') return `<path d="M16 50 Q8 110 4 146 L40 124 L80 124 L116 146 Q112 110 104 50Z" fill="#fff" ${S}/><path d="M24 70 Q20 110 16 136 M96 70 Q100 110 104 136" ${S1} opacity=".3"/>`;
+    if(h==='vinok') return [['#e53935',26],['#fdd835',34],['#1e88e5',86],['#43a047',94]].map(([col,x])=>`<path d="M${x} 40 Q${x+(x<60?-6:6)} 100 ${x+(x<60?-4:4)} 160" stroke="${INK}" stroke-width="7.4" fill="none"/><path d="M${x} 40 Q${x+(x<60?-6:6)} 100 ${x+(x<60?-4:4)} 160" stroke="${col}" stroke-width="4.6" fill="none"/>`).join('');
+    return '';
+  }
+  switch(h){
+    case 'beret': return `<g transform="rotate(-12 58 18)"><ellipse cx="58" cy="20" rx="38" ry="12" fill="${c}" ${S}/><rect x="56" y="4" width="4" height="7" rx="2" fill="${c}" ${S1}/></g>`;
+    case 'cowboy': return `<path d="M36 28 Q32 -2 50 0 Q60 7 70 0 Q88 -2 84 28Z" fill="${c}" ${S}/><path d="M37 20 L83 20" stroke="#3a2214" stroke-width="5"/><path d="M2 26 Q20 40 60 34 Q100 40 118 26 Q100 22 84 26 Q60 32 36 26 Q20 22 2 26Z" fill="${c}" ${S}/>`;
+    case 'sombrero': return `<ellipse cx="60" cy="28" rx="64" ry="13" fill="${c}" ${S}/><ellipse cx="60" cy="28" rx="58" ry="10" fill="none" stroke="${SILVER}" stroke-width="2" stroke-dasharray="3 3"/><path d="M40 28 Q40 -12 60 -16 Q80 -12 80 28Z" fill="${c}" ${S}/><path d="M42 16 Q60 10 78 16" fill="none" stroke="${SILVER}" stroke-width="3"/><path d="M44 6 L50 12 L56 6 L62 12 L68 6 L74 12" fill="none" stroke="${SILVER}" stroke-width="1.6"/>`;
+    case 'turban': return `<path d="M18 52 Q12 6 60 0 Q108 6 102 52 Q84 34 60 36 Q36 34 18 52Z" fill="${c}" ${S}/><path d="M22 40 Q60 6 98 30 M20 30 Q60 18 96 44 M30 16 Q60 30 92 18" fill="none" stroke="#fff" stroke-width="1.6" opacity=".45"/><circle cx="60" cy="24" r="5" fill="#2e7d32" stroke="${GOLD}" stroke-width="2.4"/><path d="M60 20 Q70 -6 82 -14 Q74 4 64 20Z" fill="#fff8e1" ${S1}/>`+[0,1,2,3,4].map(i=>`<circle cx="${48+i*6}" cy="${33+Math.abs(i-2)*1.2}" r="1.5" fill="#fff"/>`).join('');
+    case 'boater': return `<ellipse cx="60" cy="24" rx="46" ry="8" fill="#f2d48a" ${S}/><rect x="34" y="2" width="52" height="22" rx="4" fill="#f2d48a" ${S}/><rect x="34" y="13" width="52" height="7" fill="${c}"/><path d="M84 16 L94 30 L88 31Z" fill="${c}" ${S1}/>`;
+    case 'bonnet': return `<path d="M18 64 Q14 36 26 28 Q60 16 94 28 Q106 36 102 64" fill="none" stroke="#fff" stroke-width="5" stroke-dasharray="2 2.4"/><path d="M28 24 Q60 10 92 24" fill="none" stroke="${GOLD}" stroke-width="3"/>`+flower(60,16,3,GOLD,'#fff');
+    case 'nonla': return `<path d="M60 -30 L-6 34 Q60 46 126 34Z" fill="#ecd59b" ${S}/><path d="M60 -30 L20 38 M60 -30 L40 41 M60 -30 L60 42 M60 -30 L80 41 M60 -30 L100 38" ${S1} opacity=".35"/><path d="M6 32 Q60 42 114 32" fill="none" stroke="#c62828" stroke-width="2"/>`;
+    case 'gat': return `<rect x="42" y="-12" width="36" height="32" rx="4" fill="#1a1a1a" fill-opacity=".85" ${S}/><ellipse cx="60" cy="22" rx="56" ry="9" fill="#1a1a1a" fill-opacity=".6" ${S}/><path d="M24 26 Q26 72 46 104" fill="none" stroke="#c9a46a" stroke-width="2.4" stroke-dasharray=".1 4" stroke-linecap="round"/>`;
+    case 'kanzashi': return flower(90,26,5,'#ff8fb1','#f6c445')+flower(80,18,3.6,'#fff','#e0607e')+`<path d="M92 34 L96 54 M88 34 L88 50" stroke="${GOLD}" stroke-width="1.2"/><circle cx="96" cy="55" r="2" fill="#e0607e"/><circle cx="88" cy="51" r="2" fill="${GOLD}"/>`;
+    case 'amis': return `<path d="M20 44 Q60 22 100 44 L100 34 Q60 12 20 34Z" fill="#fdd835" ${S}/><path d="M22 38 Q60 18 98 38" fill="none" stroke="#1e88e5" stroke-width="3" stroke-dasharray="3 2"/>`+[...Array(7)].map((_,i)=>{const p=qpt([24,30],[60,0],[96,30],i/6);return`<path d="M${p[0].toFixed(1)} ${p[1].toFixed(1)} L${(p[0]+(i-3)*3).toFixed(1)} ${(p[1]-18).toFixed(1)}" stroke="${INK}" stroke-width="5" stroke-linecap="round"/><path d="M${p[0].toFixed(1)} ${p[1].toFixed(1)} L${(p[0]+(i-3)*3).toFixed(1)} ${(p[1]-18).toFixed(1)}" stroke="${['#fff','#e53935','#fdd835','#43a047'][i%4]}" stroke-width="2.6" stroke-linecap="round"/><circle cx="${(p[0]+(i-3)*3).toFixed(1)}" cy="${(p[1]-20).toFixed(1)}" r="4" fill="${['#e53935','#fff','#43a047','#fdd835'][i%4]}" ${S1}/>`}).join('');
+    case 'hibiscus': return `<g transform="translate(92 38)">${[0,72,144,216,288].map(a=>`<ellipse cx="0" cy="-7" rx="5.5" ry="8" fill="#ff5277" ${S1} transform="rotate(${a})"/>`).join('')}<circle r="3" fill="#ffd54a"/><path d="M0 0 L8 -10" stroke="#ffd54a" stroke-width="1.6"/></g>`;
+    case 'crown': return [...Array(9)].map((_,i)=>{const p=qpt([20,40],[60,-4],[100,40],i/8);return flower(+p[0].toFixed(1),+p[1].toFixed(1),3.4,f.crownC?f.crownC[i%f.crownC.length]:['#e53935','#fdd835','#ff7043','#ec407a'][i%4],'#fff8e1')}).join('')+`<path d="M18 44 Q12 50 16 58 M102 44 Q108 50 104 58" stroke="#43a047" stroke-width="3" fill="none"/>`;
+    case 'tam': return `<ellipse cx="60" cy="18" rx="42" ry="13" fill="${c}" ${S}/><rect x="22" y="22" width="76" height="7" rx="3" fill="#b3262f" ${S1}/><rect x="22" y="22" width="76" height="7" rx="3" fill="url(#p-plaid)"/><circle cx="60" cy="4" r="6" fill="#b3262f" ${S1}/>`;
+    case 'welsh': return `<path d="M24 36 Q60 42 96 36 L92 46 Q60 50 28 46Z" fill="#fff" ${S1}/><path d="M24 40 L30 46 L36 40 L42 46 L48 40 L54 46 L60 40 L66 46 L72 40 L78 46 L84 40 L90 46 L96 40" fill="none" ${S1} opacity=".5"/><ellipse cx="60" cy="30" rx="52" ry="9" fill="#1a1a1a" ${S}/><path d="M36 28 L42 -40 L78 -40 L84 28Z" fill="#1a1a1a" ${S}/><path d="M38 12 L82 12" stroke="#555" stroke-width="4"/>`;
+    case 'alsace': return `<path d="M60 22 Q22 -14 4 10 Q8 40 60 22Z" fill="#141414" ${S}/><path d="M60 22 Q98 -14 116 10 Q112 40 60 22Z" fill="#141414" ${S}/><path d="M18 8 Q34 4 50 16 M102 8 Q86 4 70 16" stroke="#555" stroke-width="2" fill="none"/><ellipse cx="60" cy="22" rx="9" ry="8" fill="#141414" ${S}/>`;
+    case 'buns': return `<circle cx="30" cy="22" r="14" fill="${HAIR.her}" ${S}/><circle cx="90" cy="22" r="14" fill="${HAIR.her}" ${S}/><path d="M18 16 L44 26 M102 16 L76 26" stroke="${GOLD}" stroke-width="2.4"/>`+flower(30,22,2.6,'#ff8fb1','#f6c445')+flower(90,22,2.6,'#ff8fb1','#f6c445')+`<path d="M98 30 L100 52" stroke="${GOLD}" stroke-width="1.2"/><circle cx="100" cy="53" r="2" fill="#c62828"/>`;
+    case 'topknot': return `<circle cx="60" cy="4" r="11" fill="${HAIR.him}" ${S}/><path d="M50 2 L70 2 L68 -6 L52 -6Z" fill="${GOLD}" ${S1}/><path d="M38 -2 L82 4" stroke="${GOLD}" stroke-width="2.4"/>`;
+    case 'khan': return `<path d="M18 48 Q14 6 60 4 Q106 6 102 48 Q60 32 18 48Z" fill="${c}" ${S}/><path d="M20 38 Q60 22 100 38 M22 28 Q60 12 98 28 M30 18 Q60 6 90 18" fill="none" stroke="#fff" stroke-width="1.2" opacity=".35"/>`;
+    case 'toque': return `<path d="M22 44 Q18 4 60 2 Q90 2 98 20 Q112 32 112 50 L104 48 Q100 34 96 32 L98 44Z" fill="${c}" ${S}/><rect x="20" y="36" width="80" height="10" rx="4" fill="#fff" ${S1}/><circle cx="110" cy="52" r="5" fill="#fff" ${S1}/>`;
+    case 'flatcap': return `<path d="M20 40 Q20 6 60 6 Q98 8 104 30 L114 38 Q74 44 20 40Z" fill="${c}" ${S}/><path d="M28 30 Q60 22 102 32" fill="none" ${S1} opacity=".4"/>`;
+    case 'ushanka': return `<rect x="14" y="36" width="16" height="40" rx="7" fill="#8a6447" ${S}/><rect x="90" y="36" width="16" height="40" rx="7" fill="#8a6447" ${S}/><path d="M18 46 Q14 -2 60 -4 Q106 -2 102 46 Q60 30 18 46Z" fill="${c}" ${S}/><path d="M20 44 Q60 26 100 44 L98 30 Q60 14 22 30Z" fill="#8a6447" ${S}/><path d="M24 20 L28 16 M40 10 L44 6 M76 8 L80 12 M92 16 L96 20" ${S1} opacity=".4"/>`;
+    case 'chullo': return `<path d="M24 46 L20 82 L30 50 M96 46 L100 82 L90 50" fill="${c}" ${S}/><path d="M20 82 L18 94 M100 82 L102 94" stroke="#fdd835" stroke-width="3" stroke-linecap="round"/><circle cx="18" cy="96" r="3.4" fill="#e53935" ${S1}/><circle cx="102" cy="96" r="3.4" fill="#e53935" ${S1}/><path d="M18 50 Q14 2 60 -2 Q106 2 102 50 Q60 34 18 50Z" fill="${c}" ${S}/><path d="M20 36 Q60 20 100 36" fill="none" stroke="#fdd835" stroke-width="5"/><path d="M22 30 Q60 14 98 30" fill="none" stroke="#1e88e5" stroke-width="3" stroke-dasharray="4 3"/><path d="M28 18 Q60 4 92 18" fill="none" stroke="#fff" stroke-width="3" stroke-dasharray="2 4"/><circle cx="60" cy="-4" r="5" fill="#fdd835" ${S1}/>`;
+    case 'montera': return `<ellipse cx="60" cy="14" rx="48" ry="11" fill="#1a1a1a" ${S}/><ellipse cx="60" cy="14" rx="40" ry="7" fill="none" stroke="#e53935" stroke-width="3"/><ellipse cx="60" cy="14" rx="30" ry="4.6" fill="none" stroke="#fdd835" stroke-width="2.4"/>`+[...Array(9)].map((_,i)=>`<path d="M${22+i*9.5} ${20+Math.sin(i/8*Math.PI)*4} l0 9" stroke="${['#e53935','#fdd835','#43a047','#1e88e5'][i%4]}" stroke-width="2"/>`).join('');
+    case 'carnival': return `<g transform="rotate(-14 86 22)"><path d="M70 18 Q86 8 102 18 Q104 30 94 30 Q86 26 78 30 Q68 30 70 18Z" fill="${GOLD}" ${S}/><ellipse cx="79" cy="21" rx="4" ry="2.6" fill="${INK}"/><ellipse cx="93" cy="21" rx="4" ry="2.6" fill="${INK}"/><path d="M98 14 Q104 -14 116 -20 Q110 0 102 16Z" fill="#6a1b4d" ${S1}/><path d="M94 12 Q94 -14 102 -24 Q102 -2 98 14Z" fill="#fff3c2" ${S1}/></g>`;
+    case 'beanie': return `<path d="M20 46 Q16 2 60 0 Q104 2 100 46Z" fill="${c}" ${S}/><rect x="18" y="34" width="84" height="13" rx="5" fill="${c}" ${S}/><path d="M26 36 L26 46 M36 36 L36 46 M46 36 L46 46 M56 36 L56 46 M66 36 L66 46 M76 36 L76 46 M86 36 L86 46 M96 36 L96 46" ${S1} opacity=".35"/><circle cx="60" cy="-2" r="8" fill="${f.pom||WHITE}" ${S}/>`;
+    case 'sunhat': return `<ellipse cx="60" cy="30" rx="60" ry="13" fill="#f2d48a" ${S}/><path d="M32 30 Q32 2 60 0 Q88 2 88 30Z" fill="#f2d48a" ${S}/><path d="M33 22 Q60 26 87 22" fill="none" stroke="${c}" stroke-width="6"/>`+flower(86,22,3.4,'#fff','#ffd54a');
+    case 'emma': return `<path d="M18 52 Q12 6 60 0 Q108 6 102 52 Q84 34 60 36 Q36 34 18 52Z" fill="${c}" ${S}/><path d="M22 40 Q60 6 98 30 M20 30 Q60 18 96 44 M30 16 Q60 30 92 18" fill="none" stroke="#b8b0a0" stroke-width="1.6"/>`;
+    case 'chada': return `<path d="M44 28 Q46 -8 60 -44 Q74 -8 76 28Z" fill="${GOLD}" ${S}/><path d="M48 14 L72 14 M50 0 L70 0 M53 -14 L67 -14 M56 -26 L64 -26" stroke="#a67c2e" stroke-width="2"/><path d="M22 44 Q60 22 98 44 L94 30 Q60 12 26 30Z" fill="${GOLD}" ${S}/><circle cx="60" cy="24" r="3.4" fill="#c62828" stroke="#fff3c2"/>`+[34,46,74,86].map(x=>`<circle cx="${x}" cy="${x<60?36-(x-30)*.5:36-(90-x)*.5}" r="2" fill="#2e7d32"/>`).join('');
+    case 'udeng': return `<path d="M20 46 Q16 10 60 8 Q104 10 100 46 Q60 30 20 46Z" fill="${c}" ${S}/>`+pat('M20 46 Q16 10 60 8 Q104 10 100 46 Q60 30 20 46Z','batik')+`<path d="M50 30 L60 -2 L70 30Z" fill="${c}" ${S}/>`+flower(60,10,2.4,'#fff','#fdd835');
+    case 'mongol': return `<path d="M30 30 Q40 -10 60 -22 Q80 -10 90 30Z" fill="${c}" ${S}/><path d="M60 -22 L60 -32" stroke="${GOLD}" stroke-width="3"/><circle cx="60" cy="-33" r="3.6" fill="${GOLD}" ${S1}/><path d="M60 -22 Q52 0 46 20 M60 -22 Q68 0 74 20" stroke="#c62828" stroke-width="2" fill="none"/><path d="M16 46 Q14 24 60 22 Q106 24 104 46 Q60 34 16 46Z" fill="#6b4a33" ${S}/><path d="M24 40 L26 32 M38 36 L40 28 M80 28 L82 36 M94 32 L96 40" ${S1} opacity=".4"/>`;
+    case 'coins': return `<path d="M20 50 Q22 26 60 22 Q98 26 100 50" fill="none" stroke="${c||GOLD}" stroke-width="4"/>`+[...Array(11)].map((_,i)=>{const p=qpt([22,52],[60,14],[98,52],i/10);return`<circle cx="${p[0].toFixed(1)}" cy="${(p[1]+5).toFixed(1)}" r="3" fill="${GOLD}" ${S1}/>`}).join('')+`<circle cx="60" cy="22" r="4" fill="#c62828" stroke="${GOLD}" stroke-width="2"/>`;
+    case 'fez': return `<g transform="rotate(6 60 10)"><path d="M38 28 L42 -8 L78 -8 L82 28Z" fill="${c}" ${S}/><ellipse cx="60" cy="-8" rx="18" ry="3.4" fill="${c}" ${S1}/><path d="M60 -8 Q80 -4 86 18" stroke="#1a1a1a" stroke-width="2" fill="none"/><path d="M84 16 L82 32 M86 16 L88 32" stroke="#1a1a1a" stroke-width="2.4"/></g>`;
+    case 'amalia': return `<g transform="rotate(-18 76 18)"><path d="M62 28 L64 6 L90 6 L92 28Z" fill="${c}" ${S}/><path d="M77 6 Q72 30 58 44" stroke="${GOLD}" stroke-width="2.4" fill="none"/><path d="M58 44 L54 64 M58 44 L60 64 M58 44 L64 62" stroke="${GOLD}" stroke-width="2"/></g>`;
+    case 'scarfhead': return `<path d="M14 72 Q8 6 60 4 Q112 6 106 72 Q100 36 60 28 Q20 36 14 72Z" fill="${c}" ${S}/>`+pat('M14 72 Q8 6 60 4 Q112 6 106 72 Q100 36 60 28 Q20 36 14 72Z',f.hatPat)+`<path d="M20 60 Q24 34 60 30 Q96 34 100 60" fill="none" stroke="${GOLD}" stroke-width="2.4"/>`;
+    case 'gele': return `<path d="M14 50 Q2 2 38 -16 Q58 -6 60 8 Q62 -10 84 -18 Q122 0 106 50 Q60 28 14 50Z" fill="${c}" ${S}/>`+pat('M14 50 Q2 2 38 -16 Q58 -6 60 8 Q62 -10 84 -18 Q122 0 106 50 Q60 28 14 50Z',f.hatPat)+`<path d="M26 30 Q34 4 40 -10 M60 8 Q56 28 46 40 M94 30 Q88 4 82 -12 M60 8 Q66 28 76 40" fill="none" ${S1} opacity=".5"/>`;
+    case 'fila': return `<path d="M24 34 Q20 4 60 2 Q98 2 106 20 Q112 32 96 34 Q60 26 24 34Z" fill="${c}" ${S}/>`+pat('M24 34 Q20 4 60 2 Q98 2 106 20 Q112 32 96 34 Q60 26 24 34Z','zig');
+    case 'peineta': return `<g transform="translate(92 34)">${[0,72,144,216,288].map(a=>`<ellipse cx="0" cy="-7" rx="6" ry="8.5" fill="#d50000" ${S1} transform="rotate(${a})"/>`).join('')}<circle r="3.4" fill="#ffd54a"/></g>`;
+    case 'cordobes': return `<ellipse cx="60" cy="26" rx="52" ry="9" fill="${c}" ${S}/><path d="M36 26 L38 2 L82 2 L84 26Z" fill="${c}" ${S}/><ellipse cx="60" cy="2" rx="22" ry="3.4" fill="${c}" ${S1}/><path d="M37 20 L83 20" stroke="#555" stroke-width="4"/>`;
+    case 'tyrol': return `<path d="M34 26 Q34 -2 60 -4 Q86 -2 86 26Z" fill="${c}" ${S}/><path d="M52 -2 Q60 6 68 -2" fill="none" ${S1}/><ellipse cx="60" cy="26" rx="46" ry="8" fill="${c}" ${S}/><path d="M35 20 L85 20" stroke="#fbf7ef" stroke-width="3" stroke-dasharray="3 2"/><path d="M84 18 Q96 -10 102 -18 Q98 -2 88 20Z" fill="#7a6a58" ${S1}/>`+flower(40,18,2,'#fff','#fdd835');
+    case 'volendam': return `<path d="M26 28 L-6 2 L2 40Z M94 28 L126 2 L118 40Z" fill="#fff" ${S}/><path d="M20 52 Q16 8 60 6 Q104 8 100 52 Q60 36 20 52Z" fill="#fff" ${S}/><path d="M26 42 Q60 24 94 42 M30 30 Q60 14 90 30" fill="none" ${S1} stroke-dasharray="1.5 2.5" opacity=".5"/>`;
+    case 'ghutra': return `<path d="M16 60 Q8 -6 60 -6 Q112 -6 104 60 Q98 30 60 26 Q22 30 16 60Z" fill="#fff" ${S}/><ellipse cx="60" cy="18" rx="42" ry="9" fill="none" stroke="#1a1a1a" stroke-width="4.4"/><ellipse cx="60" cy="13" rx="40" ry="8" fill="none" stroke="#1a1a1a" stroke-width="3"/>`;
+    case 'fedora': return `<path d="M36 26 Q34 -2 50 -2 Q60 6 70 -2 Q86 -2 84 26Z" fill="${c}" ${S}/><path d="M36 18 L84 18" stroke="${f.band||'#1a1a1a'}" stroke-width="5"/><path d="M6 26 Q30 36 60 32 Q90 36 114 24 Q100 22 84 26 Q60 30 36 26 Q20 22 6 26Z" fill="${c}" ${S}/>`;
+    case 'vinok': return [...Array(9)].map((_,i)=>{const p=qpt([20,40],[60,-4],[100,40],i/8);return flower(+p[0].toFixed(1),+p[1].toFixed(1),3.8,['#e53935','#fdd835','#1e88e5','#e53935','#fff'][i%5],'#1a1a1a')}).join('')+`<path d="M18 44 Q12 50 16 58 M102 44 Q108 50 104 58" stroke="#43a047" stroke-width="3" fill="none"/>`;
+    case 'beadband': return `<path d="M20 46 Q60 22 100 46" fill="none" stroke="#1a1a1a" stroke-width="10"/><path d="M20 46 Q60 22 100 46" fill="none" stroke="url(#p-ndebele)" stroke-width="8"/>`;
+    default: return '';
+  }
+}
+
+function person(who,f,pose){
+  const sk=SKIN[who],hr=HAIR[who];let o='';
+  const high=f.bottom==='chima';
+  o+=hat(f,who,'back');
+  if(who==='her') o+=`<path d="M22 56 Q10 96 14 140 Q26 150 38 140 Q48 150 60 142 Q72 150 82 140 Q94 150 106 140 Q110 96 98 56 Z" fill="${hr}" ${S}/>`;
+  if(f.backpack) o+=`<path d="M12 114 Q10 104 22 104 L40 108 L40 166 L18 166 Q10 166 10 156Z" fill="#b0272f" ${S}/><path d="M14 140 L38 140" ${S1}/>`;
+  o+=`<path d="M53 90 L53 106 Q60 110 67 106 L67 90Z" fill="${sk}" ${S}/><path d="M53 98 Q60 102 67 98" stroke="${SKIN_SH[who]}" stroke-width="3" fill="none"/>`;
+  const legC=f.legs||sk;
+  if(['skirt','kilt','shorts','breeches','pollera'].includes(f.bottom)) o+=`<rect x="45" y="176" width="12" height="44" rx="5" fill="${legC}" ${S}/><rect x="63" y="176" width="12" height="44" rx="5" fill="${legC}" ${S}/>`;
+  const sh=f.shoes||'#3a2a2a';
+  if(f.boots) o+=`<path d="M43 196 L57 196 L58 220 Q60 226 50 226 L42 226 Q38 222 43 218Z" fill="${f.boots}" ${S}/><path d="M63 196 L77 196 L78 218 Q82 222 78 226 L70 226 Q60 226 62 220Z" fill="${f.boots}" ${S}/>`;
+  else o+=`<ellipse cx="49" cy="223" rx="9" ry="5" fill="${sh}" ${S}/><ellipse cx="71" cy="223" rx="9" ry="5" fill="${sh}" ${S}/>`+(f.pompom?`<circle cx="42" cy="221" r="4.4" fill="#1a1a1a"/><circle cx="64" cy="221" r="4.4" fill="#1a1a1a"/>`:'');
+  const A=()=>arm('L',pose,f,who)+arm('R',pose,f,who);
+  if(f.top==='poncho') o+=A();
+  if(high){ if(f.top!=='jeogori') o+=torso({...f,sash:null}); o+=bottom(f); if(f.top==='jeogori') o+=torso(f); else if(f.sash) o+=torso({...f,topC:'none',pat:null,top:'none',high:true}).replace(/^<path[^>]*\/>/,''); }
+  else { o+=bottom(f); o+=torso(f); }
+  o+=extras(f,who);
+  if(f.top!=='poncho') o+=A();
+  if((f.extra||[]).includes('butterfly')) o+=[[36,-1],[84,1]].map(([x,d])=>`<path d="M${x-12*d} 112 Q${x-10*d} 88 ${x+6*d} 96 Q${x+12*d} 104 ${x+4*d} 112Z" fill="${f.sleeveC||f.topC}" ${S}/>`+pat(`M${x-12*d} 112 Q${x-10*d} 88 ${x+6*d} 96 Q${x+12*d} 104 ${x+4*d} 112Z`,f.pat)).join('');
+  if(who==='him') o+=`<ellipse cx="24" cy="72" rx="5" ry="8" fill="${sk}" ${S}/><ellipse cx="96" cy="72" rx="5" ry="8" fill="${sk}" ${S}/>`;
+  o+=`<path d="M24 58 Q22 92 44 102 Q60 110 76 102 Q98 92 96 58 Q96 22 60 22 Q24 22 24 58Z" fill="${sk}" ${S}/>`;
+  o+=face(who);
+  if(f.bindi) o+=`<circle cx="60" cy="60" r="2" fill="#c62828"/>`;
+  if(who==='her'){
+    o+=`<path d="M22 56 Q16 90 24 118 Q31 100 32 80 Q31 66 30 58Z" fill="${hr}" ${S}/><path d="M98 56 Q104 90 96 118 Q89 100 88 80 Q89 66 90 58Z" fill="${hr}" ${S}/>`;
+    o+=`<path d="M20 64 Q14 16 60 13 Q106 16 100 64 L94 50 L90 58 L84 44 L78 56 L70 42 L64 54 L58 40 L52 54 L44 42 L38 58 L32 46 L28 60 Z" fill="${hr}" ${S}/>`;
+    o+=`<path d="M34 30 Q60 18 86 30" stroke="${HAIR_HI.her}" stroke-width="4" fill="none" stroke-linecap="round" opacity=".85"/><path d="M40 24 Q48 21 54 21" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round" opacity=".5"/>`;
+  } else {
+    o+=`<path d="M24 58 L29 58 L31 82 L26 80Z M96 58 L91 58 L89 82 L94 80Z" fill="${hr}"/>`;
+    o+=`<path d="M20 66 Q12 22 50 12 L46 3 L60 10 L66 -1 L72 12 L86 5 L84 16 Q108 26 100 66 L96 52 L90 58 L86 42 L78 52 L70 38 L64 50 L56 36 L48 50 L40 38 L34 54 L28 48 L26 62 Z" fill="${hr}" ${S}/>`;
+    o+=`<path d="M36 26 Q56 14 80 22" stroke="${HAIR_HI.him}" stroke-width="3.4" fill="none" stroke-linecap="round" opacity=".8"/>`;
+    if(f.shades) o+=`<path d="M34 66 L56 66 L54 78 Q44 82 36 76Z M64 66 L86 66 L84 76 Q76 82 66 78Z" fill="#1d2433" ${S1}/><path d="M56 68 L64 68" ${S}/><path d="M38 68 L44 68" stroke="#fff" stroke-width="1.6" opacity=".6"/>`;
+  }
+  if(f.tikka) o+=`<path d="M60 14 L60 46" stroke="${GOLD}" stroke-width="1.4"/><circle cx="60" cy="49" r="4" fill="#c2185b" stroke="${GOLD}" stroke-width="2"/>`;
+  o+=hat(f,who,'front');
+  return o;
+}
+
+/* positions: her on the left, him on the right, hands meet at x≈205 */
+function couple(u,c,poses,opt={}){
+  const [ph,pm]=poses;
+  let o=`<ellipse cx="148" cy="283" rx="46" ry="6" fill="${INK}" opacity=".18"/><ellipse cx="265" cy="283" rx="50" ry="6" fill="${INK}" opacity=".18"/>`;
+  o+=`<g transform="translate(98 86) scale(.86)"><g class="bob">${person('her',c.her,ph)}</g></g>`;
+  o+=`<g transform="translate(209 68) scale(.93)"><g class="bob b2">${person('him',c.him,pm)}</g></g>`;
+  if(ph==='holdR'&&pm==='holdL') o+=heart(204,170,1)+heart(222,148,.6);
+  return o;
+}
+const heart=(x,y,s)=>`<path transform="translate(${x} ${y}) scale(${s})" d="M0 6 C-10 -2 -6 -12 0 -6 C6 -12 10 -2 0 6Z" fill="#ff5c8a" ${S1}/>`;
+const spark=(x,y,s,c='#fff')=>`<path transform="translate(${x} ${y}) scale(${s})" d="M0 -10 Q1.6 -1.6 10 0 Q1.6 1.6 0 10 Q-1.6 1.6 -10 0 Q-1.6 -1.6 0 -10Z" fill="${c}"/>`;
+function rng(seed){let s=seed%2147483647||7;return()=>(s=s*16807%2147483647)/2147483647}
+
+/* ---------- backgrounds (400×300) ---------- */
+const sky=(u,a,b)=>`<defs><linearGradient id="sky${u}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${a}"/><stop offset="1" stop-color="${b}"/></linearGradient></defs><rect width="400" height="300" fill="url(#sky${u})"/>`;
+const cloud=(x,y,s,c='#fff',op=.9)=>`<g transform="translate(${x} ${y}) scale(${s})" fill="${c}" opacity="${op}"><ellipse cx="0" cy="0" rx="26" ry="10"/><ellipse cx="-12" cy="-6" rx="12" ry="10"/><ellipse cx="8" cy="-9" rx="14" ry="12"/></g>`;
+const ground=(c,y=246)=>`<path d="M0 ${y} Q200 ${y-14} 400 ${y} L400 300 L0 300Z" fill="${c}"/>`;
+const tone=(op=.12)=>`<path d="M0 270 L400 260 L400 300 L0 300Z" fill="url(#p-tone)" opacity="${op}"/>`;
+const sfx=(t,x=18,y=258,c='#b23a58')=>`<text x="${x}" y="${y}" transform="rotate(-10 ${x} ${y})" font-family="Dela Gothic One, sans-serif" font-size="22" fill="${c}" stroke="#fff" stroke-width="5" paint-order="stroke" letter-spacing="1">${t}</text>`;
+function onion(cx,by,w,h,c,st){return `<path d="M${cx-w/2} ${by} Q${cx-w/2-4} ${by-h*.5} ${cx} ${by-h} Q${cx+w/2+4} ${by-h*.5} ${cx+w/2} ${by}Z" fill="${c}" ${S1}/>`+(st?`<path d="M${cx-w/4} ${by} Q${cx-w/3} ${by-h*.5} ${cx} ${by-h} M${cx+w/4} ${by} Q${cx+w/3} ${by-h*.5} ${cx} ${by-h}" stroke="${st}" stroke-width="3" fill="none"/>`:'')+`<path d="M${cx} ${by-h} L${cx} ${by-h-12} M${cx-4} ${by-h-8} L${cx+4} ${by-h-8}" stroke="${GOLD}" stroke-width="2"/>`;}
+
+const BG={
+  seattle(u){let o=sky(u,'#7fbeec','#e3f2fb')+cloud(70,40,1.3)+cloud(300,26,1)+cloud(200,60,.8);
+    o+=`<rect y="192" width="400" height="60" fill="#3f86b8"/><path d="M210 192 Q250 170 300 176 Q330 170 360 192Z" fill="#a9bccb"/>`;
+    o+=`<g stroke="#fff" fill="none"><circle cx="78" cy="128" r="54" stroke-width="3.4"/><circle cx="78" cy="128" r="44" stroke-width="1.4"/>${[...Array(12)].map((_,i)=>{const a=i*Math.PI/6;return`<line x1="78" y1="128" x2="${(78+54*Math.cos(a)).toFixed(1)}" y2="${(128+54*Math.sin(a)).toFixed(1)}" stroke-width="1.2"/>`}).join('')}<path d="M78 128 L48 200 M78 128 L108 200" stroke-width="4"/></g>${[...Array(12)].map((_,i)=>{const a=i*Math.PI/6+.26;return`<rect x="${(72+54*Math.cos(a)).toFixed(1)}" y="${(124+54*Math.sin(a)).toFixed(1)}" width="12" height="9" rx="3" fill="#e6eef5" ${S1}/>`}).join('')}`;
+    o+=`<g fill="#55687a"><path d="M352 194 L357 96 L363 96 L368 194Z"/><ellipse cx="360" cy="92" rx="24" ry="5.5"/><path d="M344 92 Q360 78 376 92Z"/><rect x="359" y="58" width="2" height="24"/></g>`;
+    o+=`<rect y="236" width="400" height="64" fill="#c3c8cd"/><path d="M0 236 L400 236" stroke="#7d868f" stroke-width="4"/><path d="M0 216 L400 216" stroke="#8b949c" stroke-width="3"/>${[...Array(14)].map((_,i)=>`<rect x="${i*30}" y="216" width="3" height="20" fill="#8b949c"/>`).join('')}`;
+    return o+tone()+sfx('ワクワク');},
+  japan(u){const r=rng(11);let o=sky(u,'#ffc9d6','#fff4e8')+`<circle cx="320" cy="70" r="26" fill="#ffefe0"/>`;
+    o+=`<path d="M10 236 L150 104 L290 236Z" fill="#7d8fbd"/><path d="M150 104 L118 136 L130 132 L140 142 L150 130 L160 142 L170 132 L182 136Z" fill="#fff"/>`;
+    o+=`<path d="M0 214 Q100 200 200 214 Q300 228 400 210 L400 300 L0 300Z" fill="#9db37a"/>`;
+    o+=`<g><rect x="306" y="150" width="9" height="98" fill="#d33a2c"/><rect x="356" y="150" width="9" height="98" fill="#d33a2c"/><rect x="296" y="164" width="80" height="7" fill="#d33a2c"/><rect x="292" y="146" width="88" height="7" fill="#d33a2c"/><path d="M282 146 Q336 154 390 146 L392 136 Q336 146 280 136Z" fill="${INK}"/></g>`;
+    o+=`<path d="M0 40 Q40 50 70 34 Q90 26 110 30" stroke="#5a3a2e" stroke-width="6" fill="none"/>`+[[20,36],[46,46],[70,28],[96,26],[30,22],[58,16]].map(([x,y])=>`<circle cx="${x}" cy="${y}" r="15" fill="#ffb3c7" opacity=".95"/>`).join('');
+    for(let i=0;i<26;i++)o+=`<ellipse cx="${(r()*400).toFixed(0)}" cy="${(r()*240).toFixed(0)}" rx="3" ry="1.8" fill="#ff9fb8" transform="rotate(${(r()*180).toFixed(0)} ${(r()*400).toFixed(0)} 0)" opacity=".85"/>`;
+    return o+ground('#f1d7c2',252)+tone()+sfx('キラキラ');},
+  taiwan(u){const r=rng(5);let o=sky(u,'#251f4d','#e48a7c');
+    for(let i=0;i<30;i++)o+=`<circle cx="${(r()*400).toFixed(0)}" cy="${(r()*120).toFixed(0)}" r="${(r()*1.2+.3).toFixed(1)}" fill="#fff" opacity=".7"/>`;
+    o+=`<g fill="#4c5e6e" ${S1}>${[...Array(8)].map((_,i)=>{const y=226-i*20;return`<path d="M48 ${y} L92 ${y} L96 ${y-20} L44 ${y-20}Z"/>`}).join('')}<rect x="54" y="46" width="32" height="20"/><rect x="66" y="10" width="8" height="36"/><rect x="69" y="-10" width="2" height="22"/></g>`+[...Array(8)].map((_,i)=>`<path d="M50 ${222-i*20} L90 ${222-i*20}" stroke="#7fe0c0" stroke-width="1.4" opacity=".7"/>`).join('');
+    o+=`<path d="M0 230 L30 230 L30 200 L46 200 L46 230 L110 230 L110 210 L140 210 L140 230 L400 230 L400 300 L0 300Z" fill="#2c2440"/>`;
+    [[160,70,1],[250,40,.8],[330,90,1.1],[130,140,.7],[300,160,.6],[210,110,.6],[370,30,.5]].forEach(([x,y,s])=>{o+=`<circle cx="${x}" cy="${y}" r="${26*s}" fill="url(#glow)" opacity=".7"/><rect x="${x-8*s}" y="${y-11*s}" width="${16*s}" height="${22*s}" rx="${5*s}" fill="#ffcf6b" stroke="#c9692c" stroke-width="1.2"/>`;});
+    return o+ground('#3b3152',250)+tone(.15)+sfx('ねがいごと',14,258,'#ffcf6b');},
+  china(u){let o=sky(u,'#fde7bd','#f7c48e')+`<circle cx="330" cy="64" r="30" fill="#fff1d0"/>`;
+    o+=`<path d="M0 150 Q60 100 130 136 Q200 90 270 128 Q330 96 400 130 L400 300 L0 300Z" fill="#c6a083"/><path d="M0 190 Q80 140 160 176 Q240 130 320 168 Q360 150 400 160 L400 300 L0 300Z" fill="#a17c62"/>`;
+    const wall='M0 196 Q60 150 120 172 Q170 190 210 160 Q260 124 310 150 Q360 176 400 158';
+    o+=`<path d="${wall}" fill="none" stroke="#e1c39a" stroke-width="12"/><path d="${wall}" fill="none" stroke="#e1c39a" stroke-width="7" stroke-dasharray="5 4" transform="translate(0 -8)"/><path d="${wall}" fill="none" ${S1} transform="translate(0 6)" opacity=".4"/>`;
+    [[118,160],[214,146],[312,138]].forEach(([x,y])=>o+=`<rect x="${x-12}" y="${y-24}" width="24" height="26" fill="#d7b386" ${S1}/><path d="M${x-14} ${y-24} L${x+14} ${y-24}" stroke="${INK}" stroke-width="2" stroke-dasharray="3 3"/><rect x="${x-3}" y="${y-14}" width="6" height="9" rx="3" fill="${INK}" opacity=".7"/>`);
+    return o+ground('#8a6a4f',252)+tone()+sfx('哇!');},
+  korea(u){let o=sky(u,'#cde7f5','#f6f1e4')+cloud(320,40,1)+`<path d="M0 170 Q90 70 200 110 Q300 60 400 140 L400 300 L0 300Z" fill="#9cb68e"/>`;
+    o+=`<rect x="30" y="196" width="340" height="26" fill="#d9cbb5" ${S1}/><rect x="60" y="150" width="280" height="48" fill="#f3e6cf" ${S1}/>`+[...Array(8)].map((_,i)=>`<rect x="${66+i*38}" y="150" width="7" height="48" fill="#b3262f"/>`).join('');
+    o+=`<rect x="56" y="140" width="288" height="12" fill="#2e8b84"/><path d="M60 146 L340 146" stroke="#f3c64b" stroke-width="2" stroke-dasharray="6 4"/>`;
+    o+=`<path d="M8 146 Q30 142 44 132 L356 132 Q370 142 392 146 Q376 120 350 112 L50 112 Q24 120 8 146Z" fill="#3d4148" ${S1}/><path d="M100 112 L300 112 L290 96 Q200 92 110 96Z" fill="#2c3036" ${S1}/>`;
+    return o+ground('#e6dac6',254)+tone()+sfx('반짝반짝');},
+  vietnam(u){let o=sky(u,'#ffe0ae','#ffcfc0')+`<rect y="180" width="400" height="80" fill="#5fa6a0"/>`;
+    [['M10 182 Q8 108 34 96 Q58 94 62 130 Q66 182 66 182Z','#4f7a62'],['M60 182 Q70 120 96 116 Q118 120 120 182Z','#6b9a7c'],['M290 182 Q286 90 316 78 Q344 84 346 140 Q352 182 352 182Z','#4f7a62'],['M340 182 Q350 130 372 126 Q396 130 400 182Z','#6b9a7c'],['M180 182 Q190 150 206 148 Q222 152 226 182Z','#86ab90']].forEach(([d,c])=>o+=`<path d="${d}" fill="${c}"/>`);
+    o+=`<path d="M0 150 L400 150" stroke="#fff" stroke-width="18" opacity=".25"/>`;
+    o+=`<path d="M120 212 L188 212 L180 224 L128 224Z" fill="#6b3f2a" ${S1}/><path d="M150 210 L150 158 M168 210 L168 168" stroke="${INK}" stroke-width="2"/><path d="M150 160 Q138 186 150 206 L132 206 Q128 182 150 160Z M168 170 Q160 190 168 206 L154 206 Q154 188 168 170Z" fill="#d84a2b" ${S1}/>`;
+    return o+ground('#e9d3a8',254)+tone()+sfx('Đẹp quá!',14,258);},
+  india(u){let o=sky(u,'#ff9f5a','#ffe2b2')+`<circle cx="200" cy="120" r="70" fill="#ffd27f" opacity=".6"/>`;
+    o+=`<rect x="40" y="198" width="320" height="18" fill="#f3ece0" ${S1}/><rect x="130" y="136" width="140" height="64" fill="#f7f1e6" ${S1}/><path d="M180 200 L180 160 Q200 140 220 160 L220 200Z" fill="#e2d7c4" ${S1}/>`;
+    o+=`<path d="M160 138 Q156 96 200 80 Q244 96 240 138Z" fill="#fbf7ef" ${S1}/><path d="M200 80 L200 64" stroke="${GOLD}" stroke-width="2.4"/><circle cx="200" cy="62" r="2.6" fill="${GOLD}"/>`;
+    [[146,134],[254,134]].forEach(([x,y])=>o+=`<path d="M${x-12} ${y} Q${x-12} ${y-20} ${x} ${y-26} Q${x+12} ${y-20} ${x+12} ${y}Z" fill="#fbf7ef" ${S1}/>`);
+    [62,338].forEach(x=>o+=`<rect x="${x-5}" y="104" width="10" height="94" fill="#f7f1e6" ${S1}/><path d="M${x-8} 106 Q${x} 88 ${x+8} 106Z" fill="#fbf7ef" ${S1}/><path d="M${x-7} 140 L${x+7} 140 M${x-7} 170 L${x+7} 170" ${S1}/>`);
+    o+=ground('#e6c99a',246)+`<rect x="180" y="240" width="40" height="60" fill="#7fb7d6" opacity=".9"/>`;
+    return o+tone()+sfx('शानदार!',14,258);},
+  hawaii(u){let o=sky(u,'#ff8f6b','#ffe3a3')+`<circle cx="230" cy="168" r="40" fill="#fff0b3"/><rect y="176" width="400" height="70" fill="#2f8fb5"/>`;
+    o+=`<path d="M0 176 Q40 120 90 128 Q120 112 150 140 Q170 160 180 176Z" fill="#6c8f5a"/><path d="M60 132 Q90 122 120 128" stroke="#4e6d40" stroke-width="3" fill="none"/>`;
+    o+=`<path d="M200 190 L260 190 M180 206 L300 206 M220 220 L340 220" stroke="#fff" stroke-width="2" opacity=".55"/>`;
+    o+=`<path d="M368 262 Q356 180 334 112" stroke="#7a5230" stroke-width="9" fill="none" stroke-linecap="round"/>`+[[-60,30],[-20,40],[20,36],[60,26],[110,20]].map(([a,l])=>`<path d="M334 112 q${(Math.cos(a*Math.PI/180)*l).toFixed(0)} ${(Math.sin(a*Math.PI/180)*l*.6+10).toFixed(0)} ${(Math.cos(a*Math.PI/180)*l*1.6).toFixed(0)} ${(Math.sin(a*Math.PI/180)*l+24).toFixed(0)}" stroke="#2f7d4a" stroke-width="9" fill="none" stroke-linecap="round"/>`).join('')+[[-160,30],[-120,36]].map(([a,l])=>`<path d="M334 112 q${(Math.cos(a*Math.PI/180)*l).toFixed(0)} ${(Math.sin(a*Math.PI/180)*l*.6+10).toFixed(0)} ${(Math.cos(a*Math.PI/180)*l*1.6).toFixed(0)} ${(Math.sin(a*Math.PI/180)*l+28).toFixed(0)}" stroke="#2f7d4a" stroke-width="9" fill="none" stroke-linecap="round"/>`).join('');
+    return o+ground('#f4dca6',248)+tone()+sfx('Aloha!',14,262,'#e2563a');},
+  usa(u){let o=sky(u,'#8fcdf0','#f8e3c2')+`<circle cx="330" cy="54" r="22" fill="#fff4d0"/>`+cloud(90,40,.9);
+    o+=`<path d="M20 206 L36 116 L112 116 L126 206Z" fill="#c2603b"/><path d="M36 116 L112 116 L114 126 L36 126Z" fill="#a14b2c"/><path d="M270 206 L282 140 L300 140 L304 96 L324 96 L328 140 L350 140 L360 206Z" fill="#b8573a"/><path d="M160 206 L170 168 L196 168 L204 206Z" fill="#cf7149"/>`;
+    o+=ground('#e5a66b',240);
+    o+=`<g fill="#3f8f4a" ${S1}><rect x="352" y="196" width="12" height="56" rx="6"/><path d="M352 222 L342 222 Q336 222 336 214 L336 204" fill="none" stroke="#3f8f4a" stroke-width="9" stroke-linecap="round"/><path d="M364 214 L374 214 Q380 214 380 206 L380 194" fill="none" stroke="#3f8f4a" stroke-width="9" stroke-linecap="round"/></g>`;
+    return o+tone()+sfx('YEEHAW!',14,258,'#a14b2c');},
+  mexico(u){let o=sky(u,'#7fd0e8','#fdf0c8');
+    for(let i=0;i<7;i++){const w=260-i*32,y=214-i*18;o+=`<rect x="${200-w/2}" y="${y}" width="${w}" height="18" fill="${i%2?'#bea77d':'#b29a70'}" ${S1}/>`;}
+    o+=`<rect x="172" y="70" width="56" height="34" fill="#a68f66" ${S1}/><rect x="192" y="82" width="16" height="22" fill="${INK}" opacity=".6"/><path d="M186 232 L214 232 L208 104 L192 104Z" fill="#cdb98f" opacity=".9"/>`;
+    o+=`<path d="M0 14 Q100 34 200 18 Q300 34 400 14" stroke="${INK}" stroke-width="1.4" fill="none"/>`+[...Array(12)].map((_,i)=>{const x=10+i*33,y=20+Math.sin(i/11*Math.PI*2)*6;return`<path d="M${x} ${y} L${x+26} ${y} L${x+26} ${y+26} L${x+20} ${y+22} L${x+13} ${y+28} L${x+6} ${y+22} L${x} ${y+26}Z" fill="${['#e53935','#fdd835','#43a047','#ec407a','#1e88e5','#ff7043'][i%6]}" opacity=".9"/><circle cx="${x+13}" cy="${y+11}" r="4" fill="#fdf0c8" opacity=".9"/>`}).join('');
+    return o+ground('#e2c08a',250)+tone()+sfx('¡Olé!',14,262,'#e53935');},
+  uk(u){let o=sky(u,'#b6c6d6','#ecf0f3')+cloud(80,40,1.2,'#fff',.8)+cloud(230,30,1,'#fff',.7);
+    o+=`<path d="M0 206 L0 170 L20 170 L20 160 L40 160 L40 172 L120 172 L120 156 L132 156 L132 172 L200 172 L200 206Z" fill="#c9b386" opacity=".75"/>`;
+    o+=`<rect x="316" y="76" width="34" height="164" fill="#c9a76a" ${S1}/><rect x="312" y="80" width="42" height="40" fill="#d8b77b" ${S1}/><circle cx="333" cy="100" r="13" fill="#fbf7ef" ${S1}/><path d="M333 100 L333 92 M333 100 L339 103" stroke="${INK}" stroke-width="1.8"/><path d="M312 80 L333 34 L354 80Z" fill="#59606a" ${S1}/><path d="M333 34 L333 20" stroke="${GOLD}" stroke-width="2"/>`;
+    o+=`<rect x="26" y="168" width="34" height="76" rx="4" fill="#c62828" ${S1}/><path d="M26 172 Q43 160 60 172" fill="#c62828" ${S1}/><rect x="32" y="182" width="22" height="40" fill="#f6e7c1" opacity=".75"/><path d="M43 182 L43 222 M32 195 L54 195 M32 208 L54 208" stroke="#c62828" stroke-width="2"/>`;
+    return o+ground('#9a9590',246)+tone()+sfx('Cheers!',70,262,'#1e3a8a');},
+  france(u){let o=sky(u,'#b8d7f2','#fbe7ee')+cloud(110,44,1);
+    o+=`<path d="M0 214 L0 176 L30 166 L60 176 L60 160 L72 160 L72 176 L110 170 L140 180 L140 214Z" fill="#8b9bb0"/><path d="M140 214 L140 184 L170 174 L200 184 L200 214Z" fill="#9faec0"/>`;
+    o+=`<path d="M292 260 Q324 190 334 100 L340 40 L346 100 Q356 190 388 260 L370 260 Q356 214 340 208 Q324 214 310 260Z" fill="#6a5a4e" ${S1}/><path d="M318 200 L362 200 M328 150 L352 150 M334 100 L346 100" stroke="#6a5a4e" stroke-width="6"/><path d="M318 200 L362 200 M328 150 L352 150" ${S1}/><path d="M340 40 L340 24" stroke="${INK}" stroke-width="2"/>`;
+    o+=`<path d="M326 160 L354 196 M354 160 L326 196 M332 110 L348 146 M348 110 L332 146" stroke="#8a7a6e" stroke-width="1.2"/>`;
+    return o+ground('#d8cfc2',248)+tone()+sfx('Ooh là là!',14,262,'#1e3a8a');},
+  italy(u){let o=sky(u,'#ffcf9f','#ffeacc');
+    [[0,90,'#e9a66b'],[90,70,'#d78a5d'],[160,80,'#f1c18a'],[240,74,'#cf7a58'],[314,86,'#e8b47a']].forEach(([x,w,c],i)=>{const top=60+(i%2)*24;o+=`<rect x="${x}" y="${top}" width="${w}" height="${206-top}" fill="${c}" ${S1}/>`+[0,1,2].map(r=>[0,1].map(k=>`<path d="M${x+14+k*(w/2)} ${top+22+r*40} l0 18 l14 0 l0 -18 q-7 -10 -14 0Z" fill="#5b3a2a" opacity=".75"/>`).join('')).join('');});
+    o+=`<rect y="200" width="400" height="60" fill="#3f8ea0"/><path d="M20 230 Q90 248 160 226 L168 218 Q90 238 24 222Z" fill="${INK}"/><path d="M160 226 L172 206 L170 220Z" fill="${SILVER}" ${S1}/><path d="M60 216 L60 190" stroke="${INK}" stroke-width="2"/>`;
+    o+=`<path d="M200 214 L400 214" stroke="#fff" stroke-width="2" opacity=".5" stroke-dasharray="20 14"/>`;
+    return o+ground('#c9b59a',252)+tone()+sfx('Bellissimo!',14,262,'#6a1b4d');},
+  denmark(u){let o=sky(u,'#a5d3f0','#eaf5fb')+cloud(300,36,1);
+    const cs=['#e9b949','#d8573c','#3f7cac','#f0e2c0','#c94b4b','#76a36b','#e58a3a'];
+    cs.forEach((c,i)=>{const x=i*58-6,h=110+(i%3)*18,top=200-h;o+=`<path d="M${x} 200 L${x} ${top+16} L${x+12} ${top+16} L${x+12} ${top+6} L${x+22} ${top+6} L${x+22} ${top-4} L${x+36} ${top-4} L${x+36} ${top+6} L${x+46} ${top+6} L${x+46} ${top+16} L${x+58} ${top+16} L${x+58} 200Z" fill="${c}" ${S1}/>`+[0,1,2].map(r=>[0,1,2].map(k=>`<rect x="${x+8+k*16}" y="${top+26+r*28}" width="9" height="13" fill="#fff" opacity=".9" ${S1}/>`).join('')).join('');});
+    o+=`<rect y="200" width="400" height="60" fill="#3b6f94"/><path d="M40 200 L40 120 M300 200 L300 110 M40 130 L70 190 M300 120 L330 190" stroke="${INK}" stroke-width="2"/>`;
+    return o+ground('#b8b0a4',252)+tone()+sfx('Hygge',14,262,'#c94b4b');},
+  finland(u){const r=rng(3);let o=sky(u,'#0a1434','#1f4060');
+    for(let i=0;i<50;i++)o+=`<circle cx="${(r()*400).toFixed(0)}" cy="${(r()*160).toFixed(0)}" r="${(r()*1.3+.3).toFixed(1)}" fill="#fff" opacity="${(r()*.6+.3).toFixed(2)}"/>`;
+    o+=`<defs><linearGradient id="au${u}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6bffb8" stop-opacity="0"/><stop offset=".5" stop-color="#4dffa6" stop-opacity=".7"/><stop offset="1" stop-color="#2bd9c8" stop-opacity="0"/></linearGradient></defs>`;
+    o+=`<path d="M-20 120 Q80 20 180 80 Q280 140 420 40 L420 100 Q280 200 180 140 Q80 80 -20 180Z" fill="url(#au${u})"/><path d="M40 60 Q140 0 240 50 Q320 90 420 20 L420 50 Q320 120 240 80 Q140 30 40 90Z" fill="url(#au${u})" opacity=".6"/>`;
+    const tree=(x,s)=>`<g transform="translate(${x} 240) scale(${s})"><path d="M0 -90 L-22 -50 L-12 -50 L-30 -20 L-16 -20 L-34 10 L34 10 L16 -20 L30 -20 L12 -50 L22 -50Z" fill="#163a2c"/><path d="M0 -90 L-10 -72 L10 -72Z M-14 -48 L14 -48 L10 -42 L-10 -42Z" fill="#fff" opacity=".9"/><rect x="-4" y="10" width="8" height="10" fill="#3a2a20"/></g>`;
+    o+=tree(30,1)+tree(78,.8)+tree(345,1.1)+tree(385,.85);
+    return o+ground('#eef4fa',248)+tone(.08)+sfx('Wow!!',150,40,'#6bffb8');},
+  russia(u){const r=rng(9);let o=sky(u,'#c6dcf0','#f4f8fc');
+    o+=`<rect x="70" y="150" width="260" height="70" fill="#b3463a" ${S1}/>`+[...Array(9)].map((_,i)=>`<path d="M${82+i*28} 220 L${82+i*28} 186 Q${92+i*28} 172 ${102+i*28} 186 L${102+i*28} 220" fill="#f3e6cf" ${S1}/>`).join('');
+    o+=`<path d="M186 150 L190 70 L210 70 L214 150Z" fill="#c9553f" ${S1}/><path d="M184 76 L200 30 L216 76Z" fill="#3a8a5a" ${S1}/>`;
+    o+=onion(200,30,16,22,GOLD)+onion(120,150,40,46,'#2e7d6a','#fdd835')+onion(280,150,40,46,'#c62828','#fff')+onion(160,150,30,36,'#1e88e5','#fff')+onion(240,150,30,36,'#fdd835','#2e7d32')+onion(84,160,22,28,'#e85d4a','#fdd835')+onion(318,160,22,28,'#43a047','#fff');
+    for(let i=0;i<30;i++)o+=`<circle cx="${(r()*400).toFixed(0)}" cy="${(r()*260).toFixed(0)}" r="${(r()*1.6+.6).toFixed(1)}" fill="#fff"/>`;
+    return o+ground('#f1f5fa',246)+tone(.08)+sfx('Ура!',14,262,'#c62828');},
+  peru(u){let o=sky(u,'#a3d3f2','#eaf6ff')+cloud(80,50,1)+cloud(300,90,.8,'#fff',.7);
+    o+=`<path d="M0 180 L60 90 L120 150 L170 70 L230 160 L400 120 L400 300 L0 300Z" fill="#8aa3b8"/><path d="M200 200 Q236 64 270 50 Q290 66 304 120 Q318 170 340 200Z" fill="#4f7d4a" ${S1}/>`;
+    o+=`<path d="M0 214 Q120 170 220 196 Q300 214 400 196 L400 300 L0 300Z" fill="#7ea35a"/>`+[0,1,2,3].map(i=>`<path d="M${20+i*10} ${222-i*10} Q140 ${186-i*8} 220 ${204-i*6}" stroke="#5e8442" stroke-width="2" fill="none"/>`).join('');
+    o+=[[250,200],[268,194],[286,200],[304,206]].map(([x,y])=>`<rect x="${x}" y="${y}" width="16" height="12" fill="#a8a197" ${S1}/>`).join('');
+    o+=`<g transform="translate(40 206)"><ellipse cx="0" cy="0" rx="16" ry="10" fill="#fbf7ef" ${S1}/><rect x="10" y="-26" width="7" height="24" rx="3" fill="#fbf7ef" ${S1}/><ellipse cx="17" cy="-26" rx="7" ry="5" fill="#fbf7ef" ${S1}/><path d="M12 -30 L11 -38 L14 -31 M16 -31 L17 -38 L19 -31" fill="#fbf7ef" ${S1}/><circle cx="18" cy="-27" r="1" fill="${INK}"/><path d="M-10 8 L-10 24 M-4 8 L-4 24 M6 8 L6 24 M12 8 L12 24" stroke="${INK}" stroke-width="3"/><path d="M-6 -8 L8 -8" stroke="#e53935" stroke-width="4"/></g>`;
+    return o+ground('#9cb36f',252)+tone()+sfx('¡Qué lindo!',90,40,'#e53935');},
+  thailand(u){let o=sky(u,'#ffc98f','#fff1d6')+`<rect y="200" width="400" height="50" fill="#8fb8b8"/>`;
+    const prang=(cx,h,w)=>`<path d="M${cx-w} 202 L${cx-w*.8} ${202-h*.3} L${cx-w*.6} ${202-h*.55} L${cx-w*.4} ${202-h*.78} L${cx-w*.15} ${202-h*.95} L${cx} ${202-h} L${cx+w*.15} ${202-h*.95} L${cx+w*.4} ${202-h*.78} L${cx+w*.6} ${202-h*.55} L${cx+w*.8} ${202-h*.3} L${cx+w} 202Z" fill="#eadbb8" ${S1}/>`+[.3,.55,.78].map(t=>`<path d="M${cx-w*(1-t*.75)} ${202-h*t} L${cx+w*(1-t*.75)} ${202-h*t}" stroke="#c99a5a" stroke-width="2.4"/>`).join('')+`<path d="M${cx} ${202-h} L${cx} ${202-h-14}" stroke="${GOLD}" stroke-width="2"/>`;
+    o+=prang(60,110,26)+prang(340,110,26)+prang(200,190,44);
+    return o+ground('#e8cf9e',250)+tone()+sfx('สวยมาก!',14,262,'#7b1e3a');},
+  indonesia(u){let o=sky(u,'#9fd8ef','#fff1d4')+`<circle cx="200" cy="120" r="34" fill="#fff4cf"/><rect y="186" width="400" height="40" fill="#4fa3b8"/>`;
+    const half=(x,d)=>{let pts=[[x,240],[x,40]];[[0,40],[18,40],[18,70],[30,70],[30,100],[42,100],[42,130],[56,130],[56,240]].forEach(([dx,y])=>pts.push([x-d*dx,y]));return `<path d="M${pts.map(p=>p.join(' ')).join(' L')}Z" fill="#7a5a4a" ${S1}/>`+[70,100,130,170].map(y=>`<path d="M${x} ${y} L${x-d*50} ${y}" stroke="#5a3e32" stroke-width="2"/>`).join('');};
+    o+=half(170,1)+half(230,-1);
+    o+=`<path d="M380 250 Q372 180 356 140" stroke="#7a5230" stroke-width="7" fill="none"/><path d="M356 140 q-30 0 -44 20 M356 140 q30 -6 44 14 M356 140 q-14 -24 -36 -26 M356 140 q16 -22 36 -22" stroke="#2f7d4a" stroke-width="8" fill="none" stroke-linecap="round"/>`;
+    return o+ground('#9cc06a',248)+tone()+sfx('Indah!',14,262,'#7a4a2a');},
+  philippines(u){let o=sky(u,'#bfe3f5','#f4fbff')+cloud(320,40,1)+`<path d="M0 120 Q100 50 200 100 Q300 40 400 110 L400 300 L0 300Z" fill="#6f9a7a"/>`;
+    ['#7fb85a','#8fc464','#9fcf6e','#7fb85a','#8fc464','#a8d674','#94c868'].forEach((c,i)=>{const y=130+i*20;o+=`<path d="M0 ${y} Q100 ${y-26+(i%2)*10} 200 ${y-6} Q300 ${y+14} 400 ${y-12} L400 300 L0 300Z" fill="${c}" ${S1} stroke-opacity=".3"/>`;});
+    return o+ground('#a8d674',256)+tone()+sfx('Mabuhay!',14,262,'#c2185b');},
+  mongolia(u){let o=sky(u,'#78bff0','#e8f6ff')+cloud(80,40,1.2)+cloud(310,60,.9)+`<path d="M0 170 Q80 110 170 150 Q260 100 400 160 L400 300 L0 300Z" fill="#8aa3b8"/>`+ground('#9cc06a',190);
+    const ger=(x,y,s)=>`<g transform="translate(${x} ${y}) scale(${s})"><rect x="-30" y="-24" width="60" height="26" fill="#fbf7ef" ${S1}/><path d="M-30 -14 L30 -14" stroke="#c62828" stroke-width="3"/><path d="M-30 -10 L30 -10" stroke="#1e88e5" stroke-width="2" stroke-dasharray="3 3"/><path d="M-34 -24 Q0 -50 34 -24Z" fill="#f3ead7" ${S1}/><rect x="-6" y="-14" width="12" height="16" fill="#e0602c" ${S1}/></g>`;
+    o+=ger(60,226,1)+ger(350,214,.8)+ger(300,224,.6);
+    return o+tone()+sfx('Сайхан!',14,262,'#1e5aa8');},
+  turkey(u){let o=sky(u,'#ffc59a','#fff1dc');
+    [[60,'#e9a0b0','#c62828'],[160,'#7fb7e8','#fdd835'],[300,'#fdd835','#e53935'],[360,'#9fd48a','#1e88e5']].forEach(([x,c1,c2],i)=>{const y=50+(i%2)*40,r=18+i%2*6;o+=`<ellipse cx="${x}" cy="${y}" rx="${r}" ry="${r*1.15}" fill="${c1}" ${S1}/><path d="M${x-r*.5} ${y-r} Q${x-r*.6} ${y} ${x-r*.4} ${y+r} M${x+r*.5} ${y-r} Q${x+r*.6} ${y} ${x+r*.4} ${y+r}" stroke="${c2}" stroke-width="4" fill="none"/><path d="M${x-6} ${y+r*1.15} L${x-4} ${y+r*1.15+10} M${x+6} ${y+r*1.15} L${x+4} ${y+r*1.15+10}" stroke="${INK}"/><rect x="${x-5}" y="${y+r*1.15+10}" width="10" height="7" fill="#7a5230" ${S1}/>`;});
+    [[30,70],[90,100],[300,90],[360,64],[200,50]].forEach(([x,h])=>o+=`<path d="M${x-18} 230 Q${x-10} ${230-h} ${x} ${230-h} Q${x+10} ${230-h} ${x+18} 230Z" fill="#e3c6a0" ${S1}/><ellipse cx="${x}" cy="${230-h}" rx="11" ry="6" fill="#b98a5a" ${S1}/>`);
+    return o+ground('#d9b88e',248)+tone()+sfx('Harika!',14,262,'#c62828');},
+  egypt(u){let o=sky(u,'#ffc970','#fff1cc')+`<circle cx="320" cy="60" r="28" fill="#fff4cf"/>`;
+    [[110,130,90],[250,110,120],[350,60,170]].forEach(([x,w,top])=>o+=`<path d="M${x-w} 230 L${x} ${top} L${x+w} 230Z" fill="#d9a95c"/><path d="M${x} ${top} L${x+w} 230 L${x+w*.25} 230Z" fill="#b98a44"/>`);
+    return o+`<path d="M0 230 Q100 210 220 232 Q320 248 400 226 L400 300 L0 300Z" fill="#ecc882"/>`+tone()+sfx('جميل!',14,262,'#1e5aa8');},
+  morocco(u){let o=`<rect width="400" height="300" fill="#4f86c6"/><rect x="0" y="0" width="400" height="250" fill="#6ea4da"/>`;
+    o+=`<path d="M150 250 L150 120 Q200 60 250 120 L250 250Z" fill="#2f5f9e" ${S1}/><path d="M160 250 L160 124 Q200 76 240 124 L240 250Z" fill="#244c80"/><circle cx="230" cy="190" r="3" fill="${GOLD}"/>`;
+    o+=`<path d="M30 40 L30 60 M24 60 L36 60 L38 80 L22 80Z" stroke="${INK}" fill="${GOLD}" stroke-width="1.4"/>`;
+    [[60,220,'#e0602c'],[100,236,'#c9553f'],[300,222,'#e0602c'],[350,236,'#d9a95c']].forEach(([x,y,c])=>o+=`<path d="M${x-12} ${y} L${x+12} ${y} L${x+9} ${y+20} L${x-9} ${y+20}Z" fill="${c}" ${S1}/><circle cx="${x-6}" cy="${y-6}" r="8" fill="#43a047"/><circle cx="${x+6}" cy="${y-8}" r="8" fill="#5cb860"/>`+flower(x,y-12,2.4,'#ec407a','#fff'));
+    return o+`<rect y="250" width="400" height="50" fill="#9fc3e8"/>`+tone()+sfx('Zwin!',14,40,'#fff');},
+  kenya(u){let o=sky(u,'#ffaa60','#ffe6b8')+`<circle cx="90" cy="110" r="36" fill="#fff0c0"/>`;
+    o+=`<path d="M60 200 Q160 100 220 96 Q290 100 390 200Z" fill="#8a7a9a"/><path d="M190 104 Q220 90 250 104 L240 116 L228 108 L214 118 L204 108Z" fill="#fff"/>`+ground('#d9b25f',214);
+    o+=`<path d="M330 260 L334 170" stroke="#5a3a20" stroke-width="6"/><path d="M334 180 L310 160 M334 176 L356 156" stroke="#5a3a20" stroke-width="3"/><ellipse cx="334" cy="152" rx="56" ry="12" fill="#4f6d3a"/>`;
+    o+=`<g fill="#c98a3a" ${S1}><path d="M30 236 L34 196 L38 196 L42 236 M50 236 L52 200 L56 200 L58 236"/><ellipse cx="46" cy="196" rx="16" ry="9"/><path d="M56 194 L70 150 L76 152 L64 196Z"/><ellipse cx="76" cy="148" rx="8" ry="4.6"/></g>`;
+    return o+tone()+sfx('Jambo!',150,40,'#c62828');},
+  nigeria(u){let o=sky(u,'#9fd6ef','#fff1d0')+cloud(330,50,1);
+    o+=`<path d="M60 232 Q66 100 160 90 Q250 100 262 232Z" fill="#8a7a6a" ${S1}/><path d="M110 130 Q120 180 112 230 M150 100 Q160 170 150 230 M200 110 Q206 170 210 230" stroke="#6a5a4a" stroke-width="5" fill="none"/>`;
+    o+=`<path d="M350 250 Q344 190 334 150" stroke="#7a5230" stroke-width="6" fill="none"/><path d="M334 150 q-26 2 -38 18 M334 150 q26 -4 38 12 M334 150 q-12 -20 -30 -22 M334 150 q14 -20 32 -20" stroke="#2f7d4a" stroke-width="7" fill="none" stroke-linecap="round"/>`;
+    return o+ground('#c9a46a',246)+tone()+sfx('Ẹ kú àbọ̀!',14,262,'#2e7d32');},
+  southafrica(u){let o=sky(u,'#8fcdf0','#eaf7ff');
+    o+=`<path d="M30 200 L80 110 L300 106 L360 200Z" fill="#7a8a6a" ${S1}/><path d="M80 110 Q190 92 300 106 Q290 96 260 96 Q190 86 110 98 Q90 100 80 110Z" fill="#fff" opacity=".95"/><path d="M120 200 L140 130 M200 200 L210 120 M260 200 L270 124" stroke="#5f6e52" stroke-width="3"/>`;
+    o+=`<rect y="196" width="400" height="44" fill="#2f8fb5"/>`;
+    return o+ground('#e8d6a8',244)+tone()+sfx('Sawubona!',14,262,'#1e88e5');},
+  brazil(u){let o=sky(u,'#8fd3f0','#fff3d6')+`<rect y="186" width="400" height="60" fill="#2f9fb5"/>`;
+    o+=`<path d="M210 190 Q216 110 250 100 Q280 104 290 190Z" fill="#4f7d4a" ${S1}/><path d="M290 190 Q300 150 330 150 Q360 156 370 190Z" fill="#5f8d5a" ${S1}/><path d="M250 100 L330 150" stroke="${INK}" stroke-width="1.2"/>`;
+    o+=`<path d="M0 190 L0 120 Q40 70 70 60 Q100 80 120 190Z" fill="#3f6d3a" ${S1}/><path d="M70 60 L70 30 M58 38 L82 38" stroke="#eee" stroke-width="5" stroke-linecap="round"/>`;
+    return o+ground('#f4dca6',248)+tone()+sfx('Que lindo!',140,40,'#2e7d32');},
+  argentina(u){let o=sky(u,'#9fd3f0','#f0f8ff');
+    ['#e53935','#fdd835','#1e88e5','#43a047','#ff7043','#ab47bc','#26a69a'].forEach((c,i)=>{const x=i*58-6,top=80+(i%3)*22;o+=`<rect x="${x}" y="${top}" width="58" height="${236-top}" fill="${c}" ${S1}/>`+[...Array(6)].map((_,k)=>`<path d="M${x+5+k*9} ${top+2} L${x+5+k*9} 236" stroke="#000" stroke-width="1" opacity=".12"/>`).join('')+`<rect x="${x+14}" y="${top+20}" width="14" height="22" fill="#fbf7ef" ${S1}/><rect x="${x+32}" y="${top+20}" width="14" height="22" fill="#fbf7ef" ${S1}/><path d="M${x+8} ${top+46} L${x+50} ${top+46}" stroke="${INK}" stroke-width="2.4"/>`;});
+    o+=`<path d="M376 250 L376 130 M366 130 L386 130" stroke="#1a1a1a" stroke-width="4"/><path d="M368 112 L384 112 L388 130 L364 130Z" fill="#fff3c2" ${S1}/>`;
+    return o+ground('#9a8f86',246)+tone()+sfx('¡Che!',14,262,'#1e88e5');},
+  spain(u){let o=sky(u,'#ffd5a0','#fff4e6');
+    [[260,30,18],[290,10,20],[320,10,20],[350,30,18],[200,90,14],[380,80,14]].forEach(([x,top,w])=>o+=`<path d="M${x-w/2} 240 L${x-w/2+3} ${top+50} Q${x} ${top} ${x+w/2-3} ${top+50} L${x+w/2} 240Z" fill="#c9a983" ${S1}/>`+[0,1,2,3].map(k=>`<ellipse cx="${x}" cy="${top+70+k*30}" rx="3" ry="6" fill="#7a5a3a" opacity=".7"/>`).join('')+`<circle cx="${x}" cy="${top+6}" r="4" fill="#e53935" ${S1}/>`);
+    o+=`<rect x="240" y="150" width="130" height="90" fill="#bfa078" ${S1}/>`;
+    return o+ground('#e3c79a',248)+tone()+sfx('¡Olé!',14,262,'#c62828');},
+  germany(u){let o=sky(u,'#a8d6f2','#eef8ff');
+    o+=`<path d="M0 160 L60 80 L110 140 L170 60 L230 140 L300 70 L400 160 L400 300 L0 300Z" fill="#9fb4cc"/><path d="M170 60 L156 80 L170 76 L184 80Z M300 70 L286 90 L300 86 L314 90Z M60 80 L50 94 L60 92 L70 94Z" fill="#fff"/>`;
+    o+=`<path d="M0 200 Q120 150 260 180 Q340 196 400 186 L400 300 L0 300Z" fill="#6f9a5a"/>`;
+    o+=`<g ${S1}><rect x="280" y="110" width="70" height="60" fill="#f3ede4"/><rect x="290" y="90" width="18" height="80" fill="#f3ede4"/><rect x="330" y="76" width="16" height="94" fill="#f3ede4"/><path d="M288 90 L299 66 L310 90Z M328 76 L338 46 L348 76Z M278 110 L314 96 L352 110Z" fill="#3f6fa8"/></g>`+[[298,120],[338,100],[316,140]].map(([x,y])=>`<rect x="${x}" y="${y}" width="5" height="9" fill="${INK}" opacity=".5"/>`).join('');
+    return o+ground('#86b06a',250)+tone()+sfx('Prost!',14,262,'#2e6b3a');},
+  netherlands(u){let o=sky(u,'#a8d6f2','#f0f8ff')+cloud(90,40,1.1);
+    ['#e53935','#fdd835','#ec407a','#ff7043','#ab47bc'].forEach((c,i)=>o+=`<path d="M${-40+i*90} 300 L${150+i*22} 196 L${168+i*22} 196 L${30+i*90} 300Z" fill="${c}"/>`);
+    o+=`<path d="M0 196 L400 196" stroke="#6f9a5a" stroke-width="6"/><path d="M310 196 L318 110 L342 110 L350 196Z" fill="#6a4a3a" ${S1}/><path d="M314 110 Q330 92 346 110Z" fill="#3a2a20" ${S1}/>`;
+    o+=`<g transform="translate(330 112) rotate(20)" ${S1}>${[0,90,180,270].map(a=>`<rect x="-4" y="-66" width="8" height="64" fill="#f3ede4" transform="rotate(${a})"/><rect x="4" y="-62" width="12" height="54" fill="#f3ede4" opacity=".7" transform="rotate(${a})"/>`).join('')}<circle r="4" fill="${INK}"/></g>`;
+    return o+tone(.1)+sfx('Gezellig!',14,262,'#ff7043');},
+  greece(u){let o=sky(u,'#8fd0f5','#eef9ff')+`<rect y="150" width="400" height="100" fill="#1e78c2"/>`;
+    o+=`<path d="M200 300 L200 150 Q260 120 400 130 L400 300Z" fill="#e8e0d4"/>`;
+    [[220,170,40,30],[262,150,36,40],[300,160,44,34],[346,140,40,48],[240,210,50,30],[310,200,46,36],[370,190,30,40]].forEach(([x,y,w,h])=>o+=`<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="#fff" ${S1}/><rect x="${x+w/2-4}" y="${y+h-14}" width="8" height="14" fill="#1e5aa8"/>`);
+    o+=`<path d="M286 150 Q300 124 314 150Z M348 140 Q362 116 376 140Z" fill="#1e5aa8" ${S1}/>`;
+    return o+ground('#f3ece0',254)+tone()+sfx('Opa!',14,262,'#1e5aa8');},
+  ireland(u){let o=sky(u,'#a9cfe8','#eef6fb');
+    o+=['#e53935','#ff9800','#fdd835','#43a047','#1e88e5','#7e57c2'].map((c,i)=>`<path d="M40 210 A170 150 0 0 1 380 210" fill="none" stroke="${c}" stroke-width="5" transform="translate(0 ${i*5})" opacity=".55"/>`).join('');
+    o+=`<rect y="190" width="400" height="60" fill="#3f86a8"/><path d="M0 150 Q80 140 160 160 L180 250 L0 250Z" fill="#4f9a4a" ${S1}/><path d="M160 160 L180 250 L150 250Z" fill="#7a7a6a"/><path d="M400 140 Q330 150 300 170 L280 250 L400 250Z" fill="#5aa652" ${S1}/>`;
+    o+=`<g transform="translate(60 174)"><ellipse rx="14" ry="9" fill="#fff" ${S1}/><circle cx="14" cy="-4" r="5" fill="${INK}"/><path d="M-6 8 L-6 16 M6 8 L6 16" stroke="${INK}" stroke-width="2.4"/></g>`;
+    return o+ground('#6fb35a',250)+tone()+sfx('Sláinte!',14,262,'#2e7d32');},
+  norway(u){let o=sky(u,'#a8cfee','#eef7ff')+`<rect y="170" width="400" height="80" fill="#3a6f94"/>`;
+    o+=`<path d="M0 60 Q40 50 70 90 Q100 140 150 176 L0 176Z" fill="#3f6a4a" ${S1}/><path d="M400 40 Q350 60 320 110 Q290 160 250 176 L400 176Z" fill="#2f5a3e" ${S1}/><path d="M0 60 Q20 56 40 64 L30 70Z M400 40 Q380 44 362 54 L376 58Z" fill="#fff"/>`;
+    o+=`<rect x="30" y="196" width="50" height="34" fill="#b3262f" ${S1}/><path d="M24 198 L55 172 L86 198Z" fill="#6f9a4a" ${S1}/><rect x="48" y="210" width="12" height="20" fill="#fbf7ef" ${S1}/>`;
+    return o+ground('#7aa860',246)+tone()+sfx('Nydelig!',300,262,'#b3262f');},
+  ukraine(u){const r=rng(17);let o=sky(u,'#5fb0f0','#d8efff')+cloud(310,40,1);
+    o+=`<path d="M0 190 Q200 176 400 190 L400 300 L0 300Z" fill="#7aa83a"/><g transform="translate(70 150)"><rect x="-16" y="0" width="32" height="40" fill="#fff" ${S1}/>${onion(0,0,18,24,GOLD)}</g>`;
+    for(let i=0;i<46;i++){const x=r()*400,y=196+r()*100,s=4+((y-196)/100)*8;o+=`<circle cx="${x.toFixed(0)}" cy="${y.toFixed(0)}" r="${s.toFixed(1)}" fill="#fdd835"/><circle cx="${x.toFixed(0)}" cy="${y.toFixed(0)}" r="${(s*.45).toFixed(1)}" fill="#6b3f1a"/>`;}
+    return o+tone(.08)+sfx('Чудово!',14,40,'#1e5aa8');},
+  uae(u){let o=sky(u,'#ff9e7a','#ffe0b8')+`<circle cx="90" cy="160" r="40" fill="#fff0c8" opacity=".9"/>`;
+    o+=`<g fill="#6a5a7a">${[[20,120],[50,90],[250,110],[290,80],[330,130],[370,100]].map(([x,top])=>`<rect x="${x}" y="${top}" width="26" height="${230-top}"/>`).join('')}<path d="M176 230 L184 120 L190 70 L196 20 L200 -6 L204 20 L210 70 L216 120 L224 230Z"/></g>`;
+    o+=`<path d="M190 70 L210 70 M186 120 L214 120 M194 40 L206 40" stroke="#fff3c2" stroke-width="1.6" opacity=".6"/>`;
+    return o+`<path d="M0 236 Q100 214 220 238 Q320 252 400 230 L400 300 L0 300Z" fill="#e8c27a"/>`+tone()+sfx('Marhaba!',14,262,'#7b1e3a');},
+  finale(u){const r=rng(21);let o=sky(u,'#1a1840','#3b2a5c');
+    for(let i=0;i<70;i++)o+=`<circle cx="${(r()*400).toFixed(0)}" cy="${(r()*200).toFixed(0)}" r="${(r()*1.4+.3).toFixed(1)}" fill="#fff" opacity="${(r()*.7+.3).toFixed(2)}"/>`;
+    o+=`<circle cx="200" cy="420" r="230" fill="#2f6fb0" ${S}/><path d="M40 260 Q80 220 130 240 Q150 260 120 280 Q80 290 40 260Z M200 210 Q250 196 270 220 Q260 250 220 246 Q190 236 200 210Z M300 250 Q340 236 370 262 Q350 292 310 280Z" fill="#5fae6a"/>`;
+    o+=`<path d="M30 150 Q120 40 200 110 Q280 180 370 70" stroke="${GOLD}" stroke-width="2" stroke-dasharray="6 6" fill="none"/><g transform="translate(370 70) rotate(-35)"><path d="M-12 0 L12 0 M0 0 L-6 -10 M0 0 L-6 10 M-11 0 L-14 -5 M-11 0 L-14 5" stroke="#fff" stroke-width="3" stroke-linecap="round"/></g>`;
+    o+=spark(60,60,1.2,GOLD)+spark(330,140,.9,'#fff3c2')+spark(150,30,.7,'#fff');
+    return o+sfx('つづく…',14,60,GOLD);}
+};
+
+/* ---------- outfits ---------- */
+const LOOKS={
+  seattle:{her:{top:'zip',topC:'#cfe6f4',sleeveC:'#cfe6f4',sleeveStripe:true,bottom:'pants',botC:'#2f4a6e',shoes:'#f2f2f2',backpack:true},
+           him:{top:'tee',topC:'#1f3b33',sleeve:'short',bottom:'pants',botC:'#3a3f4a',shoes:'#2b2b2b',extra:['emblem']}},
+  blacktie:{her:{top:'dress',topC:'#c9a45a',pat:'sequin',sleeve:'none',bottom:'longskirt',botC:'#c9a45a',botPat:'sequin',trim:'#fff3c2',extra:['necklace']},
+            him:{top:'vest',topC:WHITE,vest:'#15151c',sleeveC:'#15151c',bottom:'pants',botC:'#15151c',shoes:'#0e0e12',extra:['bowtie'],bowtie:'#15151c'}},
+  winter:{her:{top:'longcoat',topC:'#b3262f',bottom:'pants',botC:'#2b2b33',boots:'#6b4a33',hat:'beanie',hatC:WHITE,pom:'#b3262f',extra:['scarf'],scarf:'#f2d48a',cuff:WHITE},
+          him:{top:'longcoat',topC:'#2b3a55',bottom:'pants',botC:'#3a3f4a',boots:'#3a2a20',hat:'beanie',hatC:'#5e7a5a',pom:'#f2d48a',extra:['scarf'],scarf:'#b3262f',scarfPat:'plaid'}},
+  beach:{her:{top:'dress',topC:'#ffd166',pat:'hibiscus',sleeve:'none',bottom:'skirt',botC:'#ffd166',botPat:'hibiscus',shoes:'#c9a27a',hat:'sunhat',hatC:'#ef6f6c'},
+         him:{top:'shirt',topC:WHITE,collar:'#e9e1d0',sleeve:'short',bottom:'shorts',botC:'#4f8fb0',shoes:'#c9a27a',shades:true}}
+};
+
+const TRIPS=[
+ {k:'japan',name:'Japan',native:'日本',place:'Kyoto, under Mt. Fuji',poses:['peace','wave'],say:['Sakura season with you!','Matching kimono, obviously.'],fits:['Furisode kimono with gold obi and kanzashi','Montsuki kimono with striped hakama'],
+  her:{top:'kimono',topC:'#e0607e',pat:'sakura',sleeve:'wide',bottom:'robe',botC:'#e0607e',botPat:'sakura',sash:'#f2c14e',obi:true,collar:'#fff4e6',hat:'kanzashi',shoes:'#f4efe6'},
+  him:{top:'kimono',topC:'#2d3a66',pat:'seigaiha',sleeve:'wide',bottom:'widepants',botC:'#6e7385',botPat:'stripesV',sash:'#c8a96a',collar:'#e9e4d8',shoes:'#f4efe6'}},
+ {k:'taiwan',name:'Taiwan',native:'臺灣',place:'Pingxi lantern night, Taipei 101',poses:['holdR','holdL'],say:['Wishing on a sky lantern!','I wished for more trips with you.'],fits:['Amis festival dress with beaded headdress','Hakka indigo shirt with floral cloth scarf'],
+  her:{top:'tee',topC:'#c8232c',sleeve:'long',bottom:'skirt',botC:'#1d1b22',botPat:'zig',trim:'#fdd835',legs:'#1d1b22',hat:'amis',extra:['beads'],shoes:'#1d1b22'},
+  him:{top:'mandarin',topC:'#2c4a7c',trim:'#f2d48a',bottom:'pants',botC:'#22263a',extra:['scarf'],scarf:'#d6335a',scarfPat:'flowersR'}},
+ {k:'china',name:'China',native:'中国',place:'The Great Wall',poses:['cheer','hip'],say:['你好! It goes on forever!','Best view on the wall: you.'],fits:['Ruqun hanfu with hair buns and gold pins','Teal hanfu robe with a crowned topknot'],
+  her:{top:'kimono',topC:'#f7dde3',collar:'#c0394f',sleeve:'wide',bottom:'chima',botC:'#c0394f',botPat:'flowersG',sash:'#e6b84a',hat:'buns',shoes:'#c0394f'},
+  him:{top:'kimono',topC:'#2f6b62',collar:'#f3ead7',sleeve:'wide',bottom:'robe',botC:'#2f6b62',sash:'#e6b84a',hat:'topknot',shoes:'#1a1a1a'}},
+ {k:'korea',name:'Korea',native:'한국',place:'Gyeongbokgung Palace, Seoul',poses:['peace','idle'],say:['안녕! Palace day in hanbok!','My gat is serious business.'],fits:['Yellow jeogori with a pink chima and red goreum','White hanbok with navy vest and gat'],
+  her:{top:'jeogori',topC:'#f6c945',sleeveC:'#f6c945',bottom:'chima',botC:'#e2477e',extra:['goreum'],hat:'hibiscus',shoes:'#fff'},
+  him:{top:'vest',topC:'#eef1f6',vest:'#2d3e66',bottom:'widepants',botC:'#eef1f6',hat:'gat',shoes:'#1a1a1a'}},
+ {k:'vietnam',name:'Vietnam',native:'Việt Nam',place:'Hạ Long Bay',poses:['wave','holdL'],say:['Xin chào, Hạ Long Bay!','Boat ride? Boat ride.'],fits:['Red áo dài with gold flowers and nón lá','Navy áo dài with khăn đóng'],
+  her:{top:'tunic',topC:'#c62f3c',pat:'flowersG',bottom:'widepants',botC:'#fbf7ef',hat:'nonla',shoes:'#e6b84a'},
+  him:{top:'tunic',topC:'#24345e',pat:'flowersG',bottom:'widepants',botC:'#fbf7ef',hat:'khan',hatC:'#24345e',shoes:'#1a1a1a'}},
+ {k:'india',name:'India',native:'भारत',place:'Taj Mahal, Agra',poses:['holdR','holdL'],say:['नमस्ते! Golden hour at the Taj.','Wedding-guest energy.'],fits:['Magenta silk sari, maang tikka and bindi','Ivory sherwani with a saffron safa'],
+  her:{top:'sari',topC:'#c2185b',drape:'#e04585',sleeve:'short',sleeveC:'#e6b84a',bottom:'longskirt',botC:'#c2185b',botPat:'sequin',trim:GOLD,tikka:true,bindi:true,extra:['necklace'],shoes:'#e6b84a'},
+  him:{top:'longcoat',topC:'#efe0b5',pat:'zig',bottom:'pants',botC:'#fbf7ef',hat:'turban',hatC:'#e0602c',extra:['pearls'],shoes:'#b8862f'}},
+ {k:'hawaii',name:'Hawaiʻi',native:'Hawaiʻi',place:'Waikīkī and Diamond Head',poses:['cheer','peace'],say:['Aloha! Lei’d and happy.','Island time starts now.'],fits:['Turquoise muumuu, lei and hibiscus','Aloha shirt and lei'],
+  her:{top:'dress',topC:'#2bb3b1',pat:'hibiscus',sleeve:'short',bottom:'longskirt',botC:'#2bb3b1',botPat:'hibiscus',extra:['lei'],hat:'hibiscus',shoes:'#c9a27a'},
+  him:{top:'shirt',topC:'#d23b3b',pat:'hibiscus',collar:'#d23b3b',sleeve:'short',bottom:'shorts',botC:'#e7d3a8',extra:['lei'],shoes:'#c9a27a'}},
+ {k:'usa',name:'America',native:'USA',place:'Monument Valley',poses:['wave','hip'],say:['Howdy, partner!','Literally your partner.'],fits:['Red plaid western shirt, denim skirt, boots','Chambray shirt, bandana, cowboy hat'],
+  her:{top:'shirt',topC:'#c0392b',pat:'plaid',collar:'#c0392b',bottom:'skirt',botC:'#3d5a80',boots:'#7a4a2a',hat:'cowboy',hatC:'#d8b27a'},
+  him:{top:'shirt',topC:'#6f8fb5',collar:'#6f8fb5',bottom:'pants',botC:'#2f4466',boots:'#5a3420',hat:'cowboy',hatC:'#7a4a2a',extra:['scarf'],scarf:'#c62828',scarfPat:'dots'}},
+ {k:'mexico',name:'Mexico',native:'México',place:'Chichén Itzá',poses:['cheer','wave'],say:['¡Hola! It’s fiesta time!','This sombrero has its own zip code.'],fits:['China poblana with sequined skirt and flower crown','Black charro suit with silver and sombrero'],
+  her:{top:'blouse',topC:'#fbf7ef',sleeve:'short',bottom:'longskirt',botC:'#c62828',botPat:'sequin',trim:'#2e7d32',hat:'crown',shoes:'#c62828'},
+  him:{top:'jacket',topC:'#fbf7ef',vest:'#1a1a1a',sleeveC:'#1a1a1a',bottom:'pants',botC:'#1a1a1a',sideButtons:true,hat:'sombrero',hatC:'#1a1a1a',extra:['bowtie'],shoes:'#1a1a1a'}},
+ {k:'uk',name:'United Kingdom',native:'UK',place:'Westminster, London',poses:['idle','hip'],say:['Tea first, then castles.','It’s a kilt, not a skirt!'],fits:['Welsh costume: tall hat, red shawl, striped skirt','Scottish kilt with sporran and tam'],
+  her:{top:'tee',topC:'#fbf7ef',bottom:'longskirt',botC:'#2b2b44',botPat:'stripesH',apron:'#fbf7ef',extra:['shawl'],shawl:'#b3262f',hat:'welsh',shoes:'#1a1a1a'},
+  him:{top:'vest',topC:'#fbf7ef',vest:'#2f4a3a',vestButtons:SILVER,sleeveC:'#fbf7ef',bottom:'kilt',botC:'#b3262f',botPat:'plaid',legs:'#e9e1d0',sporran:true,hat:'tam',hatC:'#24345e',shoes:'#1a1a1a'}},
+ {k:'france',name:'France',native:'France',place:'Paris, by the Eiffel Tower',poses:['holdR','holdL'],say:['Bonjour, Paris!','Croissant count: four.'],fits:['Alsatian dress with the big black bow','Breton stripes, red scarf, beret'],
+  her:{top:'vest',topC:'#fbf7ef',vest:'#1a1a1a',vestPat:'flowersR',bottom:'skirt',botC:'#c62828',trim:'#1a1a1a',apron:'#1a1a1a',apronPat:'flowersR',legs:'#fbf7ef',hat:'alsace',shoes:'#1a1a1a'},
+  him:{top:'tee',topC:'#fbf7ef',pat:'breton',sleeveC:'#fbf7ef',bottom:'pants',botC:'#24345e',hat:'beret',hatC:'#1a1a1a',extra:['scarf'],scarf:'#c62828',shoes:'#1a1a1a'}},
+ {k:'italy',name:'Italy',native:'Italia',place:'Venice, Grand Canal',poses:['peace','wave'],say:['Ciao, Venezia!','Gondola? I know a guy. I’m the guy.'],fits:['Carnival gown in plum and gold with a Venetian mask','Gondolier stripes and a straw boater'],
+  her:{top:'dress',topC:'#6a1b4d',pat:'sequin',bottom:'longskirt',botC:'#6a1b4d',botPat:'zig',trim:GOLD,cuff:GOLD,hat:'carnival',extra:['necklace'],shoes:GOLD},
+  him:{top:'tee',topC:'#fbf7ef',pat:'bretonR',sleeve:'short',bottom:'pants',botC:'#1a1a1a',sash:'#c62828',hat:'boater',hatC:'#c62828',shoes:'#1a1a1a'}},
+ {k:'denmark',name:'Denmark',native:'Danmark',place:'Nyhavn, Copenhagen',poses:['holdR','holdL'],say:['Hej hej! Hygge mode on.','Every house is a different color!'],fits:['Folk dress with gold-embroidered bonnet and striped apron','Red waistcoat, knee breeches and knit cap'],
+  her:{top:'vest',topC:'#fbf7ef',vest:'#1a2a4a',vestPat:'zig',bottom:'longskirt',botC:'#b3262f',apron:'#f3e6c4',apronPat:'rainbow',hat:'bonnet',hatC:'#b3262f',shoes:'#1a1a1a'},
+  him:{top:'vest',topC:'#fbf7ef',vest:'#b3262f',vestButtons:SILVER,bottom:'breeches',botC:'#1a1a1a',legs:'#fbf7ef',hat:'toque',hatC:'#b3262f',shoes:'#1a1a1a'}},
+ {k:'finland',name:'Finland',native:'Suomi',place:'Lapland, under the aurora',poses:['cheer','cheer'],say:['Moi! Northern lights!','Okay, Lapland wins.'],fits:['Kansallispuku: striped skirt, red bodice, flower crown','Navy waistcoat, red sash, wool cap'],
+  her:{top:'vest',topC:'#fbf7ef',vest:'#b3262f',bottom:'longskirt',botC:'#2d4a7c',botPat:'rainbow',hat:'crown',crownC:['#fff','#fdd835','#90caf9'],shoes:'#1a1a1a'},
+  him:{top:'vest',topC:'#fbf7ef',vest:'#24345e',vestButtons:GOLD,bottom:'pants',botC:'#3a3a3a',sash:'#b3262f',boots:'#2b2b2b',hat:'flatcap',hatC:'#5a5560'}},
+ {k:'russia',name:'Russia',native:'Россия',place:'St. Basil’s, Moscow',poses:['wave','holdL'],say:['Привет! Snow and onion domes!','My hat is warmer than my tea.'],fits:['Red sarafan with kokoshnik','Embroidered kosovorotka, sash, ushanka'],
+  her:{top:'tee',topC:'#fbf7ef',bottom:'chima',botC:'#b3262f',botPat:'zig',trim:GOLD,hat:'kokoshnik',hatC:'#b3262f',shoes:'#b3262f'},
+  him:{top:'mandarin',topC:'#c62828',trim:GOLD,bottom:'pants',botC:'#2b2b33',sash:'#e6b84a',boots:'#1a1a1a',hat:'ushanka',hatC:'#6b4a33'}},
+ {k:'peru',name:'Peru',native:'Perú',place:'Machu Picchu',poses:['peace','wave'],say:['Allin p’unchaw! Llama spotted.','That llama is judging my hat.'],fits:['Pink pollera, woven lliclla and montera hat','Red poncho with a chullo'],
+  her:{top:'tee',topC:'#1a2a4a',bottom:'pollera',botC:'#e6449a',trim:'#fdd835',legs:SKIN.her,extra:['shawl'],shawl:'#d81b60',shawlPat:'rainbow',hat:'montera',shoes:'#1a1a1a'},
+  him:{top:'poncho',topC:'#c62828',pat:'stripesV',bottom:'pants',botC:'#2b2b33',hat:'chullo',hatC:'#c62828',shoes:'#3a2a20'}},
+ {k:'thailand',name:'Thailand',native:'ประเทศไทย',place:'Wat Arun, Bangkok',poses:['peace','idle'],say:['Sawasdee kha! Gold everywhere.','Temple of Dawn, golden hour.'],fits:['Chut thai with silk sabai, pha sin and chada crown','White raj pattern jacket with purple chong kraben'],
+  her:{top:'sari',topC:'#e6b84a',drape:'#c99a2e',drapePat:'flowersG',sleeve:'none',bottom:'longskirt',botC:'#7b1e3a',botPat:'flowersG',trim:GOLD,sash:GOLD,hat:'chada',extra:['necklace'],shoes:GOLD},
+  him:{top:'mandarin',topC:'#fbf7ef',trim:GOLD,bottom:'widepants',botC:'#5e2a84',botPat:'sequin',shoes:'#1a1a1a'}},
+ {k:'indonesia',name:'Indonesia',native:'Indonesia',place:'Bali temple gate',poses:['holdR','holdL'],say:['Selamat pagi, Bali!','Through the split gate together.'],fits:['Lace kebaya, batik sarong and frangipani','White shirt, batik kamen and udeng'],
+  her:{top:'dress',topC:'#f48fb1',pat:'dots',bottom:'longskirt',botC:'#8a5a3a',botPat:'batik',sash:GOLD,hat:'crown',crownC:['#fff','#fff8c4'],shoes:GOLD},
+  him:{top:'mandarin',topC:'#fbf7ef',bottom:'robe',botC:'#8a5a3a',botPat:'batik',sash:GOLD,hat:'udeng',hatC:'#8a5a3a',shoes:'#3a2214'}},
+ {k:'philippines',name:'Philippines',native:'Pilipinas',place:'Banaue rice terraces',poses:['wave','peace'],say:['Mabuhay! Look at these terraces.','Barong: officially my best shirt.'],fits:['Terno with butterfly sleeves','Embroidered barong tagalog'],
+  her:{top:'dress',topC:'#f8bbd0',pat:'sequin',sleeve:'short',bottom:'longskirt',botC:'#f8bbd0',botPat:'sequin',extra:['butterfly'],trim:GOLD,shoes:'#f8bbd0'},
+  him:{top:'shirt',topC:'#f3ead7',pat:'zig',collar:'#f3ead7',bottom:'pants',botC:'#1a1a1a',shoes:'#1a1a1a'}},
+ {k:'mongolia',name:'Mongolia',native:'Монгол',place:'The steppe, by the gers',poses:['cheer','hip'],say:['Sain uu! So much sky.','Ger sweet ger.'],fits:['Blue silk deel with a gold sash and pointed hat','Maroon deel with an orange sash'],
+  her:{top:'mandarin',topC:'#1e88e5',pat:'flowersG',cuff:GOLD,bottom:'robe',botC:'#1e88e5',botPat:'flowersG',sash:'#f2c14e',hat:'mongol',hatC:'#c62828',boots:'#7a2a2a'},
+  him:{top:'mandarin',topC:'#7b1e3a',cuff:'#5a1428',bottom:'robe',botC:'#7b1e3a',sash:'#f28c28',hat:'mongol',hatC:'#5a3a20',boots:'#3a2214'}},
+ {k:'turkey',name:'Türkiye',native:'Türkiye',place:'Cappadocia at sunrise',poses:['holdR','holdL'],say:['Merhaba! Balloons everywhere!','Best sunrise of my life.'],fits:['Ottoman-style entari with a gold coin headband','Embroidered vest, şalvar and fez'],
+  her:{top:'dress',topC:'#7b1e3a',pat:'zig',bottom:'longskirt',botC:'#7b1e3a',botPat:'flowersG',sash:GOLD,hat:'coins',extra:['necklace'],shoes:GOLD},
+  him:{top:'vest',topC:'#fbf7ef',vest:'#24345e',vestPat:'zig',bottom:'widepants',botC:'#3a2a4a',sash:'#c62828',hat:'fez',hatC:'#c62828',shoes:'#7a2a2a'}},
+ {k:'egypt',name:'Egypt',native:'مصر',place:'Pyramids of Giza',poses:['wave','idle'],say:['Ahlan! They’re SO big.','4,500 years old. Still standing.'],fits:['Embroidered blue galabeya with gold headscarf','White galabeya with emma turban'],
+  her:{top:'tunic',topC:'#1e5aa8',pat:'flowersG',bottom:'longskirt',botC:'#1e5aa8',hat:'scarfhead',hatC:'#e6b84a',hatPat:'sequin',extra:['necklace'],shoes:GOLD},
+  him:{top:'tunic',topC:'#fbf7ef',trim:'#b8b0a0',bottom:'widepants',botC:'#fbf7ef',hat:'emma',hatC:'#fbf7ef',shoes:'#7a5230'}},
+ {k:'morocco',name:'Morocco',native:'المغرب',place:'Chefchaouen, the blue city',poses:['peace','hip'],say:['Everything is blue!','Mint tea break?'],fits:['Emerald kaftan with a gold belt','Hooded djellaba with babouche slippers'],
+  her:{top:'tunic',topC:'#0f6b5c',pat:'sequin',bottom:'longskirt',botC:'#0f6b5c',botPat:'sequin',sash:GOLD,obi:false,extra:['necklace'],shoes:GOLD},
+  him:{top:'tunic',topC:'#8a6a4f',pat:'stripesV',trim:'#f2d48a',bottom:'robe',botC:'#8a6a4f',botPat:'stripesV',hat:'hood',hatC:'#8a6a4f',shoes:'#f2c14e'}},
+ {k:'kenya',name:'Kenya',native:'Kenya',place:'Amboseli, under Kilimanjaro',poses:['cheer','wave'],say:['Jambo! Giraffe at 9 o’clock!','Hakuna matata, for real.'],fits:['Red Maasai shuka with a beaded collar','Blue plaid shuka with a beaded collar'],
+  her:{top:'dress',topC:'#c62828',pat:'plaid',sleeve:'none',bottom:'longskirt',botC:'#c62828',botPat:'plaid',extra:['maasai'],shoes:'#7a5230'},
+  him:{top:'dress',topC:'#1e4fa8',pat:'plaid',sleeve:'none',bottom:'robe',botC:'#c62828',botPat:'plaid',extra:['maasai'],shoes:'#7a5230'}},
+ {k:'nigeria',name:'Nigeria',native:'Nigeria',place:'Zuma Rock',poses:['holdR','holdL'],say:['Look at my gele!','Agbada sleeves: maximum.'],fits:['Iro and buba with a gold gele and coral beads','Gold agbada with a fila cap'],
+  her:{top:'dress',topC:'#7b1e3a',pat:'sequin',sleeve:'short',bottom:'longskirt',botC:'#7b1e3a',botPat:'zig',hat:'gele',hatC:'#e6b84a',hatPat:'stripesV',extra:['pearls'],pearlC:'#e2563a',shoes:GOLD},
+  him:{top:'tunic',topC:'#e6b84a',pat:'zig',sleeve:'wide',bottom:'widepants',botC:'#e6b84a',hat:'fila',hatC:'#7b1e3a',extra:['pearls'],pearlC:'#e2563a',shoes:'#3a2214'}},
+ {k:'southafrica',name:'South Africa',native:'South Africa',place:'Table Mountain, Cape Town',poses:['peace','wave'],say:['Sawubona! The mountain has a tablecloth.','Madiba shirt, Cape Town sun.'],fits:['Ndebele-patterned dress with gold neck rings','Patterned Madiba shirt'],
+  her:{top:'dress',topC:'#fbf7ef',pat:'ndebele',sleeve:'none',bottom:'longskirt',botC:'#fbf7ef',botPat:'ndebele',hat:'beadband',extra:['rings'],shoes:'#1a1a1a'},
+  him:{top:'shirt',topC:'#1e6b5c',pat:'flowersG',collar:'#1e6b5c',bottom:'pants',botC:'#1a1a1a',shoes:'#1a1a1a'}},
+ {k:'brazil',name:'Brazil',native:'Brasil',place:'Rio, Sugarloaf and Corcovado',poses:['cheer','cheer'],say:['Olá, Rio!','Samba lessons tonight.'],fits:['Baiana dress with white lace and headwrap','Striped shirt, white jacket and fedora'],
+  her:{top:'blouse',topC:'#fbf7ef',sleeve:'short',bottom:'longskirt',botC:'#fbf7ef',botPat:'flowersG',trim:GOLD,hat:'gele',hatC:'#fbf7ef',extra:['beads'],shoes:'#fbf7ef'},
+  him:{top:'jacket',topC:'#fbf7ef',pat:'bretonR',vest:'#fbf7ef',bottom:'pants',botC:'#fbf7ef',hat:'fedora',hatC:'#fbf7ef',shoes:'#7a5230'}},
+ {k:'argentina',name:'Argentina',native:'Argentina',place:'La Boca, Buenos Aires',poses:['holdR','holdL'],say:['Shall we tango?','Only if you lead.'],fits:['Red tango dress with a flower','Black vest and fedora'],
+  her:{top:'dress',topC:'#b3001b',sleeve:'none',bottom:'skirt',botC:'#b3001b',trim:'#1a1a1a',hat:'peineta',noComb:true,legs:'#f1c3a6',shoes:'#1a1a1a'},
+  him:{top:'vest',topC:'#fbf7ef',vest:'#1a1a1a',bottom:'pants',botC:'#1a1a1a',hat:'fedora',hatC:'#1a1a1a',band:'#b3001b',shoes:'#1a1a1a'}},
+ {k:'spain',name:'Spain',native:'España',place:'Sagrada Família, Barcelona',poses:['cheer','hip'],say:['¡Hola! Ruffles on ruffles.','Still under construction. Still stunning.'],fits:['Polka-dot flamenco dress with peineta comb','Traje corto and cordobés hat'],
+  her:{top:'dress',topC:'#c62828',pat:'polka',sleeve:'short',bottom:'pollera',botC:'#c62828',botPat:'polka',trim:'#1a1a1a',hat:'peineta',shoes:'#c62828'},
+  him:{top:'jacket',topC:'#fbf7ef',vest:'#1a1a1a',sleeveC:'#1a1a1a',bottom:'pants',botC:'#3a3a3a',sash:'#c62828',boots:'#1a1a1a',hat:'cordobes',hatC:'#1a1a1a'}},
+ {k:'germany',name:'Germany',native:'Deutschland',place:'Neuschwanstein Castle',poses:['peace','wave'],say:['Hallo! Fairytale castle!','Lederhosen were a great decision.'],fits:['Dirndl with a blue apron and edelweiss crown','Lederhosen, checked shirt and Tyrolean hat'],
+  her:{top:'vest',topC:'#fbf7ef',vest:'#2e6b3a',vestPat:'flowersR',sleeve:'short',bottom:'skirt',botC:'#b3262f',apron:'#7db7e8',hat:'crown',crownC:['#fff','#f8bbd0'],shoes:'#1a1a1a'},
+  him:{top:'shirt',topC:'#7db7e8',pat:'plaid',collar:'#7db7e8',sleeve:'short',bottom:'shorts',botC:'#7a5230',extra:['suspenders'],legs:'#e9e1d0',hat:'tyrol',hatC:'#2e5a3a',shoes:'#5a3a20'}},
+ {k:'netherlands',name:'Netherlands',native:'Nederland',place:'Tulip fields and windmills',poses:['holdR','holdL'],say:['Hallo! Tulips forever.','Clogs are louder than expected.'],fits:['Volendam winged cap, floral bodice, coral beads','Striped shirt, black jacket and wooden clogs'],
+  her:{top:'vest',topC:'#fbf7ef',vest:'#c62828',vestPat:'flowersR',bottom:'longskirt',botC:'#1a1a1a',apron:'#1e5aa8',apronPat:'stripesV',hat:'volendam',extra:['pearls'],pearlC:'#e2563a',shoes:'#f2c14e'},
+  him:{top:'jacket',topC:'#fbf7ef',pat:'bretonR',vest:'#1a1a1a',sleeveC:'#1a1a1a',bottom:'widepants',botC:'#1a1a1a',hat:'flatcap',hatC:'#1a1a1a',shoes:'#f2c14e'}},
+ {k:'greece',name:'Greece',native:'Ελλάδα',place:'Oia, Santorini',poses:['wave','peace'],say:['Yia sou! Blue domes!','My shoes have pompoms. Respect.'],fits:['Amalia dress with a red jacket and tasselled cap','Evzone fustanella with pompom shoes'],
+  her:{top:'jacket',topC:'#fbf7ef',vest:'#b3262f',vestPat:'zig',bottom:'longskirt',botC:'#24345e',trim:GOLD,hat:'amalia',hatC:'#b3262f',shoes:'#1a1a1a'},
+  him:{top:'vest',topC:'#fbf7ef',vest:'#24345e',vestPat:'zig',sleeve:'wide',sleeveC:'#fbf7ef',bottom:'kilt',botC:'#fbf7ef',legs:'#fbf7ef',hat:'fez',hatC:'#b3262f',shoes:'#b3262f',pompom:true}},
+ {k:'ireland',name:'Ireland',native:'Éire',place:'Cliffs of Moher',poses:['cheer','wave'],say:['Dia duit! A rainbow!','Aran sweater weather.'],fits:['Embroidered green Irish dance dress','Aran knit sweater with tweed cap'],
+  her:{top:'dress',topC:'#1e7a46',pat:'zig',bottom:'skirt',botC:'#1e7a46',botPat:'zig',trim:GOLD,legs:'#fbf7ef',shoes:'#1a1a1a'},
+  him:{top:'tee',topC:'#efe6d0',pat:'knit',sleeveC:'#efe6d0',bottom:'pants',botC:'#5a5560',hat:'flatcap',hatC:'#7a6a58',shoes:'#5a3a20'}},
+ {k:'norway',name:'Norway',native:'Norge',place:'Geirangerfjord',poses:['holdR','holdL'],say:['Hei! This fjord is unreal.','Let’s live in that red cabin.'],fits:['Bunad with a silver sølje brooch','Green bunad vest, breeches and knit cap'],
+  her:{top:'vest',topC:'#fbf7ef',vest:'#b3262f',vestPat:'flowersG',bottom:'longskirt',botC:'#1a1a1a',trim:'#b3262f',extra:['brooch'],shoes:'#1a1a1a'},
+  him:{top:'vest',topC:'#fbf7ef',vest:'#2e6b3a',vestButtons:SILVER,bottom:'breeches',botC:'#1a1a1a',legs:'#fbf7ef',hat:'beanie',hatC:'#b3262f',pom:'#fbf7ef',shoes:'#1a1a1a'}},
+ {k:'ukraine',name:'Ukraine',native:'Україна',place:'Sunflower fields',poses:['cheer','peace'],say:['Привіт! Sunflowers to the horizon.','Matching vyshyvanka!'],fits:['Vyshyvanka with a vinok crown and ribbons','Vyshyvanka with a red sash and sharovary'],
+  her:{top:'tee',topC:'#fbf7ef',cuff:'#c62828',bottom:'longskirt',botC:'#1a1a1a',botPat:'flowersR',hat:'vinok',extra:['vysh','pearls'],pearlC:'#c62828',shoes:'#b3262f'},
+  him:{top:'tee',topC:'#fbf7ef',cuff:'#c62828',bottom:'widepants',botC:'#24345e',sash:'#c62828',extra:['vysh'],boots:'#b3262f'}},
+ {k:'uae',name:'UAE',native:'الإمارات',place:'Dubai, Burj Khalifa',poses:['peace','idle'],say:['Marhaba! Desert to skyline.','Tallest building. Tallest dreams.'],fits:['Black abaya with gold embroidery and shayla','White kandura with ghutra and agal'],
+  her:{top:'tunic',topC:'#15151c',pat:'flowersG',trim:GOLD,cuff:GOLD,bottom:'robe',botC:'#15151c',trim:GOLD,hat:'scarfhead',hatC:'#15151c',hatPat:'sequin',extra:['necklace'],shoes:GOLD},
+  him:{top:'tunic',topC:'#fbf7ef',trim:'#d9d4c8',bottom:'robe',botC:'#fbf7ef',hat:'ghutra',shoes:'#7a5230'}}
+];
+
+/* ---------- render ---------- */
+let uid=0;
+function panelSVG(bgKey,look,poses,label){
+  const u=++uid;
+  return `<svg viewBox="0 0 400 300" role="img" aria-label="${label}">${BG[bgKey](u)}${couple(u,look,poses)}${spark(372,30,.8)+spark(30,110,.5)}</svg>`;
+}
+const POOL=['idle','wave','peace','cheer','hip'];
+function render(shuffle){
+  uid=0;
+  const r=rng(Date.now()%100000);
+  const pick=(p)=>shuffle?(()=>{if(r()<.3)return['holdR','holdL'];return[POOL[Math.floor(r()*POOL.length)],POOL[Math.floor(r()*POOL.length)]]})():p;
+  const comic=document.getElementById('comic');
+  const ep=(i)=>String(i).padStart(2,'0');
+  let html=`<article class="panel wide" tabindex="0"><div class="stage">${panelSVG('seattle',LOOKS.seattle,pick(['holdR','holdL']),'Prologue: Seattle waterfront')}<div class="bubble her">Where should we go first?</div><div class="bubble him">Everywhere. In order.</div></div><div class="cap"><span class="ep">Prologue</span><h3>Seattle</h3><span class="native">ワクワク</span><div class="fits">Where the selfie was taken: the Great Wheel behind them, red backpack, green tee.</div></div></article>`;
+  TRIPS.forEach((t,i)=>{
+    html+=`<article class="panel" tabindex="0"><div class="stage">${panelSVG(t.k,t,pick(t.poses),t.name+': '+t.fits.join(' and '))}<div class="bubble her">${t.say[0]}</div><div class="bubble him">${t.say[1]}</div></div><div class="cap"><span class="ep">Stamp ${ep(i+1)} · ${t.place}</span><h3>${t.name}</h3><span class="native">${t.native}</span><div class="fits"><b>Her:</b> ${t.fits[0]}. <b>Him:</b> ${t.fits[1]}.</div></div></article>`;
+  });
+  html+=`<article class="panel wide" tabindex="0"><div class="stage">${panelSVG('finale',LOOKS.blacktie,pick(['holdR','holdL']),'Finale: around the world')}<div class="bubble her">${TRIPS.length} stamps so far!</div><div class="bubble him">Plenty of pages left.</div></div><div class="cap"><span class="ep">To be continued</span><h3>Next stop: anywhere</h3><span class="native">つづく</span><div class="fits">Black-tie finale. The passport is not full yet.</div></div></article>`;
+  comic.innerHTML=html;
+  comic.querySelectorAll('.panel').forEach(p=>{const go=()=>{p.classList.remove('jump');void p.offsetWidth;p.classList.add('jump');};p.addEventListener('click',go);p.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();go();}});});
+}
+
+function castCard(key,title,desc,poses,bg){
+  const u='c'+key;
+  const back=`<defs><radialGradient id="cg${u}" cx=".5" cy=".4" r=".7"><stop offset="0" stop-color="${bg[0]}"/><stop offset="1" stop-color="${bg[1]}"/></radialGradient></defs><rect width="400" height="300" fill="url(#cg${u})"/>`+[...Array(16)].map((_,i)=>`<path d="M200 150 L${200+Math.cos(i*Math.PI/8)*400} ${150+Math.sin(i*Math.PI/8)*400} L${200+Math.cos(i*Math.PI/8+.08)*400} ${150+Math.sin(i*Math.PI/8+.08)*400}Z" fill="#fff" opacity=".18"/>`).join('')+spark(40,40,1,'#fff')+spark(360,60,.7,'#fff')+spark(350,240,.6,'#fff');
+  return `<div class="card"><svg viewBox="0 0 400 300" role="img" aria-label="${title}">${back}${couple(u,LOOKS[key],poses)}</svg><h3>${title}</h3><p>${desc}</p></div>`;
+}
+document.getElementById('cast').innerHTML=
+  castCard('seattle','Seattle Casual','Light-blue track jacket and red backpack; green tee with a plaid maple leaf.',['peace','wave'],['#d9efff','#8ec5ee'])+
+  castCard('blacktie','Black Tie','Gold sequin gown and pendant; black tux with bow tie.',['holdR','holdL'],['#fff3d1','#d9b25f'])+
+  castCard('winter','Cozy Winter','Matching beanies, long coats and swapped scarf colors.',['cheer','cheer'],['#f0f4ff','#9fb4dc'])+
+  castCard('beach','Beach Day','Sunflower sundress and straw hat; linen shirt and shades.',['hip','peace'],['#fff6d6','#ffb38a']);
+
+document.getElementById('coverArt').innerHTML=`<svg viewBox="0 0 400 300" role="img" aria-label="The couple in Seattle"><defs><radialGradient id="cov" cx=".5" cy=".45" r=".6"><stop offset="0" stop-color="#3a2f63"/><stop offset="1" stop-color="#16152a"/></radialGradient></defs><rect width="400" height="300" fill="url(#cov)"/>${[...Array(24)].map((_,i)=>`<path d="M205 150 L${205+Math.cos(i*Math.PI/12)*420} ${150+Math.sin(i*Math.PI/12)*420} L${205+Math.cos(i*Math.PI/12+.05)*420} ${150+Math.sin(i*Math.PI/12+.05)*420}Z" fill="${GOLD}" opacity=".22"/>`).join('')}<circle cx="205" cy="150" r="118" fill="none" stroke="${GOLD}" stroke-width="1.4" opacity=".7"/><circle cx="205" cy="150" r="124" fill="none" stroke="${GOLD}" stroke-width=".8" opacity=".5" stroke-dasharray="2 4"/>${couple('cov',LOOKS.seattle,['holdR','holdL'])}${spark(60,50,1.3,'#fff3c2')+spark(350,80,1,'#fff3c2')+spark(330,240,.7,'#fff')+spark(70,230,.6,'#fff')}</svg>`;
+
+document.getElementById('stamps').innerHTML=TRIPS.map(t=>`<span>${t.native}</span>`).join('');
+render(false);
+document.getElementById('shuffle').addEventListener('click',()=>render(true));
+</script>
+
+</body>
+</html>
